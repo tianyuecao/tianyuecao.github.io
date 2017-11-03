@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="算法学习笔记," />
 
 
 
@@ -79,16 +79,21 @@
 
 
 
-<meta name="description" content="Stay Simple, Stay Naive.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Neverland">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从sj开始，到fj结束，有价值（权重）vj. 如果两个任务没有ov">
+<meta name="keywords" content="算法学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dynamic Programming 1 -- Weighted Interval Scheduling">
+<meta property="og:url" content="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="Stay Simple, Stay Naive.">
+<meta property="og:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从sj开始，到fj结束，有价值（权重）vj. 如果两个任务没有ov">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming1_1.png">
+<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming1_2.png">
+<meta property="og:updated_time" content="2017-11-03T04:35:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Neverland">
-<meta name="twitter:description" content="Stay Simple, Stay Naive.">
+<meta name="twitter:title" content="Dynamic Programming 1 -- Weighted Interval Scheduling">
+<meta name="twitter:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从sj开始，到fj结束，有价值（权重）vj. 如果两个任务没有ov">
+<meta name="twitter:image" content="http://yoursite.com/images/dynamicprogramming1_1.png">
 
 
 
@@ -118,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/"/>
 
 
 
 
 
-  <title>Neverland</title>
+  <title>Dynamic Programming 1 -- Weighted Interval Scheduling | Neverland</title>
   
 
 
@@ -143,8 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -229,153 +233,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/Dynamic-Programming-2-Segmented-Least-Square/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vanessa Cao">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Neverland">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/03/Dynamic-Programming-2-Segmented-Least-Square/" itemprop="url">Dynamic Programming 2 -- Segmented Least Square</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T12:27:14+08:00">
-                2017-11-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这个问题是静态的直线拟合问题的衍生，为采样点明显分段时，该如何分段拟合提供了一个解决方案。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>Least squares</strong> 是segmented least squares的基础问题，是静态的。</p>
-<ol>
-<li>已知平面上n个点(x1,y1), (x2,y2), … (xn,yn).</li>
-<li>找一条直线 y=ax+b 使得 squared error 的和最小，即 yi - axi - b 的平方和最小。</li>
-</ol>
-<p>上述问题可以直接通过计算得到公式。</p>
-<p><strong>Segmented least squares</strong> 是上述问题的衍生。</p>
-<ol>
-<li>平面上的点大致线性分段排列。</li>
-<li>给定n个点，且x1&lt;x2&lt;…&lt;xn，求分段的几条直线使得f(x)最小。</li>
-</ol>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对于价值函数f(x)，需要平衡accuracy和parsimony，也就是需要平衡拟合的程度和分段直线的数量。所以最终定义f(x)为：<br>$$f(x) = E + cL$$<br>其中E是每段的squared error的和，L是分段直线的数量。</p>
-<p>定义了价值函数之后，我们就要求解问题使得f(x)最小。下面定义OPT函数。</p>
-<ol>
-<li>基础情况是j=0时，OPT(j) = 0.</li>
-<li>定义e(i,j)为从i到j的点的squared error的和，故OPT(j) = min{e(i,j) + c + OPT(i-1)}, 1&lt;= i &lt;= j.</li>
-</ol>
-<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><blockquote>
-<p>SEGMENTED-LEAST-SQUARES(n, p1, … pn, c)</p>
-<p> For j = 1 to n<br>     For i = 1 to j<br>         Compute the least squares e(i,j) for the segment pi, pi+1, …, pj.</p>
-<p>M[0] = 0.<br>For j=1 to n<br>    M[j] = min{ eij + c + M[i-1]}, 1 &lt;= i &lt;= j.</p>
-<p>Return M[n].</p>
-</blockquote>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>此算法的bottleneck是计算O(n^2)对的e(i,j)，计算每对的eij时间为O(n)，所以总的时间复杂度为O(n^3)，空间复杂度为O(n^2). 如果已经提前计算好O(n^2)对的e(i,j)，那么时间复杂度为O(n^2)，空间复杂度为O(n).</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -405,9 +265,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/" itemprop="url">Dynamic Programming 1 -- Weighted Interval Scheduling</a></h1>
+          <h1 class="post-title" itemprop="name headline">Dynamic Programming 1 -- Weighted Interval Scheduling</h1>
         
 
         <div class="post-meta">
@@ -457,9 +315,7 @@
       
 
       
-        
-          
-            <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
 <p>Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。</p>
 <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ol>
@@ -494,8 +350,6 @@
 <p>上述算法可以直接得到最大权值，但是若想知道solution的序列该怎么办呢？<br>其实也很简单，只需要从序号j开始判断v[j] + M[p[j]]是否大于M[j-1]，若大于，说明j被选择，否则j没有被选择，序号-1继续判断，直至为序号0。</p>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>算法的时间复杂度主要由排序决定，排序算法需要时间为O(nlogn)，计算p(j)时通过按照起始时间排序时间复杂度也是O(nlogn). 在计算M[j]时，最多需要2n次recursive call，所以计算OPT的时间复杂度是O(n). 所以总的算法时间复杂度为O(nlogn)，若任务已经按照起始时间和结束时间排序，则时间复杂度为O(n).</p>
 
-          
-        
       
     </div>
     
@@ -510,142 +364,40 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/02/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vanessa Cao">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Neverland">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/02/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-02T19:49:50+08:00">
-                2017-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/算法学习笔记/" rel="tag"># 算法学习笔记</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/02/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/03/Dynamic-Programming-2-Segmented-Least-Square/" rel="prev" title="Dynamic Programming 2 -- Segmented Least Square">
+                Dynamic Programming 2 -- Segmented Least Square <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
       
     </footer>
   </div>
@@ -655,10 +407,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -666,6 +419,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -686,8 +443,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -744,6 +510,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度分析"><span class="nav-number">3.</span> <span class="nav-text">复杂度分析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -877,6 +659,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
