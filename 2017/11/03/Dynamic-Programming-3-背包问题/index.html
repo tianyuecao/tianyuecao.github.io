@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="算法学习笔记," />
 
 
 
@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
+<meta name="keywords" content="算法学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/11/02/hello-world/index.html">
+<meta property="og:title" content="Dynamic Programming 3 -- 背包问题">
+<meta property="og:url" content="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-02T11:49:50.000Z">
+<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming3_1.png">
+<meta property="og:updated_time" content="2017-11-03T12:32:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Dynamic Programming 3 -- 背包问题">
+<meta name="twitter:description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
+<meta name="twitter:image" content="http://yoursite.com/images/dynamicprogramming3_1.png">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/02/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/"/>
 
 
 
 
 
-  <title>Hello World | Neverland</title>
+  <title>Dynamic Programming 3 -- 背包问题 | Neverland</title>
   
 
 
@@ -244,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/02/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -261,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">Dynamic Programming 3 -- 背包问题</h1>
         
 
         <div class="post-meta">
@@ -273,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-02T19:49:50+08:00">
-                2017-11-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T20:32:18+08:00">
+                2017-11-03
               </time>
             
 
@@ -311,15 +314,41 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。</p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
+<li>有n个物体和一个背包；</li>
+<li>第i个物体的重量为wi &gt; 0，价值为vi &gt; 0；</li>
+<li>背包总承重W；</li>
+<li>GOAL：使得装进背包的物品价值最大。</li>
+</ul>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>首先考虑的是能不能用Greedy Algorithm求解，但是无论是以最大价值、最小重量还是价值和重量的比值为Greedy Patten，都不能满足最优。所以考虑使用动态规划。</p>
+<p>首先定义OPT函数，由于这是一个binary choice的问题，所以首先考虑的是OPT(i) = 从1到i的最大价值subset。</p>
+<ul>
+<li>OPT不选择i：OPT选择从1到i-1的最优值。</li>
+<li>OPT选择i：选择了物体i不一定会是最优解，可能还能接受其他的物品，但是我们不知道我们是不是在选择了i之前还选择了其他的物品，甚至不知道有没有i的空间。</li>
+</ul>
+<p>根据上面的分析，我们发现OPT如果只是关于i的函数，是不能解决这个问题的，所以我们增加一个参数限制，w。</p>
+<p>OPT(i,w) = 从1到i且重量小于w的最大价值的subset.</p>
+<ul>
+<li>OPT不选择i：OPT选择从1到i-1的重量小于等于w的OPT结果；</li>
+<li>OPT选择I：OPT选择从1到i-1的重量小于等于w-wi的结果。</li>
+</ul>
+<p>则OPT函数的定义为：</p>
+<ol>
+<li>当i=0时，OPT(i,w) = 0；</li>
+<li>当wi &gt; w时，OPT(i,w) = OPT(i-1, w)；</li>
+<li>否则，OPT(i,w) = max(OPT(i-1,w), vi + OPT(i-1,w-wi)).</li>
+</ol>
+<p>通过OPT可以找到最大价值，为了找到选择的物品，从二维的memory中从右下角向上向左找解，向上的储存值与当前相等时说明没有选择此物品，直至不相等选择此物品，w变为w-wi，具体过程如下图：</p>
+<p><img src="/images/dynamicprogramming3_1.png" alt="Alt text"></p>
+<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>下面是一个bottom-up的解决方案：</p>
+<blockquote>
+<p>KNAPSACK(n, W, w1, …, wn, v1, …, vn)</p>
+<p> For w = 0 to W<br>     M[0, w] = 0.</p>
+<p> For I = 1 to n<br>     For w = 1 to W<br>     If (wi &gt; w)    M[i, w] = M[i-1, w].<br>     Else             M[i, w] = max(M[i-1, w], vi + M[i-1, w-wi]).</p>
+<p> Return M[n, W].</p>
+</blockquote>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>填表时每填一格需要时间为O(1)，表格共有O(nW)格，所以时间复杂度为O(nW)，空间复杂度也为O(nW).</p>
 
       
     </div>
@@ -335,6 +364,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/算法学习笔记/" rel="tag"># 算法学习笔记</a>
+          
+        </div>
+      
 
       
       
@@ -344,15 +379,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/11/03/Dynamic-Programming-2-Segmented-Least-Square/" rel="next" title="Dynamic Programming 2 -- Segmented Least Square">
+                <i class="fa fa-chevron-left"></i> Dynamic Programming 2 -- Segmented Least Square
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/" rel="prev" title="Dynamic Programming 1 -- Weighted Interval Scheduling">
-                Dynamic Programming 1 -- Weighted Interval Scheduling <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -481,7 +516,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法流程"><span class="nav-number">3.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度分析"><span class="nav-number">4.</span> <span class="nav-text">复杂度分析</span></a></li></ol></div>
             
 
           </div>
