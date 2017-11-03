@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="算法学习笔记," />
+  <meta name="keywords" content="随笔," />
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
-<meta name="keywords" content="算法学习笔记">
+<meta name="description" content="【我与图书馆的故事】的投稿，由于于某同学极力鼓动我参加所以写了一篇，就放上来吧。才疏学浅，请雅正。  夏至早上八点钟，一边哼着歌，一遍眯着眼睛看一眼天空，阳光明媚却不刺眼。今天说不定会有好事发生。嗯，会不会昨天调不出来的代码今天就写好了呢。或者，今天的约会会比较顺利？你问约会的对象？啊，就在前面。 晨曦中她好像女神一样耀眼。长发及腰，螓首蛾眉，明眸皓齿，巧笑倩兮。一袭白色长裙，看到我歪了一下头，">
+<meta name="keywords" content="随笔">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dynamic Programming 3 -- 背包问题">
-<meta property="og:url" content="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/index.html">
+<meta property="og:title" content="阳光好的日子总会有好事情发生">
+<meta property="og:url" content="http://yoursite.com/2017/11/03/阳光好的日子总会有好事情发生/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
+<meta property="og:description" content="【我与图书馆的故事】的投稿，由于于某同学极力鼓动我参加所以写了一篇，就放上来吧。才疏学浅，请雅正。  夏至早上八点钟，一边哼着歌，一遍眯着眼睛看一眼天空，阳光明媚却不刺眼。今天说不定会有好事发生。嗯，会不会昨天调不出来的代码今天就写好了呢。或者，今天的约会会比较顺利？你问约会的对象？啊，就在前面。 晨曦中她好像女神一样耀眼。长发及腰，螓首蛾眉，明眸皓齿，巧笑倩兮。一袭白色长裙，看到我歪了一下头，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming3_1.png">
-<meta property="og:updated_time" content="2017-11-03T12:32:32.000Z">
+<meta property="og:updated_time" content="2017-11-03T15:57:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dynamic Programming 3 -- 背包问题">
-<meta name="twitter:description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
-<meta name="twitter:image" content="http://yoursite.com/images/dynamicprogramming3_1.png">
+<meta name="twitter:title" content="阳光好的日子总会有好事情发生">
+<meta name="twitter:description" content="【我与图书馆的故事】的投稿，由于于某同学极力鼓动我参加所以写了一篇，就放上来吧。才疏学浅，请雅正。  夏至早上八点钟，一边哼着歌，一遍眯着眼睛看一眼天空，阳光明媚却不刺眼。今天说不定会有好事发生。嗯，会不会昨天调不出来的代码今天就写好了呢。或者，今天的约会会比较顺利？你问约会的对象？啊，就在前面。 晨曦中她好像女神一样耀眼。长发及腰，螓首蛾眉，明眸皓齿，巧笑倩兮。一袭白色长裙，看到我歪了一下头，">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/03/阳光好的日子总会有好事情发生/"/>
 
 
 
 
 
-  <title>Dynamic Programming 3 -- 背包问题 | Neverland</title>
+  <title>阳光好的日子总会有好事情发生 | Neverland</title>
   
 
 
@@ -247,7 +245,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/阳光好的日子总会有好事情发生/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -264,7 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Dynamic Programming 3 -- 背包问题</h1>
+          <h1 class="post-title" itemprop="name headline">阳光好的日子总会有好事情发生</h1>
         
 
         <div class="post-meta">
@@ -276,7 +274,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T20:32:18+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T23:55:29+08:00">
                 2017-11-03
               </time>
             
@@ -314,41 +312,20 @@
       
 
       
-        <p>背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
-<li>有n个物体和一个背包；</li>
-<li>第i个物体的重量为wi &gt; 0，价值为vi &gt; 0；</li>
-<li>背包总承重W；</li>
-<li>GOAL：使得装进背包的物品价值最大。</li>
-</ul>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>首先考虑的是能不能用Greedy Algorithm求解，但是无论是以最大价值、最小重量还是价值和重量的比值为Greedy Patten，都不能满足最优。所以考虑使用动态规划。</p>
-<p>首先定义OPT函数，由于这是一个binary choice的问题，所以首先考虑的是OPT(i) = 从1到i的最大价值subset。</p>
-<ul>
-<li>OPT不选择i：OPT选择从1到i-1的最优值。</li>
-<li>OPT选择i：选择了物体i不一定会是最优解，可能还能接受其他的物品，但是我们不知道我们是不是在选择了i之前还选择了其他的物品，甚至不知道有没有i的空间。</li>
-</ul>
-<p>根据上面的分析，我们发现OPT如果只是关于i的函数，是不能解决这个问题的，所以我们增加一个参数限制，w。</p>
-<p>OPT(i,w) = 从1到i且重量小于w的最大价值的subset.</p>
-<ul>
-<li>OPT不选择i：OPT选择从1到i-1的重量小于等于w的OPT结果；</li>
-<li>OPT选择I：OPT选择从1到i-1的重量小于等于w-wi的结果。</li>
-</ul>
-<p>则OPT函数的定义为：</p>
-<ol>
-<li>当i=0时，OPT(i,w) = 0；</li>
-<li>当wi &gt; w时，OPT(i,w) = OPT(i-1, w)；</li>
-<li>否则，OPT(i,w) = max(OPT(i-1,w), vi + OPT(i-1,w-wi)).</li>
-</ol>
-<p>通过OPT可以找到最大价值，为了找到选择的物品，从二维的memory中从右下角向上向左找解，向上的储存值与当前相等时说明没有选择此物品，直至不相等选择此物品，w变为w-wi，具体过程如下图：</p>
-<p><img src="/images/dynamicprogramming3_1.png" alt="Alt text"></p>
-<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>下面是一个bottom-up的解决方案：</p>
-<blockquote>
-<p>KNAPSACK(n, W, w1, …, wn, v1, …, vn)</p>
-<p> For w = 0 to W<br>     M[0, w] = 0.</p>
-<p> For I = 1 to n<br>     For w = 1 to W<br>     If (wi &gt; w)    M[i, w] = M[i-1, w].<br>     Else             M[i, w] = max(M[i-1, w], vi + M[i-1, w-wi]).</p>
-<p> Return M[n, W].</p>
-</blockquote>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>填表时每填一格需要时间为O(1)，表格共有O(nW)格，所以时间复杂度为O(nW)，空间复杂度也为O(nW).</p>
+        <hr>
+<p>【我与图书馆的故事】的投稿，由于于某同学极力鼓动我参加所以写了一篇，就放上来吧。<br>才疏学浅，请雅正。</p>
+<hr>
+<h2 id="夏至"><a href="#夏至" class="headerlink" title="夏至"></a>夏至</h2><p>早上八点钟，一边哼着歌，一遍眯着眼睛看一眼天空，阳光明媚却不刺眼。<br>今天说不定会有好事发生。<br>嗯，会不会昨天调不出来的代码今天就写好了呢。<br>或者，今天的约会会比较顺利？<br>你问约会的对象？<br>啊，就在前面。</p>
+<p>晨曦中她好像女神一样耀眼。<br>长发及腰，螓首蛾眉，明眸皓齿，巧笑倩兮。<br>一袭白色长裙，看到我歪了一下头，眼睛弯成好看的弧度。</p>
+<p>我快步跑到她身边，她还是一样，身上带着书香，好像有让人安心的力量。<br>“早上好。”我说。<br>“早上好。”她答道。<br>今天的阳光真是太好了，让我有些恍惚，好像回到了第一次遇见她的那一天。</p>
+<h2 id="初遇"><a href="#初遇" class="headerlink" title="初遇"></a>初遇</h2><p>大一的新生的眼睛里有星星，有太阳，有整个宇宙。<br>两年前，我也是这样一个充满着对大学生活期望的大一新生。<br>早就听说，交大有一个很有名的传说，<br>据说交大有一个叫馨瑹的神秘女子，每个人对她的描述都不同，但唯有一点相同，就是她的身上无论何时都弥漫着书香。</p>
+<p>嘿，说不定，我看到的是个美少女呢。<br>这么想着，我和室友飞飞一起在校园里散步，熟悉环境。<br>今天的阳光很好，虽然已经入了秋，但是上海的九月份还留着夏天的小尾巴。<br>“据说，通常阳光很好的日子，总会有好事情发生哦。”我笑着对飞飞说。<br>抬起头，不知道什么时候迎面走来了一个少女。</p>
+<p>少女穿着白色长裙，在阳光中好像钻石闪着光。<br>黑色的长发像瀑布一样垂下来，阳光在她长长的睫毛上跳着舞。</p>
+<p>“早上好。”她温柔的微笑着跟我打招呼。<br>“……”我还没回过神。<br>“早上好。”她又说了一遍，依旧温柔。<br>“啊，早上好！”<br>打过招呼，我们就擦肩而过，她的身上有迷人的书香。</p>
+<p>过了一会，飞飞突然说，“刚刚那个红色裙子的女生，身上的书香好好闻。”<br>“啊？红色？不是白色吗？”<br>“啊？红色的啊！“飞飞很惊讶。<br>诶？该不会，该不会是那个？叫什么来着，馨，馨瑹？</p>
+<h2 id="未来"><a href="#未来" class="headerlink" title="未来"></a>未来</h2><p>“想什么呢？” 馨瑹的手在我面前晃了晃。<br>“啊，在想我们第一次遇见的事情。” 我说这，嘴角不禁上扬。<br>第一次遇见之后，我就经常去那里找馨瑹，一起算微积分，一起码代码，一起看古今中外有趣的书，一起度过了春夏秋冬。和她也从开始的生疏，渐渐熟识，到有时候会开起玩笑。她一直那么温柔，她身上的书香味，一直深深的让我迷恋。她会一直在校园里，不会离开，但我两年后，就会离开这里，走向远方。</p>
+<p>”那个时候呀，好怀念呢。“<br>”好希望之后也能一直和你在一起呀。“ 想到只能再和她有两年相处的时间，我有点感伤。<br>”虽然我们不能在一起了，但是希望这段经历可以让你成长为更好的人。“<br>我抬起头，看到她的眼睛，坚定而认真。<br>“嗯，会的。”<br>“好啦，我们去学习吧。你不是昨天代码还没改好嘛。” 她拉起我的手向前走去。</p>
+<p>我的未来里，可能不再有你的身影，但是，和你相处的四年，会变成我美好的回忆和未来前进的动力。<br>谢谢你，馨瑹。<br>谢谢你，新图。</p>
 
       
     </div>
@@ -366,7 +343,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法学习笔记/" rel="tag"># 算法学习笔记</a>
+            <a href="/tags/随笔/" rel="tag"># 随笔</a>
           
         </div>
       
@@ -379,8 +356,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/03/Dynamic-Programming-2-Segmented-Least-Square/" rel="next" title="Dynamic Programming 2 -- Segmented Least Square">
-                <i class="fa fa-chevron-left"></i> Dynamic Programming 2 -- Segmented Least Square
+              <a href="/2017/11/03/Dynamic-Programming-4-RNA-secondary-structure/" rel="next" title="Dynamic Programming 4 -- RNA secondary structure">
+                <i class="fa fa-chevron-left"></i> Dynamic Programming 4 -- RNA secondary structure
               </a>
             
           </div>
@@ -388,10 +365,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/03/Dynamic-Programming-4-RNA-secondary-structure/" rel="prev" title="Dynamic Programming 4 -- RNA secondary structure">
-                Dynamic Programming 4 -- RNA secondary structure <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -520,7 +493,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法流程"><span class="nav-number">3.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度分析"><span class="nav-number">4.</span> <span class="nav-text">复杂度分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#夏至"><span class="nav-number">1.</span> <span class="nav-text">夏至</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初遇"><span class="nav-number">2.</span> <span class="nav-text">初遇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未来"><span class="nav-number">3.</span> <span class="nav-text">未来</span></a></li></ol></div>
             
 
           </div>
