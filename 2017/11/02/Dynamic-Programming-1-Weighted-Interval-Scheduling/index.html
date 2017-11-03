@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从$s_j$开始，到$f_j$结束，有价值（权重）$v_j$. 如果两">
+<meta name="description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从\(s_j\)开始，到$f_j$结束，有价值（权重）$v_j$. 如">
 <meta name="keywords" content="算法学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dynamic Programming 1 -- Weighted Interval Scheduling">
 <meta property="og:url" content="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从$s_j$开始，到$f_j$结束，有价值（权重）$v_j$. 如果两">
+<meta property="og:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从\(s_j\)开始，到$f_j$结束，有价值（权重）$v_j$. 如">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/屏幕快照%202017-11-02%20下午10.09.11.png">
 <meta property="og:image" content="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/044EF3D3-514B-46F9-B337-0F6865752580.png">
-<meta property="og:updated_time" content="2017-11-03T07:38:45.000Z">
+<meta property="og:updated_time" content="2017-11-03T07:40:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dynamic Programming 1 -- Weighted Interval Scheduling">
-<meta name="twitter:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从$s_j$开始，到$f_j$结束，有价值（权重）$v_j$. 如果两">
+<meta name="twitter:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从\(s_j\)开始，到$f_j$结束，有价值（权重）$v_j$. 如">
 <meta name="twitter:image" content="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/屏幕快照%202017-11-02%20下午10.09.11.png">
 
 
@@ -317,7 +317,7 @@
       
         <p>Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。</p>
 <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
-<li>有n个任务，任务j从$s_j$开始，到$f_j$结束，有价值（权重）$v_j$.</li>
+<li>有n个任务，任务j从\(s_j\)开始，到$f_j$结束，有价值（权重）$v_j$.</li>
 <li>如果两个任务没有overlap, 那么称两个任务compatible.</li>
 <li>目标：找到总权值最大的mutually compatible jobs subset.</li>
 </ul>
