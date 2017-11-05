@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="算法学习笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="作业里的几道编程题。  1. 矩阵连乘问题问题描述Given a sequence of matrices {A1, A2, …, An} suppose for any i = 1, 2, …, n-1, Ai and Ai+1are multipliable, find the most efficient way to multiply these matrices, and output">
+<meta name="keywords" content="算法学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dynamic Programming -- Exercise">
+<meta property="og:url" content="http://yoursite.com/2017/11/05/Dynamic-Programming-Exercise/index.html">
+<meta property="og:site_name" content="Neverland">
+<meta property="og:description" content="作业里的几道编程题。  1. 矩阵连乘问题问题描述Given a sequence of matrices {A1, A2, …, An} suppose for any i = 1, 2, …, n-1, Ai and Ai+1are multipliable, find the most efficient way to multiply these matrices, and output">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-05T06:31:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dynamic Programming -- Exercise">
+<meta name="twitter:description" content="作业里的几道编程题。  1. 矩阵连乘问题问题描述Given a sequence of matrices {A1, A2, …, An} suppose for any i = 1, 2, …, n-1, Ai and Ai+1are multipliable, find the most efficient way to multiply these matrices, and output">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/05/Dynamic-Programming-Exercise/"/>
+
+
+
+
+
+  <title>Dynamic Programming -- Exercise | Neverland</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Neverland</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/05/Dynamic-Programming-Exercise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vanessa Cao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Neverland">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dynamic Programming -- Exercise</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-05T14:31:26+08:00">
+                2017-11-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作业里的几道编程题。</p>
+<hr>
+<h2 id="1-矩阵连乘问题"><a href="#1-矩阵连乘问题" class="headerlink" title="1. 矩阵连乘问题"></a>1. 矩阵连乘问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>Given a sequence of matrices {A1, A2, …, An} suppose for any i = 1, 2, …, n-1, Ai and Ai+1are multipliable, find the most efficient way to multiply these matrices, and output the minimum number of operations. </p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>The matrices can be multiplied in different order, different order can have different steps of calculation. For example, A1A2A3 can be multiplied in the order (A1A2)A3, also can be multiplied in the order A1(A2A3).</p>
+<p>To know the minimum number of operations, we should decide the order of calculation. So here we decide the OPT function.</p>
+<p>We use OPT(i,j) to represent the minimum calculation to multiply Ai to Aj.</p>
+<ul>
+<li>If 1 &lt;= i = j &lt;= n, OPT(i,j) = 0. Which is the basic case.</li>
+<li>If i &lt; j, then OPT(i,j) = min{OPT(i,k) + OPT(k+1,j) + pi-1 <em> pk </em> pj}, where i &lt;= k &lt;= j.</li>
+</ul>
+<p>So according to the analysis, we can use dynamic programming to solve the question in a bottom-up method. We use a memory to memorize OPT(i,j) in order to reduce the calculation.</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> matrix_num = <span class="number">0</span>; <span class="comment">//matrix number</span></div><div class="line"><span class="keyword">int</span>* size;          <span class="comment">//size of matrices</span></div><div class="line"><span class="keyword">int</span> m[<span class="number">101</span>][<span class="number">101</span>];    <span class="comment">//memory</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//dynamic programming</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">dp</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=matrix_num;i++)&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=matrix_num-i+<span class="number">1</span>;j++)&#123;</div><div class="line">            <span class="keyword">int</span> k = i+j<span class="number">-1</span>;</div><div class="line">            m[j][k] = m[j+<span class="number">1</span>][k] + size[j<span class="number">-1</span>]*size[j]*size[k];</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> l=j+<span class="number">1</span>;l&lt;=k<span class="number">-1</span>;l++)&#123;</div><div class="line">                <span class="keyword">int</span> tmp = m[j][l] + m[l+<span class="number">1</span>][k] + size[j<span class="number">-1</span>]*size[l]*size[k];</div><div class="line">                <span class="keyword">if</span> (tmp&lt;m[j][k])&#123;</div><div class="line">                    m[j][k] = tmp;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> m[<span class="number">1</span>][matrix_num];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">//input</span></div><div class="line">    <span class="built_in">cin</span> &gt;&gt; matrix_num;</div><div class="line">    size = <span class="keyword">new</span> <span class="keyword">int</span>[matrix_num+<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=matrix_num;i++)&#123;</div><div class="line">        <span class="built_in">cin</span> &gt;&gt; size[i];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//dynamic programming</span></div><div class="line">    <span class="keyword">int</span> res = dp();</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; res;</div><div class="line"></div><div class="line">    <span class="comment">//release space</span></div><div class="line">    <span class="keyword">delete</span> [] size;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><p>Since the bottom-up method to fill the n^2 memory box is the bottleneck of the algorithm, the time complexity is O(n^3), and space complexity is O(n^2).</p>
+<hr>
+<h2 id="2-背包问题"><a href="#2-背包问题" class="headerlink" title="2. 背包问题"></a>2. 背包问题</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h3><p>Given N objects and a package with a capacity of V. The volume and value of object i are c[i] and v[i], respectively. Find a way to put objects into package with max value, and output the max value.</p>
+<h3 id="问题分析-1"><a href="#问题分析-1" class="headerlink" title="问题分析"></a>问题分析</h3><p>This is a typical knapsack problem, so we can solve it using dynamic programming. Analysis details can be seen in <a href="https://tianyuecao.github.io/2017/11/03/Dynamic-Programming-3-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" target="_blank" rel="external">my previous blog discussing knapsack problem</a>.</p>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> obj_num;    <span class="comment">//number of objects</span></div><div class="line"><span class="keyword">int</span> pac_cap;    <span class="comment">//capacity of package</span></div><div class="line"><span class="keyword">int</span>* weight;    <span class="comment">//the volume of objects</span></div><div class="line"><span class="keyword">int</span>* value;     <span class="comment">//the value of objects</span></div><div class="line"><span class="keyword">int</span> mem[<span class="number">101</span>][<span class="number">101</span>];  <span class="comment">//memory</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//dynamic programming</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">dp</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;pac_cap+<span class="number">1</span>;i++)</div><div class="line">        mem[<span class="number">0</span>][i] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;obj_num+<span class="number">1</span>;i++)&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=pac_cap+<span class="number">1</span>;j++)&#123;</div><div class="line">            <span class="keyword">if</span> (j&lt;weight[i<span class="number">-1</span>])</div><div class="line">                mem[i][j] = mem[i<span class="number">-1</span>][j];</div><div class="line">            <span class="keyword">else</span>&#123;</div><div class="line">                <span class="keyword">if</span> (mem[i<span class="number">-1</span>][j] &gt; mem[i<span class="number">-1</span>][j-weight[i<span class="number">-1</span>]]+value[i<span class="number">-1</span>])</div><div class="line">                    mem[i][j] = mem[i<span class="number">-1</span>][j];</div><div class="line">                <span class="keyword">else</span></div><div class="line">                    mem[i][j] = mem[i<span class="number">-1</span>][j-weight[i<span class="number">-1</span>]]+value[i<span class="number">-1</span>];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> mem[obj_num][pac_cap];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">//input</span></div><div class="line">    <span class="built_in">cin</span> &gt;&gt; obj_num &gt;&gt; pac_cap;</div><div class="line">    weight = <span class="keyword">new</span> <span class="keyword">int</span>[obj_num];</div><div class="line">    value = <span class="keyword">new</span> <span class="keyword">int</span>[obj_num];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;obj_num;i++)&#123;</div><div class="line">        <span class="built_in">cin</span> &gt;&gt; weight[i];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;obj_num;i++)&#123;</div><div class="line">        <span class="built_in">cin</span> &gt;&gt; value[i];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//dynamic programming</span></div><div class="line">    <span class="keyword">int</span> res = dp();</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; res;</div><div class="line"></div><div class="line">    <span class="comment">//release space</span></div><div class="line">    <span class="keyword">delete</span> [] weight;</div><div class="line">    <span class="keyword">delete</span> [] value;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>Because we need to fill in a c*n table, so the time complexity is O(nc), and the space complexity is also O(nc).</p>
+<h3 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h3><p>Since every time, memory[i][j] is only related to mem[i-1][x], where x is from 1 to j, so we can reduce memory to one dimensional array, thus reduce the space complexity to O(c). The OPT function change to OPT(j) = max{OPT(j),OPT(j-wi)+vi}.</p>
+<p>But there is a little difference between the optimize method from the previous one. Since mem[i][j] is decided by mem[i-1][j], so the order of scanning the array is from c to 0. Otherwise, values preserved in previous loop will be changed.</p>
+<h3 id="优化代码实现"><a href="#优化代码实现" class="headerlink" title="优化代码实现"></a>优化代码实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> obj_num;    <span class="comment">//number of objects</span></div><div class="line"><span class="keyword">int</span> pac_cap;    <span class="comment">//capacity of package</span></div><div class="line"><span class="keyword">int</span>* weight;    <span class="comment">//the volume of objects</span></div><div class="line"><span class="keyword">int</span>* value;     <span class="comment">//the value of objects</span></div><div class="line"><span class="keyword">int</span> mem[<span class="number">101</span>];  <span class="comment">//memory</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//dynamic programming</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">dp</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;pac_cap+<span class="number">1</span>;i++)</div><div class="line">        mem[i] = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;obj_num+<span class="number">1</span>;i++)&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=pac_cap;j&gt;=<span class="number">0</span>;j--)&#123;</div><div class="line">            <span class="keyword">if</span> (mem[j] &lt;= mem[j-weight[i<span class="number">-1</span>]]+value[i<span class="number">-1</span>] &amp;&amp; j - weight[i<span class="number">-1</span>] &gt;= <span class="number">0</span>)</div><div class="line">                mem[j] = mem[j-weight[i<span class="number">-1</span>]] + value[i<span class="number">-1</span>];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> mem[pac_cap];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">//input</span></div><div class="line">    <span class="built_in">cin</span> &gt;&gt; obj_num &gt;&gt; pac_cap;</div><div class="line">    weight = <span class="keyword">new</span> <span class="keyword">int</span>[obj_num];</div><div class="line">    value = <span class="keyword">new</span> <span class="keyword">int</span>[obj_num];</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;obj_num;i++)&#123;</div><div class="line">        <span class="built_in">cin</span> &gt;&gt; weight[i];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;obj_num;i++)&#123;</div><div class="line">        <span class="built_in">cin</span> &gt;&gt; value[i];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//dynamic programming</span></div><div class="line">    <span class="keyword">int</span> res = dp();</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; res;</div><div class="line"></div><div class="line">    <span class="comment">//release space</span></div><div class="line">    <span class="keyword">delete</span> [] weight;</div><div class="line">    <span class="keyword">delete</span> [] value;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="3-整数分解使得乘积最大"><a href="#3-整数分解使得乘积最大" class="headerlink" title="3. 整数分解使得乘积最大"></a>3. 整数分解使得乘积最大</h2><h3 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h3><p>Given a positive integer n, break it into the sum of <strong>at least</strong> two positive integers and maximize the product of those integers. Return the maximum product you can get.<br>For example, given n = 2, return 1 (2 = 1 + 1); given n = 10, return 36 (10 = 3 + 3 + 4).<br><strong>Note</strong>: You may assume that n is not less than 2 and not larger than 58.</p>
+<h3 id="问题分析-2"><a href="#问题分析-2" class="headerlink" title="问题分析"></a>问题分析</h3><p>According to the question, we can see that for number i, which has an factor integer j that can make the product maximum, will cause i-j have the maximum product. So we can define the OPT function as following:</p>
+<ul>
+<li>If i=0, then OPT(i,j) = 1；</li>
+<li>If j&lt;=i, then OPT(i,j) = max(OPT(i-j,k)*j), where 0 &lt;= k &lt;= j.</li>
+</ul>
+<p>Then we can solve the question using a bottom-up method, the solution is max(OPT(n, j)), where 0 &lt;= j &lt;= n.</p>
+<h3 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n;  <span class="comment">//integer to split</span></div><div class="line"><span class="keyword">long</span> <span class="keyword">long</span> mem[<span class="number">59</span>][<span class="number">59</span>];  <span class="comment">//memory to store results</span></div><div class="line"></div><div class="line"><span class="comment">//dynamic programming</span></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">dp</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;i++)</div><div class="line">        mem[<span class="number">0</span>][i] = <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=i;j++)&#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;=j;k++)&#123;</div><div class="line">                <span class="keyword">if</span> (mem[i-j][k]*j &gt; mem[i][j])</div><div class="line">                    mem[i][j] = mem[i-j][k]*j;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</div><div class="line">        <span class="keyword">if</span> (res &lt; mem[n][i])</div><div class="line">            res = mem[n][i];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> res;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">//input</span></div><div class="line">    <span class="built_in">cin</span> &gt;&gt; n;</div><div class="line">    <span class="comment">//dynamic programming</span></div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res = dp();</div><div class="line">    <span class="comment">//output</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; res;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><p>We can see that the time complexity is O(n^3) and space complexity is O(n^2).</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法学习笔记/" rel="tag"># 算法学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/03/阳光好的日子总会有好事情发生/" rel="next" title="阳光好的日子总会有好事情发生">
+                <i class="fa fa-chevron-left"></i> 阳光好的日子总会有好事情发生
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vanessa Cao" />
+            
+              <p class="site-author-name" itemprop="name">Vanessa Cao</p>
+              <p class="site-description motion-element" itemprop="description">Stay Simple, Stay Naive.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-矩阵连乘问题"><span class="nav-number">1.</span> <span class="nav-text">1. 矩阵连乘问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题分析"><span class="nav-number">1.2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂度分析"><span class="nav-number">1.4.</span> <span class="nav-text">复杂度分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-背包问题"><span class="nav-number">2.</span> <span class="nav-text">2. 背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述-1"><span class="nav-number">2.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题分析-1"><span class="nav-number">2.2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-number">2.3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">2.4.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化算法"><span class="nav-number">2.5.</span> <span class="nav-text">优化算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化代码实现"><span class="nav-number">2.6.</span> <span class="nav-text">优化代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-整数分解使得乘积最大"><span class="nav-number">3.</span> <span class="nav-text">3. 整数分解使得乘积最大</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述-2"><span class="nav-number">3.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题分析-2"><span class="nav-number">3.2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-2"><span class="nav-number">3.3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂度分析-1"><span class="nav-number">3.4.</span> <span class="nav-text">复杂度分析</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vanessa Cao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
