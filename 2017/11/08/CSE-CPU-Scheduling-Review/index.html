@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="cse," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CPU scheduling decisions may take place when a process: Switches from running to waiting state Switches from running to ready state Switches from waiting to ready Terminates  Preemptive Consider acces">
+<meta name="keywords" content="cse">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSE CPU Scheduling Review">
+<meta property="og:url" content="http://yoursite.com/2017/11/08/CSE-CPU-Scheduling-Review/index.html">
+<meta property="og:site_name" content="Neverland">
+<meta property="og:description" content="CPU scheduling decisions may take place when a process: Switches from running to waiting state Switches from running to ready state Switches from waiting to ready Terminates  Preemptive Consider acces">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-08T14:28:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSE CPU Scheduling Review">
+<meta name="twitter:description" content="CPU scheduling decisions may take place when a process: Switches from running to waiting state Switches from running to ready state Switches from waiting to ready Terminates  Preemptive Consider acces">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/08/CSE-CPU-Scheduling-Review/"/>
+
+
+
+
+
+  <title>CSE CPU Scheduling Review | Neverland</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Neverland</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/08/CSE-CPU-Scheduling-Review/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vanessa Cao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Neverland">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSE CPU Scheduling Review</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-08T22:27:20+08:00">
+                2017-11-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="CPU-scheduling-decisions-may-take-place-when-a-process"><a href="#CPU-scheduling-decisions-may-take-place-when-a-process" class="headerlink" title="CPU scheduling decisions may take place when a process:"></a>CPU scheduling decisions may take place when a process:</h2><ul>
+<li>Switches from running to waiting state</li>
+<li>Switches from running to ready state</li>
+<li>Switches from waiting to ready</li>
+<li>Terminates</li>
+</ul>
+<h2 id="Preemptive"><a href="#Preemptive" class="headerlink" title="Preemptive"></a>Preemptive</h2><ul>
+<li>Consider access to shared data</li>
+<li>Consider preemption while in kernel mode</li>
+<li>Consider interrupts occurring during crucial OS activities</li>
+</ul>
+<h2 id="Dispatcher-module-gives-control-of-the-CPU-to-the-process-selected-by-the-short-term-scheduler-this-involves"><a href="#Dispatcher-module-gives-control-of-the-CPU-to-the-process-selected-by-the-short-term-scheduler-this-involves" class="headerlink" title="Dispatcher module gives control of the CPU to the process selected by the short-term scheduler, this involves:"></a>Dispatcher module gives control of the CPU to the process selected by the short-term scheduler, this involves:</h2><ul>
+<li>switching context</li>
+<li>switching to user mode</li>
+<li>jumping to the proper location in the user program to restart that program</li>
+</ul>
+<h2 id="Scheduling-Criteria"><a href="#Scheduling-Criteria" class="headerlink" title="Scheduling Criteria"></a>Scheduling Criteria</h2><ul>
+<li>CPU utilization -&gt; max</li>
+<li>Throughput -&gt; max</li>
+<li>Turnaround time -&gt; min</li>
+<li>Waiting time -&gt; min</li>
+<li>Response time -&gt; min</li>
+</ul>
+<h2 id="Different-Scheduling-Algorithms"><a href="#Different-Scheduling-Algorithms" class="headerlink" title="Different Scheduling Algorithms"></a>Different Scheduling Algorithms</h2><ul>
+<li>FCFS</li>
+<li>SJF : minimum average waiting time</li>
+<li>Shortest remaining time first</li>
+<li>Priority scheduling<ul>
+<li>Starvation problem - Aging</li>
+</ul>
+</li>
+<li>RR<ul>
+<li>no process waits more than (n-1)q time units</li>
+<li>typically higher average turnaround than SJF, but better response</li>
+</ul>
+</li>
+<li>Multilevel Queue<ul>
+<li>Ready queue is partitioned into separate queues, eg.<ul>
+<li>foreground (interactive)</li>
+<li>background (batch)</li>
+</ul>
+</li>
+<li>Process permanently in a given queue</li>
+<li>Each queue has its own scheduling algorithm:<ul>
+<li>foreground RR</li>
+<li>background FCFS</li>
+</ul>
+</li>
+<li>Scheduling must be done between the queues:<ul>
+<li>Fixed priority scheduling; possibility of starvation.</li>
+<li>Time slice - each queue gets a certain amount of CPU time which it can schedule amongst its processes; I.e., 80% to foreground in RR, 20% to background in FCFS</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Multilevel Feedback Queue<ul>
+<li>defined by the following parameters:<ul>
+<li>number of queues</li>
+<li>scheduling algorithms for each queue</li>
+<li>method used to determine when to upgrade a process</li>
+<li>method used to determine when to demote a process</li>
+<li>method used to determine which queue a process will enter when that process needs service</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Distinction-between-user-level-and-kernel-level-threads"><a href="#Distinction-between-user-level-and-kernel-level-threads" class="headerlink" title="Distinction between user-level and kernel-level threads"></a>Distinction between user-level and kernel-level threads</h2><p><a href="http://blog.csdn.net/jicheng687/article/details/4527676" target="_blank" rel="external">here is the answer</a></p>
+<ul>
+<li>When threads supported, threads scheduled, not processes</li>
+<li>Many-to-one and many-to-many models, thread library schedules user-level threads to run on LWP<ul>
+<li>Known as process-contention scope since scheduling competition (<strong>PCS</strong>) is within the process</li>
+<li>Typically done via priority set by programmer</li>
+</ul>
+</li>
+<li>Kernel thread scheduled onto available CPU is system-contention scope (<strong>SCS</strong>) - competition among all threads in system</li>
+</ul>
+<h2 id="Pthread-Scheduling"><a href="#Pthread-Scheduling" class="headerlink" title="Pthread Scheduling"></a>Pthread Scheduling</h2><p>API allows specifying either PCS or SCS during thread creation</p>
+<ul>
+<li>PTHREAD_SCOPE_PROCESS : PCS</li>
+<li>PTHREAD_SCOPE_SYSTEM : SCS</li>
+</ul>
+<p>Can be limited by OS - Linux and Mac OS X only allow PTHREAD_SCOPE_SYSTEM</p>
+<h2 id="Multiple-Processor-Scheduling"><a href="#Multiple-Processor-Scheduling" class="headerlink" title="Multiple-Processor Scheduling"></a>Multiple-Processor Scheduling</h2><ul>
+<li>More complex when multiple CPUs are avaliable</li>
+<li>Homogeneous processors within a multiprocessor</li>
+<li>Asymmetric multiprocessing : only one processor accesses the system data structures, alleviating the need for data sharing</li>
+<li>Symmetric multiprocessing (SMP) : each processor is self-scheduling, all processes in common ready queue, or each has its own private queue of ready processes (currently most common)</li>
+</ul>
+<p>Processor affinity - process has affinity for processor on which it is currently running</p>
+<ul>
+<li>soft affinity</li>
+<li>hard affinity</li>
+<li>variations including processor sets</li>
+</ul>
+<h2 id="Virtualization-and-Scheduling"><a href="#Virtualization-and-Scheduling" class="headerlink" title="Virtualization and Scheduling"></a>Virtualization and Scheduling</h2><ul>
+<li>Virtualization software schedules multiple guests onto CPUs</li>
+<li>Each guest doing its own scheduling<ul>
+<li>Not knowing it doesn’t own CPU</li>
+<li>Can result in poor response time</li>
+<li>Can effect time-of-day clocks in guests</li>
+</ul>
+</li>
+<li>Can undo good scheduling algorithm efforts of guests</li>
+</ul>
+<h2 id="Operating-system-examples"><a href="#Operating-system-examples" class="headerlink" title="Operating system examples"></a>Operating system examples</h2><h3 id="Solaris"><a href="#Solaris" class="headerlink" title="Solaris"></a>Solaris</h3><ul>
+<li>Priority based scheduling</li>
+<li>6 classes available<ul>
+<li>Time sharing</li>
+<li>Interactive</li>
+<li>Real time</li>
+<li>System</li>
+<li>Fair Share</li>
+<li>Fixed priority</li>
+</ul>
+</li>
+<li>Given thread can be in one class at a time</li>
+<li>Each class has its own scheduling algorithm</li>
+<li>Time sharing is multi-level feedback queue (Loadable table configurable by sysadmin)</li>
+<li>Scheduler converts class-specific priorities into a per thread global priority<ul>
+<li>Thread with highest priority runs next</li>
+<li>Runs until<ul>
+<li>blocks</li>
+<li>uses time slice</li>
+<li>preempted by higher priority thread</li>
+<li>Multiple threads at same priority selected via RR</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><ul>
+<li>Priority based scheduling</li>
+<li>Dispatcher is scheduler</li>
+<li>Thread runs until<ul>
+<li>blocks</li>
+<li>uses time slice</li>
+<li>preempted by higher priority thread</li>
+</ul>
+</li>
+<li>Real time threads can preempt non-real-time</li>
+<li>32-level priority scheme</li>
+<li>variable class is 1-15, real time class is 16-31</li>
+<li>priority 0 is memory-management thread</li>
+<li>if no run-able thread, runs idle thread</li>
+</ul>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><ul>
+<li>constant order O(1) scheduling time</li>
+<li>preemptive, priority based</li>
+<li>two priority ranges: time-sharing and real-time</li>
+<li>Real-time range from 0 to 99 and nice value from 100 to 140</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cse/" rel="tag"># cse</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/07/CSE-Threads-Review/" rel="next" title="CSE Threads Review">
+                <i class="fa fa-chevron-left"></i> CSE Threads Review
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vanessa Cao" />
+            
+              <p class="site-author-name" itemprop="name">Vanessa Cao</p>
+              <p class="site-description motion-element" itemprop="description">Stay Simple, Stay Naive.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-scheduling-decisions-may-take-place-when-a-process"><span class="nav-number">1.</span> <span class="nav-text">CPU scheduling decisions may take place when a process:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preemptive"><span class="nav-number">2.</span> <span class="nav-text">Preemptive</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dispatcher-module-gives-control-of-the-CPU-to-the-process-selected-by-the-short-term-scheduler-this-involves"><span class="nav-number">3.</span> <span class="nav-text">Dispatcher module gives control of the CPU to the process selected by the short-term scheduler, this involves:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scheduling-Criteria"><span class="nav-number">4.</span> <span class="nav-text">Scheduling Criteria</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Different-Scheduling-Algorithms"><span class="nav-number">5.</span> <span class="nav-text">Different Scheduling Algorithms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distinction-between-user-level-and-kernel-level-threads"><span class="nav-number">6.</span> <span class="nav-text">Distinction between user-level and kernel-level threads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pthread-Scheduling"><span class="nav-number">7.</span> <span class="nav-text">Pthread Scheduling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multiple-Processor-Scheduling"><span class="nav-number">8.</span> <span class="nav-text">Multiple-Processor Scheduling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Virtualization-and-Scheduling"><span class="nav-number">9.</span> <span class="nav-text">Virtualization and Scheduling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operating-system-examples"><span class="nav-number">10.</span> <span class="nav-text">Operating system examples</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Solaris"><span class="nav-number">10.1.</span> <span class="nav-text">Solaris</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows"><span class="nav-number">10.2.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux"><span class="nav-number">10.3.</span> <span class="nav-text">Linux</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vanessa Cao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
