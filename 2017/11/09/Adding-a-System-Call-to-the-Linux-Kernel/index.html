@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="算法学习笔记," />
+  <meta name="keywords" content="cse," />
 
 
 
@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="这次是与生物相关的动态规划应用，关于RNA单链的成环问题。 问题描述RNA 用一个String B = b1b2…bn表示一条RNA链，b表示四种碱基A，C，G，U.Secondary structure RNA是一种单链所以它会趋于自己配对，从而形成二级结构。配对S = {(bi,bj)}满足：  S是一种匹配，即为A-U，U-A，C-G，G-C. 成环时，环至少有4个碱基，即成对的(bi,bj">
-<meta name="keywords" content="算法学习笔记">
+<meta name="description" content="计算机系统工程的第一个project，不得不说，operating system concepts这本书给的guide一点用都没有。guide里面的版本是2.x但是现在linux kernel已经4.x了，所以很多地方都已经不一样了，按照之前的就会出现各种问题。于是去网上找了参考教程，来实现为Linux Kernel 4.x 添加一个system call。 下载内核源代码在Linux官网下载相应">
+<meta name="keywords" content="cse">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dynamic Programming 4 -- RNA secondary structure">
-<meta property="og:url" content="http://yoursite.com/2017/11/03/Dynamic-Programming-4-RNA-secondary-structure/index.html">
+<meta property="og:title" content="Adding a System Call to the Linux Kernel">
+<meta property="og:url" content="http://yoursite.com/2017/11/09/Adding-a-System-Call-to-the-Linux-Kernel/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="这次是与生物相关的动态规划应用，关于RNA单链的成环问题。 问题描述RNA 用一个String B = b1b2…bn表示一条RNA链，b表示四种碱基A，C，G，U.Secondary structure RNA是一种单链所以它会趋于自己配对，从而形成二级结构。配对S = {(bi,bj)}满足：  S是一种匹配，即为A-U，U-A，C-G，G-C. 成环时，环至少有4个碱基，即成对的(bi,bj">
+<meta property="og:description" content="计算机系统工程的第一个project，不得不说，operating system concepts这本书给的guide一点用都没有。guide里面的版本是2.x但是现在linux kernel已经4.x了，所以很多地方都已经不一样了，按照之前的就会出现各种问题。于是去网上找了参考教程，来实现为Linux Kernel 4.x 添加一个system call。 下载内核源代码在Linux官网下载相应">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming4_1.png">
-<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming4_2.png">
-<meta property="og:updated_time" content="2017-11-05T06:32:10.000Z">
+<meta property="og:updated_time" content="2017-11-09T04:09:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dynamic Programming 4 -- RNA secondary structure">
-<meta name="twitter:description" content="这次是与生物相关的动态规划应用，关于RNA单链的成环问题。 问题描述RNA 用一个String B = b1b2…bn表示一条RNA链，b表示四种碱基A，C，G，U.Secondary structure RNA是一种单链所以它会趋于自己配对，从而形成二级结构。配对S = {(bi,bj)}满足：  S是一种匹配，即为A-U，U-A，C-G，G-C. 成环时，环至少有4个碱基，即成对的(bi,bj">
-<meta name="twitter:image" content="http://yoursite.com/images/dynamicprogramming4_1.png">
+<meta name="twitter:title" content="Adding a System Call to the Linux Kernel">
+<meta name="twitter:description" content="计算机系统工程的第一个project，不得不说，operating system concepts这本书给的guide一点用都没有。guide里面的版本是2.x但是现在linux kernel已经4.x了，所以很多地方都已经不一样了，按照之前的就会出现各种问题。于是去网上找了参考教程，来实现为Linux Kernel 4.x 添加一个system call。 下载内核源代码在Linux官网下载相应">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/03/Dynamic-Programming-4-RNA-secondary-structure/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/09/Adding-a-System-Call-to-the-Linux-Kernel/"/>
 
 
 
 
 
-  <title>Dynamic Programming 4 -- RNA secondary structure | Neverland</title>
+  <title>Adding a System Call to the Linux Kernel | Neverland</title>
   
 
 
@@ -248,7 +245,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/Dynamic-Programming-4-RNA-secondary-structure/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/09/Adding-a-System-Call-to-the-Linux-Kernel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -265,7 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Dynamic Programming 4 -- RNA secondary structure</h1>
+          <h1 class="post-title" itemprop="name headline">Adding a System Call to the Linux Kernel</h1>
         
 
         <div class="post-meta">
@@ -277,8 +274,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T21:56:30+08:00">
-                2017-11-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T12:09:04+08:00">
+                2017-11-09
               </time>
             
 
@@ -315,43 +312,22 @@
       
 
       
-        <p>这次是与生物相关的动态规划应用，关于RNA单链的成环问题。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>RNA</strong> 用一个String B = b1b2…bn表示一条RNA链，b表示四种碱基A，C，G，U.<br><strong>Secondary structure</strong> RNA是一种单链所以它会趋于自己配对，从而形成二级结构。配对S = {(bi,bj)}满足：</p>
-<ul>
-<li>S是一种匹配，即为A-U，U-A，C-G，G-C.</li>
-<li>成环时，环至少有4个碱基，即成对的(bi,bj)，i &lt; j-4.</li>
-<li>碱基配对不会交叉，即(bi,bj)和(bk,bl)是两对配对的碱基，我们不可能有i &lt; k &lt; j &lt; l.</li>
-</ul>
-<p><strong>Free energy</strong> 通常的假设是RNA会用最小的自由能形成二级结构。<br><strong>Goal</strong> 已知一个RNA链B = b1b2…bn，找到一种二级结构S使得碱基对的数量最大。</p>
-<p><img src="/images/dynamicprogramming4_1.png" alt="Alt text"></p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对OPT函数进行定义：<br>首先尝试OPT(j) = substring b1b2…bj的最大配对碱基数的二级结构。<br>由于这是一个配对问题，所以不再是一个binary choice的问题，如果bt和bn配对，那么需要：</p>
-<ul>
-<li>找b1b2…bt-1的二级结构，即OPT(t-1)；</li>
-<li>找bt+1bt+2…bn-2的二级结构，无法用现有的OPT函数表示，所以需要新的OPT的定义方式。</li>
-</ul>
-<p><strong>Notation</strong> OPT(i, j) = bibi+1…bj的最大配对碱基数的二级结构。</p>
-<ul>
-<li>如果i &gt;= j-4，OPT(i, j) = 0</li>
-<li>如果bj没有配对，那么 OPT(i, j) = OPT(i, j-1).</li>
-<li>如果bj与bt配对，且i &lt;= t &lt; j-4，那么，<ul>
-<li>由于不能交叉，会减少subproblems；</li>
-<li>OPT(i, j) = 1 + maxt{ OPT(i, t-1) + OPT(t+1, j-1) }，i &lt;= t &lt; j-4，并且bt和bj满足配对规则。</li>
-</ul>
-</li>
-</ul>
-<p>另外，在解决subproblems的时候，首先解决短区间。</p>
-<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><blockquote>
-<p>RNA(n, b1, b2, …, bn)</p>
-<p>For k=5 to n-1<br>    For i=1 to n-k<br>        j = i+k<br>        Compute M[i,j] using formula.<br>Return M[1,n].</p>
-</blockquote>
-<p><img src="/images/dynamicprogramming4_2.png" alt="Alt text"></p>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>时间复杂度为O(n^3)，空间复杂度为O(n^2).</p>
-<h2 id="技巧总结"><a href="#技巧总结" class="headerlink" title="技巧总结"></a>技巧总结</h2><ul>
-<li>Binary choice：weighted interval scheduling</li>
-<li>Multiway choice：segmented least squares</li>
-<li>Adding a new variable：knapsack problem</li>
-<li>Dynamic programming over intervals：RNA secondary structure</li>
-</ul>
+        <p>计算机系统工程的第一个project，不得不说，operating system concepts这本书给的guide一点用都没有。guide里面的版本是2.x但是现在linux kernel已经4.x了，所以很多地方都已经不一样了，按照之前的就会出现各种问题。于是去网上找了<a href="http://www.cnblogs.com/yueshangzuo/p/7782295.html" target="_blank" rel="external">参考教程</a>，来实现为Linux Kernel 4.x 添加一个system call。</p>
+<h2 id="下载内核源代码"><a href="#下载内核源代码" class="headerlink" title="下载内核源代码"></a>下载内核源代码</h2><p>在<a href="https://www.kernel.org/pub/linux/kernel/v4.x/" target="_blank" rel="external">Linux官网</a>下载相应的内核版本，解压并进入源代码根目录。我下载的是4.3.3的版本。</p>
+<h2 id="增加system-call的调用号"><a href="#增加system-call的调用号" class="headerlink" title="增加system call的调用号"></a>增加system call的调用号</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim ./arch/x86/entry/syscalls/syscall_64.tbl</div></pre></td></tr></table></figure>
+<p>如果是32位系统为syscall_32.tbl.<br>在最后一行添加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">546	x32 helloworld		sys_helloworld</div></pre></td></tr></table></figure></p>
+<p>helloworld可换成自定义的系统调用名，注意编号不能覆盖原有编号。</p>
+<h2 id="添加系统函数"><a href="#添加系统函数" class="headerlink" title="添加系统函数"></a>添加系统函数</h2><p>首先声明系统函数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim ./include/linux/syscalls.h</div></pre></td></tr></table></figure></p>
+<p>在末端#endif前加入系统函数调用的声明<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">asmlinkage <span class="keyword">long</span> <span class="title">sys_helloworld</span><span class="params">(<span class="keyword">int</span> arg)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>然后实现系统函数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim ./kernel/sys.c</div></pre></td></tr></table></figure></p>
+<p>在文件末端加入对应的实现函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">asmlinkage <span class="keyword">long</span> <span class="title">sys_helloworld</span><span class="params">(<span class="keyword">int</span> arg)</span></span>&#123;</div><div class="line">	printk(<span class="string">"hello world!"</span>);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>该系统调用打印”hello world!”。</p>
+<h2 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo make oldconfig</div><div class="line">sudo make clean</div><div class="line">make -j8 (并行编译，加快编译速度，8为cpu核心数*2，8表示4核)</div></pre></td></tr></table></figure>
+<p>之后就进入了漫长的编译过程。</p>
+<p>过程中报错：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scripts/sign-file.c:23:30: fatal error: openssl/opensslv.h</div></pre></td></tr></table></figure></p>
+<p>原因是ubuntu下缺少了部分如下的组件，安装即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libssl-dev</div></pre></td></tr></table></figure></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">make modules</div><div class="line">make modules_install</div><div class="line">make install</div><div class="line">update-grub</div></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>重启选择新的内核(grub引导界面选择ubuntu高级设置，选择linux-4.3.3)<br>进入后可uname -a确认内核版本</p>
 
       
     </div>
@@ -369,7 +345,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法学习笔记/" rel="tag"># 算法学习笔记</a>
+            <a href="/tags/cse/" rel="tag"># cse</a>
           
         </div>
       
@@ -382,8 +358,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/03/Dynamic-Programming-3-背包问题/" rel="next" title="Dynamic Programming 3 -- 背包问题">
-                <i class="fa fa-chevron-left"></i> Dynamic Programming 3 -- 背包问题
+              <a href="/2017/11/09/CSE-Process-Synchronization-Review/" rel="next" title="CSE Process Synchronization Review">
+                <i class="fa fa-chevron-left"></i> CSE Process Synchronization Review
               </a>
             
           </div>
@@ -391,10 +367,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/03/阳光好的日子总会有好事情发生/" rel="prev" title="阳光好的日子总会有好事情发生">
-                阳光好的日子总会有好事情发生 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -523,7 +495,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法实现"><span class="nav-number">3.</span> <span class="nav-text">算法实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度分析"><span class="nav-number">4.</span> <span class="nav-text">复杂度分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技巧总结"><span class="nav-number">5.</span> <span class="nav-text">技巧总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载内核源代码"><span class="nav-number">1.</span> <span class="nav-text">下载内核源代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加system-call的调用号"><span class="nav-number">2.</span> <span class="nav-text">增加system call的调用号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加系统函数"><span class="nav-number">3.</span> <span class="nav-text">添加系统函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译内核"><span class="nav-number">4.</span> <span class="nav-text">编译内核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">5.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">6.</span> <span class="nav-text">测试</span></a></li></ol></div>
             
 
           </div>
