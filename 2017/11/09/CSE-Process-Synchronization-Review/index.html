@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Multithreads Benefits: Responsiveness Resource sharing Economy Scalability  Multicore systems putting pressure on programmers, chanllenges include Dividing activities Balence Data splitting Data depen">
+<meta name="description" content="ExamplesSolaris Implements a variety of locks to support multitasking, multithreading (including real-time threads), and multiprocessing Uses adaptive mutexes for efficiency when protecting data from">
 <meta name="keywords" content="cse">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSE Threads Review">
-<meta property="og:url" content="http://yoursite.com/2017/11/07/CSE-Threads-Review/index.html">
+<meta property="og:title" content="CSE Process Synchronization Review">
+<meta property="og:url" content="http://yoursite.com/2017/11/09/CSE-Process-Synchronization-Review/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="Multithreads Benefits: Responsiveness Resource sharing Economy Scalability  Multicore systems putting pressure on programmers, chanllenges include Dividing activities Balence Data splitting Data depen">
+<meta property="og:description" content="ExamplesSolaris Implements a variety of locks to support multitasking, multithreading (including real-time threads), and multiprocessing Uses adaptive mutexes for efficiency when protecting data from">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-07T14:19:08.000Z">
+<meta property="og:updated_time" content="2017-11-09T02:19:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CSE Threads Review">
-<meta name="twitter:description" content="Multithreads Benefits: Responsiveness Resource sharing Economy Scalability  Multicore systems putting pressure on programmers, chanllenges include Dividing activities Balence Data splitting Data depen">
+<meta name="twitter:title" content="CSE Process Synchronization Review">
+<meta name="twitter:description" content="ExamplesSolaris Implements a variety of locks to support multitasking, multithreading (including real-time threads), and multiprocessing Uses adaptive mutexes for efficiency when protecting data from">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/07/CSE-Threads-Review/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/09/CSE-Process-Synchronization-Review/"/>
 
 
 
 
 
-  <title>CSE Threads Review | Neverland</title>
+  <title>CSE Process Synchronization Review | Neverland</title>
   
 
 
@@ -245,7 +245,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/07/CSE-Threads-Review/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/09/CSE-Process-Synchronization-Review/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -262,7 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CSE Threads Review</h1>
+          <h1 class="post-title" itemprop="name headline">CSE Process Synchronization Review</h1>
         
 
         <div class="post-meta">
@@ -274,8 +274,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-07T22:18:40+08:00">
-                2017-11-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T10:19:36+08:00">
+                2017-11-09
               </time>
             
 
@@ -312,163 +312,148 @@
       
 
       
-        <h2 id="Multithreads-Benefits"><a href="#Multithreads-Benefits" class="headerlink" title="Multithreads Benefits:"></a>Multithreads Benefits:</h2><ul>
-<li>Responsiveness</li>
-<li>Resource sharing</li>
-<li>Economy</li>
-<li>Scalability</li>
-</ul>
-<h2 id="Multicore-systems-putting-pressure-on-programmers-chanllenges-include"><a href="#Multicore-systems-putting-pressure-on-programmers-chanllenges-include" class="headerlink" title="Multicore systems putting pressure on programmers, chanllenges include"></a>Multicore systems putting pressure on programmers, chanllenges include</h2><ul>
-<li>Dividing activities</li>
-<li>Balence</li>
-<li>Data splitting</li>
-<li>Data dependency</li>
-<li>Testing and debugging</li>
-</ul>
-<h2 id="Three-primary-thread-libraries"><a href="#Three-primary-thread-libraries" class="headerlink" title="Three primary thread libraries"></a>Three primary thread libraries</h2><ul>
-<li>POSIX Pthreads</li>
-<li>Win32 threads</li>
-<li>Java threads</li>
-</ul>
-<h2 id="Multithreading-Models"><a href="#Multithreading-Models" class="headerlink" title="Multithreading Models"></a>Multithreading Models</h2><ul>
-<li>Many-to-One:<ul>
-<li>Solaris Green Threads</li>
-<li>GUN Portable Threads</li>
+        <h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><h3 id="Solaris"><a href="#Solaris" class="headerlink" title="Solaris"></a>Solaris</h3><ul>
+<li>Implements a variety of locks to support multitasking, multithreading (including real-time threads), and multiprocessing</li>
+<li>Uses adaptive mutexes for efficiency when protecting data from short code segments<ul>
+<li>Starts as a standard semaphore spin-lock</li>
+<li>If lock held, and by a thread running on another CPU, spins</li>
+<li>If lock held by non-run-state thread, block and sleep waiting for signal of lock being released</li>
 </ul>
 </li>
-<li>One-to-One:<ul>
-<li>Windows NT/XP/2000</li>
-<li>Linux</li>
-<li>Solaris 0 and later</li>
+<li>Uses condition variables</li>
+<li>Uses readers-writers locks when longer sections of code need access to data</li>
+<li>Uses turnstiles to order the list of threads waiting to acquire either an adaptive mutex or reader-writer lock<ul>
+<li>Turnstiles are per-lock-holding-thread, not per-object</li>
 </ul>
 </li>
-<li>Many-to-Many:<ul>
-<li>Windows NT/2000 with the <em>ThreadFiber</em> package</li>
-<li>Solaris prior to version 9</li>
+<li>Priority-inheritance per-turnstile gives the running thread the highest<br>of the priorities of the threads in its turnstile</li>
+</ul>
+<h3 id="Windows-XP"><a href="#Windows-XP" class="headerlink" title="Windows XP"></a>Windows XP</h3><ul>
+<li>Uses interrupt masks to protect access to global resources on uniprocessor systems</li>
+<li>Uses spinlocks on multiprocessor systems<ul>
+<li>Spinlocking-thread will never be preempted</li>
 </ul>
 </li>
-<li>Two-level Model:<ul>
-<li>IRIX</li>
-<li>HP-UX</li>
+<li>Also provides dispatcher objects user-land which may act mutexes, semaphores, events, and timers<ul>
+<li>Events - An event acts much like a condition variable</li>
+<li>Timers notify one or more thread when time expired</li>
+<li>Dispatcher objects either signaled-state (object available) or non-signaled state (thread will block)</li>
 </ul>
 </li>
 </ul>
-<h2 id="Two-primary-ways-of-implementing-Thread-Libraries"><a href="#Two-primary-ways-of-implementing-Thread-Libraries" class="headerlink" title="Two primary ways of implementing Thread Libraries"></a>Two primary ways of implementing Thread Libraries</h2><ul>
-<li>Library entirely in user space</li>
-<li>Kernel-level library supported by the OS</li>
-</ul>
-<h2 id="Compare-Pthreads-amp-Java-threads"><a href="#Compare-Pthreads-amp-Java-threads" class="headerlink" title="Compare Pthreads &amp; Java threads"></a>Compare Pthreads &amp; Java threads</h2><ul>
-<li>Pthreads<ul>
-<li>May be provided either as user-level or kernel-level</li>
-<li>A POSIX standard API for thread creation and synchronization</li>
-<li>API specifies behavior of the thread library, implementation is up to development of the library</li>
-<li>Common in UNIX operating systems</li>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><ul>
+<li>Prior to kernel Version 2.6, disables interrupts to implement short critical sections</li>
+<li>Version 2.6 and later, fully preemptive</li>
+<li>Linux provides:<ul>
+<li>semaphores</li>
+<li>spinlocks</li>
+<li>reader-writer versions of both</li>
 </ul>
 </li>
-<li>Java Threads<ul>
-<li>Java threads are managed by the JVM</li>
-<li>Typically implemented using the threads model provided by underlying OS</li>
-<li>Java threads may be created by<ul>
-<li>Extending Thread class</li>
-<li>Implementing the Runnable interface</li>
+<li>On single-cpu system, spinlocks replaced by enabling and disabling kernel preemption</li>
+</ul>
+<h3 id="Pthreads"><a href="#Pthreads" class="headerlink" title="Pthreads"></a>Pthreads</h3><ul>
+<li>Pthreads API is OS-independent</li>
+<li>Pthreads provides:<ul>
+<li>mutex locks</li>
+<li>condition variables</li>
 </ul>
 </li>
-</ul>
-</li>
-</ul>
-<h2 id="Threading-Issues"><a href="#Threading-Issues" class="headerlink" title="Threading Issues"></a>Threading Issues</h2><ul>
-<li>Semantics of <strong>fork()</strong> and <strong>exec()</strong> system calls</li>
-<li>Thread cancellation of target thread (Asynchronous or deferred)</li>
-<li>Signal handling (Synchronous and asynchronous)<ul>
-<li>process signals:<ul>
-<li>Signal is generated by particular event</li>
-<li>Signal is delivered to a process</li>
-<li>Signal is handled</li>
-</ul>
-</li>
-<li>Options:<ul>
-<li>Deliver the signal to the thread to which the signal applies</li>
-<li>Deliver the signal to every thread in the process</li>
-<li>Deliver the signal to certain threads in the process</li>
-<li>Assign a specific thread to receive all signals for the process</li>
+<li>Non-protable extensions include:<ul>
+<li>read-write locks</li>
+<li>spinlocks</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>Thread pools<ul>
-<li>Advantages:<ul>
-<li>Usually slightly after to service a request with an existing thread than create a new thread</li>
-<li>Allows the number of threads in the application be bound to the size of the pool</li>
+<h2 id="Atomic-Transactions"><a href="#Atomic-Transactions" class="headerlink" title="Atomic Transactions"></a>Atomic Transactions</h2><ul>
+<li>System Model</li>
+<li>Log-based Recovery</li>
+<li>Checkpoints</li>
+<li>Concurrent Atomic Transactions</li>
+</ul>
+<h3 id="System-Model"><a href="#System-Model" class="headerlink" title="System Model"></a>System Model</h3><ul>
+<li>Assures that operations happen as a single logical unit of work, in its entirety, or not at all</li>
+<li>Related to field of database systems</li>
+<li>Challenge is assuring atomicity despite computer system failures</li>
+<li>Transaction - collection of instructions or operations that performs single logical function<ul>
+<li>Here we are concerned with changes to stable storage – disk</li>
+<li>Transaction is series of read and write operations</li>
+<li>Terminated by commit (transaction successful) or abort (transaction failed) operation</li>
+<li>Aborted transaction must be rolled back to undo any changes it performed</li>
 </ul>
 </li>
-</ul>
-</li>
-<li>Thread-specific data<ul>
-<li>Allows each thread to have its own copy of data</li>
-<li>Useful when do not have control over the thread creation process(i.e when using a thread pool)</li>
-</ul>
-</li>
-<li>Scheduler activations<ul>
-<li>Both M:M and Two-level models require communication to maintain the appropriate number of kernel threads allocated to the application</li>
-<li>Scheduler activations provide upcalls - a communication mechanism from the kernel to the thread library</li>
-<li>This communication allows an application to maintain the correct number kernel threads</li>
-</ul>
-</li>
-</ul>
-<h2 id="Windows-XP-Threads"><a href="#Windows-XP-Threads" class="headerlink" title="Windows XP Threads"></a>Windows XP Threads</h2><ul>
-<li>one-to-one mapping, kernel-level</li>
-<li>Each thread contains<ul>
-<li>A thread id</li>
-<li>Register set</li>
-<li>Separate user and kernel stacks</li>
-<li>Private data storage area</li>
-</ul>
-</li>
-<li>context of the threads<ul>
-<li>register set</li>
-<li>stacks</li>
-<li>private storage area</li>
-</ul>
-</li>
-<li>primary data structures of a thread include<ul>
-<li>ETHREAD (executive thread block)</li>
-<li>KTHREAD (kernel thread block)</li>
-<li>TEB (thread environment block)</li>
+<li>Types of Storage Media<ul>
+<li>Volatile storage: main memory, cache</li>
+<li>Nonvolatile storage: disk and tape</li>
+<li>Stable storage: not actually possible</li>
 </ul>
 </li>
 </ul>
-<h2 id="Linux-Threads"><a href="#Linux-Threads" class="headerlink" title="Linux Threads"></a>Linux Threads</h2><ul>
-<li>Linux refers to them as tasks rather than threads</li>
-<li>Thread creation is done through clone() system call</li>
-<li>clone() allows a child task to share the address space of the parent task (process)</li>
-<li>struct task_struct points to process data structures (shared or unique)</li>
+<h3 id="Log-Based-Recovery"><a href="#Log-Based-Recovery" class="headerlink" title="Log-Based Recovery"></a>Log-Based Recovery</h3><ul>
+<li>Log on stable storage, each log record describes single transaction write operation, including<ul>
+<li>Transaction name</li>
+<li>Data item name</li>
+<li>Old value</li>
+<li>New value</li>
 </ul>
-<h2 id="Compare-Linux-Process-and-Thread"><a href="#Compare-Linux-Process-and-Thread" class="headerlink" title="Compare Linux Process and Thread"></a>Compare Linux Process and Thread</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Process</th>
-<th style="text-align:center">Thread(LWP)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">fork()</td>
-<td style="text-align:center">clone()</td>
-</tr>
-<tr>
-<td style="text-align:center">task_struct</td>
-<td style="text-align:center">task_struct</td>
-</tr>
-<tr>
-<td style="text-align:center">exec()</td>
-<td style="text-align:center">join()</td>
-</tr>
-<tr>
-<td style="text-align:center">exit()/abort()</td>
-<td style="text-align:center">exit()</td>
-</tr>
-</tbody>
-</table>
+</li>
+<li>Ti starts writtTi commits&gt; written when Ti commitsen to log when transaction Ti starts</li>
+<li>Ti commits written when Ti commits</li>
+<li>Algorithm<ul>
+<li>Using the log, system can handle any volatile memory errors<ul>
+<li>Undo(Ti) restores value of all data updated by Ti</li>
+<li>Redo(Ti) sets values of all data in transaction Ti to new values</li>
+</ul>
+</li>
+<li>Undo(Ti) and Redo(Ti) must be idempotent</li>
+<li>If system fails, restore state of all updated data via log<ul>
+<li>If log contains Ti starts without Ti commits, undo(Ti)</li>
+<li>If log contains Ti starts and Ti commits, redo(Ti)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Checkpoints"><a href="#Checkpoints" class="headerlink" title="Checkpoints"></a>Checkpoints</h3><ul>
+<li>Checkpoint scheme:<ul>
+<li>Output all log records currently in volatile storage to stable storage</li>
+<li>Output all modified data from volatile to stable storage</li>
+<li>Output a log record checkpoint to the log on stable storage</li>
+</ul>
+</li>
+</ul>
+<h3 id="Concurrent-Transaction"><a href="#Concurrent-Transaction" class="headerlink" title="Concurrent Transaction"></a>Concurrent Transaction</h3><ul>
+<li>Serialazability</li>
+<li>Could perform all transactions in critical section (Inefficient, too restrictive)</li>
+<li>Concurrency-control algorithms provide serializability</li>
+</ul>
+<h2 id="Locking-Protocol"><a href="#Locking-Protocol" class="headerlink" title="Locking Protocol"></a>Locking Protocol</h2><ul>
+<li>Locks<ul>
+<li>Shared</li>
+<li>Exclusive</li>
+</ul>
+</li>
+</ul>
+<h2 id="Two-phase-Locking-Protocol"><a href="#Two-phase-Locking-Protocol" class="headerlink" title="Two-phase Locking Protocol"></a>Two-phase Locking Protocol</h2><p>Each transaction issues lock and unlock requests in two phases</p>
+<ul>
+<li>Growing</li>
+<li>Shrinking</li>
+</ul>
+<h2 id="Timestamp-based-Protocols"><a href="#Timestamp-based-Protocols" class="headerlink" title="Timestamp-based Protocols"></a>Timestamp-based Protocols</h2><p>Transaction Ti associated with timestamp TS(Ti) before Ti starts</p>
+<ul>
+<li>TS(Ti) &lt; TS(Tj) if Ti entered system before Tj</li>
+<li>TS can be generated from system clock or as logical counter incremented at each entry of transaction</li>
+</ul>
+<p>Timestamps determine serializability order</p>
+<ul>
+<li>If TS(Ti) &lt; TS(Tj), system must ensure produced schedule equivalent to serial schedule where Ti appears before Tj</li>
+</ul>
+<p>Data item Q gets two timestamps</p>
+<ul>
+<li>W-timestamp(Q) – largest timestamp of any transaction that executed write(Q) successfully</li>
+<li>R-timestamp(Q) – largest timestamp of successful read(Q)</li>
+<li>Updated whenever read(Q) or write(Q) executed</li>
+</ul>
 
       
     </div>
@@ -499,8 +484,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/05/Dynamic-Programming-Exercise/" rel="next" title="Dynamic Programming -- Exercise">
-                <i class="fa fa-chevron-left"></i> Dynamic Programming -- Exercise
+              <a href="/2017/11/08/CSE-CPU-Scheduling-Review/" rel="next" title="CSE CPU Scheduling Review">
+                <i class="fa fa-chevron-left"></i> CSE CPU Scheduling Review
               </a>
             
           </div>
@@ -508,10 +493,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/08/CSE-CPU-Scheduling-Review/" rel="prev" title="CSE CPU Scheduling Review">
-                CSE CPU Scheduling Review <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -640,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Multithreads-Benefits"><span class="nav-number">1.</span> <span class="nav-text">Multithreads Benefits:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multicore-systems-putting-pressure-on-programmers-chanllenges-include"><span class="nav-number">2.</span> <span class="nav-text">Multicore systems putting pressure on programmers, chanllenges include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Three-primary-thread-libraries"><span class="nav-number">3.</span> <span class="nav-text">Three primary thread libraries</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multithreading-Models"><span class="nav-number">4.</span> <span class="nav-text">Multithreading Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Two-primary-ways-of-implementing-Thread-Libraries"><span class="nav-number">5.</span> <span class="nav-text">Two primary ways of implementing Thread Libraries</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compare-Pthreads-amp-Java-threads"><span class="nav-number">6.</span> <span class="nav-text">Compare Pthreads & Java threads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Threading-Issues"><span class="nav-number">7.</span> <span class="nav-text">Threading Issues</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-XP-Threads"><span class="nav-number">8.</span> <span class="nav-text">Windows XP Threads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-Threads"><span class="nav-number">9.</span> <span class="nav-text">Linux Threads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compare-Linux-Process-and-Thread"><span class="nav-number">10.</span> <span class="nav-text">Compare Linux Process and Thread</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Examples"><span class="nav-number">1.</span> <span class="nav-text">Examples</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Solaris"><span class="nav-number">1.1.</span> <span class="nav-text">Solaris</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows-XP"><span class="nav-number">1.2.</span> <span class="nav-text">Windows XP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux"><span class="nav-number">1.3.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pthreads"><span class="nav-number">1.4.</span> <span class="nav-text">Pthreads</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Atomic-Transactions"><span class="nav-number">2.</span> <span class="nav-text">Atomic Transactions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#System-Model"><span class="nav-number">2.1.</span> <span class="nav-text">System Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log-Based-Recovery"><span class="nav-number">2.2.</span> <span class="nav-text">Log-Based Recovery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Checkpoints"><span class="nav-number">2.3.</span> <span class="nav-text">Checkpoints</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Concurrent-Transaction"><span class="nav-number">2.4.</span> <span class="nav-text">Concurrent Transaction</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Locking-Protocol"><span class="nav-number">3.</span> <span class="nav-text">Locking Protocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Two-phase-Locking-Protocol"><span class="nav-number">4.</span> <span class="nav-text">Two-phase Locking Protocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Timestamp-based-Protocols"><span class="nav-number">5.</span> <span class="nav-text">Timestamp-based Protocols</span></a></li></ol></div>
             
 
           </div>
