@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="cse," />
+  <meta name="keywords" content="cs222," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Multithreads Benefits: Responsiveness Resource sharing Economy Scalability  Multicore systems putting pressure on programmers, chanllenges include Dividing activities Balence Data splitting Data depen">
-<meta name="keywords" content="cse">
+<meta name="description" content="What is algorithmAn algorithm is a sequence of unambiguous instructions for solving a problem, i.e., for obtaining a required output for any legitimate input in a finite amount of time. Euclid’s Algor">
+<meta name="keywords" content="cs222">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSE Threads Review">
-<meta property="og:url" content="http://yoursite.com/2017/11/07/CSE-Threads-Review/index.html">
+<meta property="og:title" content="CSE Deadlock Review">
+<meta property="og:url" content="http://yoursite.com/2017/12/05/Algorithm-Introduction/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="Multithreads Benefits: Responsiveness Resource sharing Economy Scalability  Multicore systems putting pressure on programmers, chanllenges include Dividing activities Balence Data splitting Data depen">
+<meta property="og:description" content="What is algorithmAn algorithm is a sequence of unambiguous instructions for solving a problem, i.e., for obtaining a required output for any legitimate input in a finite amount of time. Euclid’s Algor">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-07T14:19:08.000Z">
+<meta property="og:updated_time" content="2017-12-09T10:14:45.632Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CSE Threads Review">
-<meta name="twitter:description" content="Multithreads Benefits: Responsiveness Resource sharing Economy Scalability  Multicore systems putting pressure on programmers, chanllenges include Dividing activities Balence Data splitting Data depen">
+<meta name="twitter:title" content="CSE Deadlock Review">
+<meta name="twitter:description" content="What is algorithmAn algorithm is a sequence of unambiguous instructions for solving a problem, i.e., for obtaining a required output for any legitimate input in a finite amount of time. Euclid’s Algor">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/07/CSE-Threads-Review/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/05/Algorithm-Introduction/"/>
 
 
 
 
 
-  <title>CSE Threads Review | Neverland</title>
+  <title>CSE Deadlock Review | Neverland</title>
   
 
 
@@ -245,7 +245,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/07/CSE-Threads-Review/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/05/Algorithm-Introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -262,7 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CSE Threads Review</h1>
+          <h1 class="post-title" itemprop="name headline">CSE Deadlock Review</h1>
         
 
         <div class="post-meta">
@@ -274,8 +274,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-07T22:18:40+08:00">
-                2017-11-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-05T21:13:51+08:00">
+                2017-12-05
               </time>
             
 
@@ -293,9 +293,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/11/07/CSE-Threads-Review/#comments" itemprop="discussionUrl">
+                <a href="/2017/12/05/Algorithm-Introduction/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/07/CSE-Threads-Review/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/12/05/Algorithm-Introduction/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -323,164 +323,23 @@
       
 
       
-        <h2 id="Multithreads-Benefits"><a href="#Multithreads-Benefits" class="headerlink" title="Multithreads Benefits:"></a>Multithreads Benefits:</h2><ul>
-<li>Responsiveness</li>
-<li>Resource sharing</li>
-<li>Economy</li>
-<li>Scalability</li>
-</ul>
-<h2 id="Multicore-systems-putting-pressure-on-programmers-chanllenges-include"><a href="#Multicore-systems-putting-pressure-on-programmers-chanllenges-include" class="headerlink" title="Multicore systems putting pressure on programmers, chanllenges include"></a>Multicore systems putting pressure on programmers, chanllenges include</h2><ul>
-<li>Dividing activities</li>
-<li>Balence</li>
-<li>Data splitting</li>
-<li>Data dependency</li>
-<li>Testing and debugging</li>
-</ul>
-<h2 id="Three-primary-thread-libraries"><a href="#Three-primary-thread-libraries" class="headerlink" title="Three primary thread libraries"></a>Three primary thread libraries</h2><ul>
-<li>POSIX Pthreads</li>
-<li>Win32 threads</li>
-<li>Java threads</li>
-</ul>
-<h2 id="Multithreading-Models"><a href="#Multithreading-Models" class="headerlink" title="Multithreading Models"></a>Multithreading Models</h2><ul>
-<li>Many-to-One:<ul>
-<li>Solaris Green Threads</li>
-<li>GUN Portable Threads</li>
-</ul>
-</li>
-<li>One-to-One:<ul>
-<li>Windows NT/XP/2000</li>
-<li>Linux</li>
-<li>Solaris 0 and later</li>
-</ul>
-</li>
-<li>Many-to-Many:<ul>
-<li>Windows NT/2000 with the <em>ThreadFiber</em> package</li>
-<li>Solaris prior to version 9</li>
-</ul>
-</li>
-<li>Two-level Model:<ul>
-<li>IRIX</li>
-<li>HP-UX</li>
-</ul>
-</li>
-</ul>
-<h2 id="Two-primary-ways-of-implementing-Thread-Libraries"><a href="#Two-primary-ways-of-implementing-Thread-Libraries" class="headerlink" title="Two primary ways of implementing Thread Libraries"></a>Two primary ways of implementing Thread Libraries</h2><ul>
-<li>Library entirely in user space</li>
-<li>Kernel-level library supported by the OS</li>
-</ul>
-<h2 id="Compare-Pthreads-amp-Java-threads"><a href="#Compare-Pthreads-amp-Java-threads" class="headerlink" title="Compare Pthreads &amp; Java threads"></a>Compare Pthreads &amp; Java threads</h2><ul>
-<li>Pthreads<ul>
-<li>May be provided either as user-level or kernel-level</li>
-<li>A POSIX standard API for thread creation and synchronization</li>
-<li>API specifies behavior of the thread library, implementation is up to development of the library</li>
-<li>Common in UNIX operating systems</li>
-</ul>
-</li>
-<li>Java Threads<ul>
-<li>Java threads are managed by the JVM</li>
-<li>Typically implemented using the threads model provided by underlying OS</li>
-<li>Java threads may be created by<ul>
-<li>Extending Thread class</li>
-<li>Implementing the Runnable interface</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Threading-Issues"><a href="#Threading-Issues" class="headerlink" title="Threading Issues"></a>Threading Issues</h2><ul>
-<li>Semantics of <strong>fork()</strong> and <strong>exec()</strong> system calls</li>
-<li>Thread cancellation of target thread (Asynchronous or deferred)</li>
-<li>Signal handling (Synchronous and asynchronous)<ul>
-<li>process signals:<ul>
-<li>Signal is generated by particular event</li>
-<li>Signal is delivered to a process</li>
-<li>Signal is handled</li>
-</ul>
-</li>
-<li>Options:<ul>
-<li>Deliver the signal to the thread to which the signal applies</li>
-<li>Deliver the signal to every thread in the process</li>
-<li>Deliver the signal to certain threads in the process</li>
-<li>Assign a specific thread to receive all signals for the process</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Thread pools<ul>
-<li>Advantages:<ul>
-<li>Usually slightly after to service a request with an existing thread than create a new thread</li>
-<li>Allows the number of threads in the application be bound to the size of the pool</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Thread-specific data<ul>
-<li>Allows each thread to have its own copy of data</li>
-<li>Useful when do not have control over the thread creation process(i.e when using a thread pool)</li>
-</ul>
-</li>
-<li>Scheduler activations<ul>
-<li>Both M:M and Two-level models require communication to maintain the appropriate number of kernel threads allocated to the application</li>
-<li>Scheduler activations provide upcalls - a communication mechanism from the kernel to the thread library</li>
-<li>This communication allows an application to maintain the correct number kernel threads</li>
-</ul>
-</li>
-</ul>
-<h2 id="Windows-XP-Threads"><a href="#Windows-XP-Threads" class="headerlink" title="Windows XP Threads"></a>Windows XP Threads</h2><ul>
-<li>one-to-one mapping, kernel-level</li>
-<li>Each thread contains<ul>
-<li>A thread id</li>
-<li>Register set</li>
-<li>Separate user and kernel stacks</li>
-<li>Private data storage area</li>
-</ul>
-</li>
-<li>context of the threads<ul>
-<li>register set</li>
-<li>stacks</li>
-<li>private storage area</li>
-</ul>
-</li>
-<li>primary data structures of a thread include<ul>
-<li>ETHREAD (executive thread block)</li>
-<li>KTHREAD (kernel thread block)</li>
-<li>TEB (thread environment block)</li>
-</ul>
-</li>
-</ul>
-<h2 id="Linux-Threads"><a href="#Linux-Threads" class="headerlink" title="Linux Threads"></a>Linux Threads</h2><ul>
-<li>Linux refers to them as tasks rather than threads</li>
-<li>Thread creation is done through clone() system call</li>
-<li>clone() allows a child task to share the address space of the parent task (process)</li>
-<li>struct task_struct points to process data structures (shared or unique)</li>
-</ul>
-<h2 id="Compare-Linux-Process-and-Thread"><a href="#Compare-Linux-Process-and-Thread" class="headerlink" title="Compare Linux Process and Thread"></a>Compare Linux Process and Thread</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">Process</th>
-<th style="text-align:center">Thread(LWP)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">fork()</td>
-<td style="text-align:center">clone()</td>
-</tr>
-<tr>
-<td style="text-align:center">task_struct</td>
-<td style="text-align:center">task_struct</td>
-</tr>
-<tr>
-<td style="text-align:center">exec()</td>
-<td style="text-align:center">join()</td>
-</tr>
-<tr>
-<td style="text-align:center">exit()/abort()</td>
-<td style="text-align:center">exit()</td>
-</tr>
-</tbody>
-</table>
-
+        <h2 id="What-is-algorithm"><a href="#What-is-algorithm" class="headerlink" title="What is algorithm"></a>What is algorithm</h2><p>An algorithm is a sequence of unambiguous instructions for solving a problem, i.e., for obtaining a required output for any legitimate input in a finite amount of time.</p>
+<h2 id="Euclid’s-Algorithm"><a href="#Euclid’s-Algorithm" class="headerlink" title="Euclid’s Algorithm"></a>Euclid’s Algorithm</h2><h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><p>求gcd(m,n)，两个非负整数的最大公因数，并且不是0且不是m和n。<br>e.g. gcd(60,24) = 12, gcd(60,0) = 60, gcd(0,0) = ?</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>Euclid’s algorithm基于gcd(m,n) = gcd(n, m mod n)，重复直至第二个参数为0。<br>e.g. gcd(60,24) = gcd(24,12) = gcd(12,0) = 12</p>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">while n != 0 do</div><div class="line">	r &lt;- m mod n</div><div class="line">	m &lt;- n</div><div class="line">	n &lt;- r</div><div class="line">return m</div></pre></td></tr></table></figure>
+<h3 id="另两种方法计算gcd-m-n"><a href="#另两种方法计算gcd-m-n" class="headerlink" title="另两种方法计算gcd(m,n)"></a>另两种方法计算gcd(m,n)</h3><h4 id="Consecutive-integer-checking-algorithm"><a href="#Consecutive-integer-checking-algorithm" class="headerlink" title="Consecutive integer checking algorithm"></a>Consecutive integer checking algorithm</h4><ol>
+<li>t赋值为min{m,n}</li>
+<li>用m除以t，若余数为0，转到3；否则转到4</li>
+<li>用n除以t，若余数为0，返回t并停止；否则转到4</li>
+<li>t=t-1，转到2.</li>
+</ol>
+<h4 id="Middle-school-procedure"><a href="#Middle-school-procedure" class="headerlink" title="Middle-school procedure"></a>Middle-school procedure</h4><ol>
+<li>找到m的质因数</li>
+<li>找到n的质因数</li>
+<li>找到所有共同的质因数</li>
+<li>计算所有共同质因数的乘积即位gcd(m,n)</li>
+</ol>
+<h2 id="Sieve-of-Eratosthenes"><a href="#Sieve-of-Eratosthenes" class="headerlink" title="Sieve of Eratosthenes"></a>Sieve of Eratosthenes</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Input: Integer n&gt;=2</div><div class="line">Output: List of primes less than or equal to n</div><div class="line">for p &lt;- 2 to n do A[p] &lt;- p</div><div class="line">for p &lt;- 2 to √n do</div><div class="line">	if A[p] != 0  //p hasn&apos;t been previously eliminated from the list</div><div class="line">	j &lt;- p*p</div><div class="line">	while j &lt;= n do</div><div class="line">		A[j] &lt;- 0  //mark element as eliminated</div><div class="line">		j &lt;- j+p</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -497,7 +356,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/cse/" rel="tag"># cse</a>
+            <a href="/tags/cs222/" rel="tag"># cs222</a>
           
         </div>
       
@@ -510,8 +369,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/05/Dynamic-Programming-Exercise/" rel="next" title="Dynamic Programming -- Exercise">
-                <i class="fa fa-chevron-left"></i> Dynamic Programming -- Exercise
+              <a href="/2017/12/05/CSE-Deadlock-Review/" rel="next" title="CSE Deadlock Review">
+                <i class="fa fa-chevron-left"></i> CSE Deadlock Review
               </a>
             
           </div>
@@ -519,10 +378,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/08/CSE-CPU-Scheduling-Review/" rel="prev" title="CSE CPU Scheduling Review">
-                CSE CPU Scheduling Review <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -661,7 +516,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Multithreads-Benefits"><span class="nav-number">1.</span> <span class="nav-text">Multithreads Benefits:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multicore-systems-putting-pressure-on-programmers-chanllenges-include"><span class="nav-number">2.</span> <span class="nav-text">Multicore systems putting pressure on programmers, chanllenges include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Three-primary-thread-libraries"><span class="nav-number">3.</span> <span class="nav-text">Three primary thread libraries</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multithreading-Models"><span class="nav-number">4.</span> <span class="nav-text">Multithreading Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Two-primary-ways-of-implementing-Thread-Libraries"><span class="nav-number">5.</span> <span class="nav-text">Two primary ways of implementing Thread Libraries</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compare-Pthreads-amp-Java-threads"><span class="nav-number">6.</span> <span class="nav-text">Compare Pthreads & Java threads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Threading-Issues"><span class="nav-number">7.</span> <span class="nav-text">Threading Issues</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-XP-Threads"><span class="nav-number">8.</span> <span class="nav-text">Windows XP Threads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-Threads"><span class="nav-number">9.</span> <span class="nav-text">Linux Threads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compare-Linux-Process-and-Thread"><span class="nav-number">10.</span> <span class="nav-text">Compare Linux Process and Thread</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-algorithm"><span class="nav-number">1.</span> <span class="nav-text">What is algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Euclid’s-Algorithm"><span class="nav-number">2.</span> <span class="nav-text">Euclid’s Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem"><span class="nav-number">2.1.</span> <span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Analysis"><span class="nav-number">2.2.</span> <span class="nav-text">Analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#伪代码"><span class="nav-number">2.3.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另两种方法计算gcd-m-n"><span class="nav-number">2.4.</span> <span class="nav-text">另两种方法计算gcd(m,n)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Consecutive-integer-checking-algorithm"><span class="nav-number">2.4.1.</span> <span class="nav-text">Consecutive integer checking algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Middle-school-procedure"><span class="nav-number">2.4.2.</span> <span class="nav-text">Middle-school procedure</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sieve-of-Eratosthenes"><span class="nav-number">3.</span> <span class="nav-text">Sieve of Eratosthenes</span></a></li></ol></div>
             
 
           </div>
@@ -824,9 +679,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2017/11/07/CSE-Threads-Review/';
-          this.page.identifier = '2017/11/07/CSE-Threads-Review/';
-          this.page.title = 'CSE Threads Review';
+          this.page.url = 'http://yoursite.com/2017/12/05/Algorithm-Introduction/';
+          this.page.identifier = '2017/12/05/Algorithm-Introduction/';
+          this.page.title = 'CSE Deadlock Review';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://Neverland.disqus.com/embed.js';
