@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="leetcode," />
+  <meta name="keywords" content="Computer Vision, Detection," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="My solution123456789101112131415class Solution &amp;#123;public:    vector&amp;lt;int&amp;gt; twoSum(vector&amp;lt;int&amp;gt;&amp;amp; nums, int target) &amp;#123;        vector&amp;lt;int&amp;gt; res;        for (int i=0;i&amp;lt;nums.siz">
-<meta name="keywords" content="leetcode">
+<meta name="description" content="@(Computer Vision)[Detection] R-CNN(Rich feature hierarchies for accurate object detection and semantic segmentation)算是Computer Vision方面看的第一篇论文，希望能从此开启一条通往CV的康庄大道。So, LET’S GO AND EXPLORE！  [TOC] Intr">
+<meta name="keywords" content="Computer Vision, Detection">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Leetcode-1.TwoSum">
-<meta property="og:url" content="http://yoursite.com/2018/01/17/Leetcode-1-TwoSum/index.html">
+<meta property="og:title" content="Paper Reading -- R-CNN">
+<meta property="og:url" content="http://yoursite.com/2018/04/23/rcnn/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="My solution123456789101112131415class Solution &amp;#123;public:    vector&amp;lt;int&amp;gt; twoSum(vector&amp;lt;int&amp;gt;&amp;amp; nums, int target) &amp;#123;        vector&amp;lt;int&amp;gt; res;        for (int i=0;i&amp;lt;nums.siz">
+<meta property="og:description" content="@(Computer Vision)[Detection] R-CNN(Rich feature hierarchies for accurate object detection and semantic segmentation)算是Computer Vision方面看的第一篇论文，希望能从此开启一条通往CV的康庄大道。So, LET’S GO AND EXPLORE！  [TOC] Intr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-17T03:28:48.999Z">
+<meta property="og:updated_time" content="2018-04-23T07:05:17.947Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Leetcode-1.TwoSum">
-<meta name="twitter:description" content="My solution123456789101112131415class Solution &amp;#123;public:    vector&amp;lt;int&amp;gt; twoSum(vector&amp;lt;int&amp;gt;&amp;amp; nums, int target) &amp;#123;        vector&amp;lt;int&amp;gt; res;        for (int i=0;i&amp;lt;nums.siz">
+<meta name="twitter:title" content="Paper Reading -- R-CNN">
+<meta name="twitter:description" content="@(Computer Vision)[Detection] R-CNN(Rich feature hierarchies for accurate object detection and semantic segmentation)算是Computer Vision方面看的第一篇论文，希望能从此开启一条通往CV的康庄大道。So, LET’S GO AND EXPLORE！  [TOC] Intr">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/17/Leetcode-1-TwoSum/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/23/rcnn/"/>
 
 
 
 
 
-  <title>Leetcode-1.TwoSum | Neverland</title>
+  <title>Paper Reading -- R-CNN | Neverland</title>
   
 
 
@@ -245,7 +245,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/Leetcode-1-TwoSum/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/23/rcnn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -262,7 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Leetcode-1.TwoSum</h1>
+          <h1 class="post-title" itemprop="name headline">Paper Reading -- R-CNN</h1>
         
 
         <div class="post-meta">
@@ -274,8 +274,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T11:20:01+08:00">
-                2018-01-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T15:04:28+08:00">
+                2018-04-23
               </time>
             
 
@@ -293,9 +293,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/17/Leetcode-1-TwoSum/#comments" itemprop="discussionUrl">
+                <a href="/2018/04/23/rcnn/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/17/Leetcode-1-TwoSum/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/04/23/rcnn/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -323,10 +323,60 @@
       
 
       
-        <h2 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution"></a>My solution</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class Solution &#123;</div><div class="line">public:</div><div class="line">    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) &#123;</div><div class="line">        vector&lt;int&gt; res;</div><div class="line">        for (int i=0;i&lt;nums.size();i++)&#123;//time complexity O(n^2)</div><div class="line">            for (int j=i+1;j&lt;nums.size();j++)&#123;</div><div class="line">                if (nums[i]+nums[j]==target)&#123;</div><div class="line">                    res.push_back(i);</div><div class="line">                    res.push_back(j);</div><div class="line">                    return res;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>time: 181ms</p>
-<h2 id="sample-9-ms-submission"><a href="#sample-9-ms-submission" class="headerlink" title="sample 9 ms submission"></a>sample 9 ms submission</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class Solution &#123;</div><div class="line">public:</div><div class="line">    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) &#123;</div><div class="line">        using vType = remove_reference_t&lt;decltype(nums)&gt;::size_type;</div><div class="line">        /*remove_referce_t: ????*/</div><div class="line">        unordered_map&lt;int,vType&gt; m ;</div><div class="line">        /*unordered_map uses more memory but is efficient*/</div><div class="line">        for (int i = 0; i &lt; nums.size(); ++i) &#123;</div><div class="line">        /*use find target-num[i] to find solution in O(n)*/</div><div class="line">            const auto it = m.find(target - nums[i]);</div><div class="line">            if (it != m.end())</div><div class="line">                    return vector&lt;int&gt; &#123;it-&gt;second,i&#125;;</div><div class="line">            m.emplace(nums[i],i);</div><div class="line">        &#125;</div><div class="line">        throw std::runtime_error(&quot;no solutions:&quot;) ;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>nuordered_map uses hash, which is more efficient than vector.</p>
+        <p>@(Computer Vision)[Detection]</p>
+<p><strong>R-CNN</strong>(Rich feature hierarchies for accurate object detection and semantic segmentation)算是Computer Vision方面看的第一篇论文，希望能从此开启一条通往CV的康庄大道。So, LET’S <strong>GO AND EXPLORE！</strong></p>
+<hr>
+<p>[TOC]</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>这篇文章主要解决的问题就是：将ImageNet上CNN分类的结果推广到PASCAL VOC挑战的物体检测结果如何？</p>
+<h3 id="Challenge-1"><a href="#Challenge-1" class="headerlink" title="Challenge 1"></a>Challenge 1</h3><p>localizing -&gt; Regions with CNN features</p>
+<h3 id="Challenge-2"><a href="#Challenge-2" class="headerlink" title="Challenge 2"></a>Challenge 2</h3><p>已标注数据量不够 -&gt; 在大的副数据集上supervised pre-training，在小的数据集上进行domain-specific fine-tuning</p>
+<h2 id="Object-detection-with-R-CNN"><a href="#Object-detection-with-R-CNN" class="headerlink" title="Object detection with R-CNN"></a>Object detection with R-CNN</h2><h3 id="Module-1-Region-Proposals"><a href="#Module-1-Region-Proposals" class="headerlink" title="Module 1. Region Proposals"></a>Module 1. Region Proposals</h3><p>使用Selective Search的方法，选择约2k个备选区域。</p>
+<blockquote>
+<p>Selective Search：</p>
+<ol>
+<li>由于不知道区域尺度，就尽可能遍历所有尺度，从小尺度的区域出发，一次次合并到大尺度。</li>
+<li>由于特征很多，就尽可能把知道的特征用上，但是同时也要照顾到计算复杂度。</li>
+<li>对每个区域进行排序，这样想要多少个区域，就产生多少个区域，防止浪费。</li>
+</ol>
+</blockquote>
+<h4 id="产生多尺度的区域"><a href="#产生多尺度的区域" class="headerlink" title="产生多尺度的区域"></a>产生多尺度的区域</h4><p>基于图的图像分割方法初始化原始区域，将图像分割成许多小块，然后使用贪心策略，计算每两个相邻区域之间的相似度，每次合并最相似的两块，直到最终剩下一块完整的图片，每次产生的图像包括合并的图像块都保存下来。</p>
+<h4 id="保持多样性的策略"><a href="#保持多样性的策略" class="headerlink" title="保持多样性的策略"></a>保持多样性的策略</h4><ul>
+<li>颜色空间变换</li>
+<li>距离计算<ul>
+<li>颜色距离</li>
+<li>纹理距离</li>
+</ul>
+</li>
+<li>优先合并小的区域</li>
+<li>区域的合适距离</li>
+<li>综合各种距离</li>
+<li>使用多种参数初始化图像</li>
+</ul>
+<h4 id="给区域打分"><a href="#给区域打分" class="headerlink" title="给区域打分"></a>给区域打分</h4><p>最先合并的图片块较大的权重。当策略很多的时候，权重会重合，所以乘以一个随机数，相同的区域多次出现进行权重叠加。</p>
+<h3 id="Module-2-CNN-Network"><a href="#Module-2-CNN-Network" class="headerlink" title="Module 2. CNN Network"></a>Module 2. CNN Network</h3><p>使用CNN进行特征提取，生成一个4096维的特征向量。</p>
+<blockquote>
+<p>网络结构：<br>layer 1. Conv1 + relu1 + pool1 + norm1<br>layer 2. Conv2 + relu2 + pool2 + norm2<br>layer 3. Conv3 + relu3<br>layer 4. Conv4 + relu4<br>layer 5. Conv5 + relu5 + pool5<br>layer6. fc6 + relu6<br>layer7. fc7 + relu7</p>
+</blockquote>
+<h3 id="Module-3-SVMs"><a href="#Module-3-SVMs" class="headerlink" title="Module 3. SVMs"></a>Module 3. SVMs</h3><p>每一个类别，都用训练好的SVM分类。对每一个区域，使用greedy non-maximum suppression，去除IoU overlap。</p>
+<blockquote>
+<p>R-CNN效率高的原因</p>
+<ul>
+<li>CNN 的参数是所有类别共享的</li>
+<li>特征向量维数低</li>
+</ul>
+</blockquote>
+<h3 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h3><ul>
+<li>Supervised pre-training</li>
+<li>Domain-specific fine-tuning</li>
+<li>Object category classifiers<ul>
+<li>当区域与物体有overlap的时候，使用IoU overlap threshold</li>
+</ul>
+</li>
+<li>使用hard negative mining method加速收敛</li>
+</ul>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p>论文发表的2014年，DPM已经进入瓶颈期，即使使用复杂的特征和结构得到的提升也十分有限。本文将深度学习引入检测领域，一举将PASCAL VOC上的检测率从35.1%提升到53.7%。 </p>
+<p>本文的前两个步骤（候选区域提取+特征提取）与待检测类别无关，可以在不同类之间共用。这两步在GPU上约需13秒。 </p>
+<p>同时检测多类时，需要倍增的只有后两步骤（判别+精修），都是简单的线性运算，速度很快。这两步对于100K类别只需10秒。</p>
 
       
     </div>
@@ -344,7 +394,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+            <a href="/tags/Computer-Vision-Detection/" rel="tag"># Computer Vision, Detection</a>
           
         </div>
       
@@ -357,8 +407,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/05/CSE-Deadlock-Review/" rel="next" title="CSE Deadlock Review">
-                <i class="fa fa-chevron-left"></i> CSE Deadlock Review
+              <a href="/2018/01/17/Leetcode-2-AddTwoNumbers/" rel="next" title="Leetcode-2.AddTwoNumbers">
+                <i class="fa fa-chevron-left"></i> Leetcode-2.AddTwoNumbers
               </a>
             
           </div>
@@ -366,10 +416,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/17/Leetcode-2-AddTwoNumbers/" rel="prev" title="Leetcode-2.AddTwoNumbers">
-                Leetcode-2.AddTwoNumbers <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -508,7 +554,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#My-solution"><span class="nav-number">1.</span> <span class="nav-text">My solution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sample-9-ms-submission"><span class="nav-number">2.</span> <span class="nav-text">sample 9 ms submission</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Challenge-1"><span class="nav-number">1.1.</span> <span class="nav-text">Challenge 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Challenge-2"><span class="nav-number">1.2.</span> <span class="nav-text">Challenge 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-detection-with-R-CNN"><span class="nav-number">2.</span> <span class="nav-text">Object detection with R-CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-1-Region-Proposals"><span class="nav-number">2.1.</span> <span class="nav-text">Module 1. Region Proposals</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#产生多尺度的区域"><span class="nav-number">2.1.1.</span> <span class="nav-text">产生多尺度的区域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保持多样性的策略"><span class="nav-number">2.1.2.</span> <span class="nav-text">保持多样性的策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#给区域打分"><span class="nav-number">2.1.3.</span> <span class="nav-text">给区域打分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-2-CNN-Network"><span class="nav-number">2.2.</span> <span class="nav-text">Module 2. CNN Network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-3-SVMs"><span class="nav-number">2.3.</span> <span class="nav-text">Module 3. SVMs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training"><span class="nav-number">2.4.</span> <span class="nav-text">Training</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">3.</span> <span class="nav-text">Results</span></a></li></ol></div>
             
 
           </div>
@@ -671,9 +717,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/01/17/Leetcode-1-TwoSum/';
-          this.page.identifier = '2018/01/17/Leetcode-1-TwoSum/';
-          this.page.title = 'Leetcode-1.TwoSum';
+          this.page.url = 'http://yoursite.com/2018/04/23/rcnn/';
+          this.page.identifier = '2018/04/23/rcnn/';
+          this.page.title = 'Paper Reading -- R-CNN';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://Neverland.disqus.com/embed.js';
