@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Computer Vision," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Fast R-CNN实现了除了region proposal以外的端对端，所以瓶颈就在region proposal上。下一步就是要把proposal阶段也用CNN实现（放在GPU上），所以出现了Faster R-CNN，是完全端对端的CNN对象检测模型。 Main Idea网络中的各个卷积层特征也可以用来预测类别相关的region proposal，但是如果简单的在前面增加一个专门提取propo">
+<meta name="keywords" content="Computer Vision">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paper Reading -- Faster R-CNN">
+<meta property="og:url" content="http://yoursite.com/2018/05/16/Paper-Reading-Faster-R-CNN/index.html">
+<meta property="og:site_name" content="Neverland">
+<meta property="og:description" content="Fast R-CNN实现了除了region proposal以外的端对端，所以瓶颈就在region proposal上。下一步就是要把proposal阶段也用CNN实现（放在GPU上），所以出现了Faster R-CNN，是完全端对端的CNN对象检测模型。 Main Idea网络中的各个卷积层特征也可以用来预测类别相关的region proposal，但是如果简单的在前面增加一个专门提取propo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/RPN.jpg">
+<meta property="og:image" content="http://yoursite.com/images/RPNloss.jpg">
+<meta property="og:image" content="http://yoursite.com/images/AlternatingTraining.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ApproximateJointTraining.jpg">
+<meta property="og:image" content="http://yoursite.com/images/4-stepAT.jpg">
+<meta property="og:updated_time" content="2018-05-16T05:05:06.577Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Paper Reading -- Faster R-CNN">
+<meta name="twitter:description" content="Fast R-CNN实现了除了region proposal以外的端对端，所以瓶颈就在region proposal上。下一步就是要把proposal阶段也用CNN实现（放在GPU上），所以出现了Faster R-CNN，是完全端对端的CNN对象检测模型。 Main Idea网络中的各个卷积层特征也可以用来预测类别相关的region proposal，但是如果简单的在前面增加一个专门提取propo">
+<meta name="twitter:image" content="http://yoursite.com/images/RPN.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/16/Paper-Reading-Faster-R-CNN/"/>
+
+
+
+
+
+  <title>Paper Reading -- Faster R-CNN | Neverland</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Neverland</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/16/Paper-Reading-Faster-R-CNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vanessa Cao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Neverland">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Paper Reading -- Faster R-CNN</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T13:02:34+08:00">
+                2018-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/16/Paper-Reading-Faster-R-CNN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/16/Paper-Reading-Faster-R-CNN/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Fast R-CNN实现了除了region proposal以外的端对端，所以瓶颈就在region proposal上。下一步就是要把proposal阶段也用CNN实现（放在GPU上），所以出现了Faster R-CNN，是完全端对端的CNN对象检测模型。</p>
+<h2 id="Main-Idea"><a href="#Main-Idea" class="headerlink" title="Main Idea"></a>Main Idea</h2><p>网络中的各个卷积层特征也可以用来预测类别相关的region proposal，但是如果简单的在前面增加一个专门提取proposal的网络又显得不够优雅，所以最终把region proposal提取和Fast-RCNN部分融合进了一个网络模型 (区域生成网络 RPN层)，虽然训练阶段仍然要分多步，但是检测阶段非常方便快捷，准确率也与原来的Fast-RCNN相差不多。</p>
+<p>Faster R-CNN可以大致看成<code>区域生成网络+Fast R-CNN</code>的系统，用区域生成网络代替selective search的方法。</p>
+<h2 id="Region-Proposal-Networks"><a href="#Region-Proposal-Networks" class="headerlink" title="Region Proposal Networks"></a>Region Proposal Networks</h2><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>论文借鉴SPP和RoI中的思想，在feature map中提取proposal。先通过对应关系<a href="https://zhuanlan.zhihu.com/p/24780433" title="把feature map的点映射回原图" target="_blank" rel="external">把feature map的点映射回原图</a>，在每一个对应的原图设计不同的固定尺度窗口（bbox），根据该窗口与ground truth的IOU给它正负标签，让它学习里面是否有object，这样就训练一个网络（Region Proposal Network）。</p>
+<p>论文中味了降低任务复杂度对bbox做了三个固定：</p>
+<ul>
+<li>固定尺度变化（三种尺度）</li>
+<li>固定scale ratio变化（三种ratio）</li>
+<li>固定采样方式（只在feature map的每个点在原图中对应的RoI上采样）</li>
+</ul>
+<p>可以在特征图上提取proposal之后，网络前面就可以共享卷积计算结果（SPP减少计算量的思想）。这个网络的结果就是卷积层的每个点都有有关于k个anchor boxes的输出，包括是不是物体，调整box相应的位置。</p>
+<h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><p><img src="/images/RPN.jpg" alt="Alt text"></p>
+<ol>
+<li>得到最终用来预测的feature map：图片在输入网络后，依次经过一系列conv+relu （套用ImageNet上常见的分类网络即可，本论文实验了5层的ZF,16层的VGG-16）得到的feature map，额外添加一个conv+relu层，输出51*39*256维特征（feature map）。准备后续用来选取proposal，并且此时坐标依然可以映射回原图。</li>
+<li>计算Anchors： 在feature map上的每个特征点预测多个region proposals。具体做法是：把每个特征点映射回映射回原图的感受野的中心点当成一个基准点，然后围绕这个基准点选取k个不同scale、asect ratio的anchor。论文中3个scale（三种面积（<code>{128^2, 256^2, 512^2}</code>），3个aspect ratio(<code>{1:1,1:2,2:1}</code> )<ul>
+<li>有关正负样本的划分：考察训练集中的每张图像（含有人工标定的ground true box） 的所有anchor（N<em>M</em>k）<ul>
+<li>对每个标定的ground true box区域，与其重叠比例最大的anchor记为<strong>正样本</strong> (保证每个ground true 至少对应一个正样本anchor）</li>
+<li>对剩余的anchor，如果其与某个标定区域重叠比例大于0.7，记为正样本（每个ground true box可能会对应多个正样本anchor。但每个正样本anchor 只可能对应一个grand true box）；如果其与任意一个标定的重叠比例都小于0.3，记为负样本。</li>
+<li>对上述两种剩余的anchor，丢弃不用</li>
+<li>跨越图像边界的anchor，丢弃不用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>定义损失函数：对于每一个anchor，在后面接上一个二分类softmax（用2个score输出用以表示其是一个物体的概率和不是一个物体的概率），和一个bounding-box的regressor输出代表这个anchor的四个坐标位置。总体的Loss函数为<img src="/images/RPNloss.jpg" alt="Alt text">其中i表示第i个anchor，当anchor是正样本时，pi*=1，是负样本时为0. ti*表示一个与正样本anchor相关的ground true box坐标（每个正样本anchor只可能对应一个ground true box：一个正样本anchor 与某个grand true box对应，那么该anchor与ground true box 的IoU要么是所有anchor中最大，要么大于0.7）。ti表示predict box相对于anchor box的偏移，ti*表示ground true box相对于anchor box的便宜，学习目标是让ti接近ti*</p>
+</li>
+<li><p>训练RPN：文中提到如果每幅图的所有anchor都去参与优化loss function，那么最终会因为负样本过多导致最终得到的模型对正样本预测准确率很低。因此 在每幅图像中随机采样256个anchors去参与计算一次mini-batch的损失。正负比例1:1(如果正样本少于128则补充采样负样本）</p>
+</li>
+</ol>
+<h2 id="Sharing-Features-for-RPN-and-Fast-R-CNN"><a href="#Sharing-Features-for-RPN-and-Fast-R-CNN" class="headerlink" title="Sharing Features for RPN and Fast R-CNN"></a>Sharing Features for RPN and Fast R-CNN</h2><p>前面已经讨论如何训练提取proposal的RPN，分类采用Fast R-CNN。接下来讨论如何把这两者放在同一个网络结构中训练出一个共享卷积的Multi-task网络模型。</p>
+<p>如果是分别训练两种不同任务的网络模型，即使它们的结构、参数完全一致，但各自的卷积层内的卷积核也会向着不同的方向改变，导致无法共享网络权重，论文作者提出了三种可能的方式：</p>
+<ol>
+<li><p>Alternating training：此方法其实就是一个不断迭代的训练过程，既然分别训练RPN和Fast-RCNN可能让网络朝不同的方向收敛，</p>
+<ul>
+<li>a)那么我们可以先独立训练RPN，然后用这个RPN的网络权重对Fast-RCNN网络进行初始化并且用之前RPN输出proposal作为此时Fast-RCNN的输入训练Fast R-CNN。</li>
+<li>b) 用Fast R-CNN的网络参数去初始化RPN。之后不断迭代这个过程，即循环训练RPN、Fast-RCNN。<br><img src="/images/AlternatingTraining.jpg" alt="Alt text"></li>
+</ul>
+</li>
+<li><p>Approximate joint training：这里与前一种方法不同，不再是串行训练RPN和Fast-RCNN，而是尝试把二者融入到一个网络内，具体融合的网络结构如下图所示，可以看到，proposals是由中间的RPN层输出的，而不是从网络外部得到。需要注意的一点，名字中的”approximate”是因为反向传播阶段RPN产生的cls score能够获得梯度用以更新参数，但是proposal的坐标预测则直接把梯度舍弃了，这个设置可以使backward时该网络层能得到一个解析解（closed results），并且相对于Alternating training减少了25-50%的训练时间。<br><img src="/images/ApproximateJointTraining.jpg" alt="Alt text"></p>
+</li>
+<li><p>Non-approximate training：上面的Approximate joint training把proposal的坐标预测梯度直接舍弃，所以被称作approximate，那么理论上如果不舍弃是不是能更好的提升RPN部分网络的性能呢？作者把这种训练方式称为“ Non-approximate joint training”，但是此方法在paper中只是一笔带过，表示“This is a nontrivial problem and  a solution can be given by an “RoI warping” layer as developed in [15], which is beyond the scope of this paper”</p>
+</li>
+</ol>
+<p>作者源代码中使用了另一种叫做4-Step Alternating Training的方法，思路和迭代的Alternating training有点类似，但是细节有点差别：</p>
+<ol>
+<li>第一步：用ImageNet模型初始化，独立训练一个RPN网络；</li>
+<li>第二步：仍然用ImageNet模型初始化，但是使用上一步RPN网络产生的proposal作为输入，训练一个Fast R-CNN网络，至此，两个网络每一层的参数完全不共享；</li>
+<li>第三步：使用第二步的Fast R-CNN网络参数初始化一个新的RPN网络，但是把RPN、Fast R-CNN共享的那些卷积层的learning rate设置为0，也就是不更新，仅仅更新RPN特有的那些网络层，重新训练，此时，两个网络已经共享了所有公共的卷积层；</li>
+<li>第四步：仍然固定共享的那些网络层，把Fast-RCNN特有的网络层也加入进来，形成一个unified network，继续训练，fine tune Fast R-CNN特有的网络层，此时，该网络已经实现我们设想的目标，即网络内部预测proposal并实现检测的功能。</li>
+</ol>
+<p><img src="/images/4-stepAT.jpg" alt="Alt text"></p>
+<hr>
+<p>Reference:<br> <a href="https://zhuanlan.zhihu.com/p/24916624?refer=xiaoleimlnote" target="_blank" rel="external">Faster R-CNN</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Computer-Vision/" rel="tag"># Computer Vision</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/16/Paper-Reading-Fast-R-CNN/" rel="next" title="Paper Reading -- Fast R-CNN">
+                <i class="fa fa-chevron-left"></i> Paper Reading -- Fast R-CNN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vanessa Cao" />
+            
+              <p class="site-author-name" itemprop="name">Vanessa Cao</p>
+              <p class="site-description motion-element" itemprop="description">Stay Simple, Stay Naive.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-Idea"><span class="nav-number">1.</span> <span class="nav-text">Main Idea</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Region-Proposal-Networks"><span class="nav-number">2.</span> <span class="nav-text">Region Proposal Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分析"><span class="nav-number">2.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过程"><span class="nav-number">2.2.</span> <span class="nav-text">过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sharing-Features-for-RPN-and-Fast-R-CNN"><span class="nav-number">3.</span> <span class="nav-text">Sharing Features for RPN and Fast R-CNN</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vanessa Cao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://Neverland.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/05/16/Paper-Reading-Faster-R-CNN/';
+          this.page.identifier = '2018/05/16/Paper-Reading-Faster-R-CNN/';
+          this.page.title = 'Paper Reading -- Faster R-CNN';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Neverland.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
