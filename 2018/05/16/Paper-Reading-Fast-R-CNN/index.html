@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="算法学习笔记," />
+  <meta name="keywords" content="Computer Vision," />
 
 
 
@@ -79,21 +79,20 @@
 
 
 
-<meta name="description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从sj开始，到fj结束，有价值（权重）vj. 如果两个任务没有ov">
-<meta name="keywords" content="算法学习笔记">
+<meta name="description" content="IntroductionFast R-CNN??R-CNN ????????detection???????????????contribution??  ?R-CNN?SPPnet?mAP?? ???single-stage????multi-task loss ????update?????? ?????????feature caching  Architecture and Trainin">
+<meta name="keywords" content="Computer Vision">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dynamic Programming 1 -- Weighted Interval Scheduling">
-<meta property="og:url" content="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/index.html">
+<meta property="og:title" content="Paper Reading -- Fast R-CNN">
+<meta property="og:url" content="http://yoursite.com/2018/05/16/Paper-Reading-Fast-R-CNN/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从sj开始，到fj结束，有价值（权重）vj. 如果两个任务没有ov">
+<meta property="og:description" content="IntroductionFast R-CNN??R-CNN ????????detection???????????????contribution??  ?R-CNN?SPPnet?mAP?? ???single-stage????multi-task loss ????update?????? ?????????feature caching  Architecture and Trainin">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming1_1.png">
-<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming1_2.png">
-<meta property="og:updated_time" content="2017-11-03T07:43:00.000Z">
+<meta property="og:image" content="http://yoursite.com/images/FastRCNN.png">
+<meta property="og:updated_time" content="2018-05-16T02:47:20.187Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dynamic Programming 1 -- Weighted Interval Scheduling">
-<meta name="twitter:description" content="Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。 问题描述 有n个任务，任务j从sj开始，到fj结束，有价值（权重）vj. 如果两个任务没有ov">
-<meta name="twitter:image" content="http://yoursite.com/images/dynamicprogramming1_1.png">
+<meta name="twitter:title" content="Paper Reading -- Fast R-CNN">
+<meta name="twitter:description" content="IntroductionFast R-CNN??R-CNN ????????detection???????????????contribution??  ?R-CNN?SPPnet?mAP?? ???single-stage????multi-task loss ????update?????? ?????????feature caching  Architecture and Trainin">
+<meta name="twitter:image" content="http://yoursite.com/images/FastRCNN.png">
 
 
 
@@ -123,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/16/Paper-Reading-Fast-R-CNN/"/>
 
 
 
 
 
-  <title>Dynamic Programming 1 -- Weighted Interval Scheduling | Neverland</title>
+  <title>Paper Reading -- Fast R-CNN | Neverland</title>
   
 
 
@@ -248,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/16/Paper-Reading-Fast-R-CNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -265,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Dynamic Programming 1 -- Weighted Interval Scheduling</h1>
+          <h1 class="post-title" itemprop="name headline">Paper Reading -- Fast R-CNN</h1>
         
 
         <div class="post-meta">
@@ -277,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-02T23:02:31+08:00">
-                2017-11-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T10:45:28+08:00">
+                2018-05-16
               </time>
             
 
@@ -296,9 +295,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/#comments" itemprop="discussionUrl">
+                <a href="/2018/05/16/Paper-Reading-Fast-R-CNN/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/05/16/Paper-Reading-Fast-R-CNN/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -326,40 +325,47 @@
       
 
       
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
-<p>Dynamic Programming 主要借鉴了Cache的思想，相当于将中间结果记录在一个表中，方便之后reuse，解决的主要是subproblems有overlapping的问题。首先使用Dynamic Programming解决Weighted Interval Scheduling的问题。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ol>
-<li>有n个任务，任务j从sj开始，到fj结束，有价值（权重）vj.</li>
-<li>如果两个任务没有overlap, 那么称两个任务compatible.</li>
-<li>目标：找到总权值最大的mutually compatible jobs subset.</li>
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Fast R-CNN??R-CNN ????????detection???????????????contribution??</p>
+<ol>
+<li>?R-CNN?SPPnet?mAP??</li>
+<li>???single-stage????multi-task loss</li>
+<li>????update??????</li>
+<li>?????????feature caching</li>
 </ol>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>当权值都为1时，可以用Greedy Algorithm解决，以结束时间作为Greedy的Patten。但是当权值不全为1时，Greedy Algorithm失效。<br><img src="/images/dynamicprogramming1_1.png" alt="Alt text"></p>
-<p>为了方便问题的表达和解决，有以下Notation和Defination：</p>
-<p><strong>Notation</strong> 将工作按照结束时间排序标号为：f1 &lt;= f2 &lt;= … fn.<br><strong>Def</strong> p(j) 是最大的与j compatible的任务i. 如p(8)=5,p(7)=3,p(2)=0.<br><img src="/images/dynamicprogramming1_2.png" alt="Alt text"></p>
-<p>当然，对于DP，肯定要定义OPT function：</p>
-<p><strong>Notation</strong> OPT(j) = 从1到j的任务序列的最优解。</p>
-<p>对每个任务只有<em>选择</em>和<em>不选择</em>两个选项，所以这其实是一个binary choice的问题。对任务j分为以下两种情况：</p>
-<p><strong>Case 1</strong> OPT选择任务j。</p>
+<h2 id="Architecture-and-Training"><a href="#Architecture-and-Training" class="headerlink" title="Architecture and Training"></a>Architecture and Training</h2><p>??????????object proposals?set<br>???</p>
 <ul>
-<li>获得价值vj；</li>
-<li>加上从1到p(j)的OPT值。</li>
+<li>?????max pooling???conv feature map?</li>
+<li>???object proposal??region of interest(RoI)????????????feature vector?</li>
+<li>??feature vector????????????</li>
 </ul>
-<p><strong>Case2</strong> OPT没有选择任务j。</p>
+<p>???</p>
 <ul>
-<li>这种情况下，OPT(j) = OPT(j-1).</li>
+<li>??K?object classes + 1???class?softmax probability</li>
+<li>?K?object classes?4?real-valued numbers</li>
 </ul>
-<p>所以，OPT function为：</p>
-<p>j=0时, OPT(j)=0<br>否则，  max(vi + OPT(p(j)),OPT(j-1))</p>
-<p>在定义了OPT function后，自然可以根据这个function进行递归实现，但是递归过程中，会有很多重复出现的子问题被运行了多次，导致最终的时间复杂度是指数级别。为了解决这个问题，我们如果把子问题都先计算出来，在需要的时候直接取结果就可以了，可以减少许多重复计算。所以我们使用了Memoization，用一个数组来记录从1到i的OPT值，另外用一个数组记录从1到i的p。</p>
+<p><img src="/images/FastRCNN.png" alt="Alt text"></p>
+<h3 id="RoI-pooling-layer"><a href="#RoI-pooling-layer" class="headerlink" title="RoI pooling layer"></a>RoI pooling layer</h3><p>RoI pooling layer???????????????????features?????????(H *<br> W)???feature map. ??RoI???4????</p>
 <blockquote>
-<p>Input: n, s[1…n], f[1…n],v[1…n]<br>Sort jobs by finish time so that f[1] &lt;= f[2] &lt;= … &lt;= f[n].<br>Compute p[1], p[2], …, p[n].</p>
-<p>for j=1 to n<br>    M[j] = empty.<br>M[0] = 0.</p>
-<p>M-Compute-Opt(j):<br>if M[j] is empty<br>    M[j] = max{v[j] + M-Compute-Opt(p[j]), M-Compute-Opt(j-1)}.<br>return M[j]</p>
+<p>RoI: (r,c,h,w)<br>top-left corner: (r,c)<br>height and width: (h,w)</p>
 </blockquote>
-<p>另外，根据上述思想，也可以设计一个bottom-up算法，i从0开始，每次增加1，计算M[i]，得到M数组后，即可直接得到M[j].</p>
-<p>上述算法可以直接得到最大权值，但是若想知道solution的序列该怎么办呢？<br>其实也很简单，只需要从序号j开始判断v[j] + M[p[j]]是否大于M[j-1]，若大于，说明j被选择，否则j没有被选择，序号-1继续判断，直至为序号0。</p>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>算法的时间复杂度主要由排序决定，排序算法需要时间为O(nlogn)，计算p(j)时通过按照起始时间排序时间复杂度也是O(nlogn). 在计算M[j]时，最多需要2n次recursive call，所以计算OPT的时间复杂度是O(n). 所以总的算法时间复杂度为O(nlogn)，若任务已经按照起始时间和结束时间排序，则时间复杂度为O(n).</p>
+<p>RoI max pooling????????(h,w)?RoI window??????(h/H, w/W)?subwindow????????(H, W)????????????channel???????</p>
+<h3 id="Initializing-from-pretrained-networks"><a href="#Initializing-from-pretrained-networks" class="headerlink" title="Initializing from pretrained networks"></a>Initializing from pretrained networks</h3><p>??ImageNet?pre-trained?networks???????</p>
+<ol>
+<li>?????max pooling??RoI pooling</li>
+<li>???????????softmax?????????????????K+1????softmax???category-specific bounding-box regressors?</li>
+</ol>
+<h3 id="Fine-tuning-for-detection"><a href="#Fine-tuning-for-detection" class="headerlink" title="Fine-tuning for detection"></a>Fine-tuning for detection</h3><p>??hierarchical sampling SGD???sampling N images????????sampling R/N RoIs. ?????????RoIs?????????share computation?memory. </p>
+<p>???Fast R-CNN??streamlined training process???????softmax????bounding-box regressors??????????softmax????SVMs?regressors?</p>
+<h4 id="Multi-task-loss"><a href="#Multi-task-loss" class="headerlink" title="Multi-task loss"></a>Multi-task loss</h4><p>????softmax log loss + smooth L1 loss????multi-task?loss</p>
+<h4 id="Mini-batch-sampling"><a href="#Mini-batch-sampling" class="headerlink" title="Mini-batch sampling"></a>Mini-batch sampling</h4><p>?fine-tuning???????SGD?mini-batch??N=2????????R=128??????????64?RoI?????????IoU??0.5?box??????????0.5??????</p>
+<h4 id="Back-propagation-through-RoI-pooling-layers"><a href="#Back-propagation-through-RoI-pooling-layers" class="headerlink" title="Back-propagation through RoI pooling layers"></a>Back-propagation through RoI pooling layers</h4><h4 id="SGD-hyper-parameters"><a href="#SGD-hyper-parameters" class="headerlink" title="SGD hyper-parameters"></a>SGD hyper-parameters</h4><p>softmax????bounding-box regression??????????0.01?0.001??????biases????0????learning rate?weight?1??biases?2?global learning rate?0.001. </p>
+<h2 id="Fast-R-CNN-detection"><a href="#Fast-R-CNN-detection" class="headerlink" title="Fast R-CNN detection"></a>Fast R-CNN detection</h2><p>??????????R?object proposals???????RoI <strong>r</strong>???????class posterior probability distribution<br><strong>p</strong>????<strong>r</strong>???bounding-box offests. ???<strong>r</strong>??object class <strong>k</strong>?detection confidence?????????<em>Pr(class = k|r) = pk</em>. ???????R-CNN????????????????</p>
+<p>????SVD?????</p>
+<h2 id="Main-results"><a href="#Main-results" class="headerlink" title="Main results"></a>Main results</h2><ol>
+<li>?VOC07?2010?2012??state-of-art mAP</li>
+<li>?R-CNN?SPPnet???????????</li>
+<li>?VGG16???fine-tuning conv layers??mAP</li>
+</ol>
 
       
     </div>
@@ -377,7 +383,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法学习笔记/" rel="tag"># 算法学习笔记</a>
+            <a href="/tags/Computer-Vision/" rel="tag"># Computer Vision</a>
           
         </div>
       
@@ -390,8 +396,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/02/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/04/23/rcnn/" rel="next" title="Paper Reading -- R-CNN">
+                <i class="fa fa-chevron-left"></i> Paper Reading -- R-CNN
               </a>
             
           </div>
@@ -399,10 +405,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/03/Dynamic-Programming-2-Segmented-Least-Square/" rel="prev" title="Dynamic Programming 2 -- Segmented Least Square">
-                Dynamic Programming 2 -- Segmented Least Square <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -541,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度分析"><span class="nav-number">3.</span> <span class="nav-text">复杂度分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture-and-Training"><span class="nav-number">2.</span> <span class="nav-text">Architecture and Training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RoI-pooling-layer"><span class="nav-number">2.1.</span> <span class="nav-text">RoI pooling layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Initializing-from-pretrained-networks"><span class="nav-number">2.2.</span> <span class="nav-text">Initializing from pretrained networks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fine-tuning-for-detection"><span class="nav-number">2.3.</span> <span class="nav-text">Fine-tuning for detection</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-task-loss"><span class="nav-number">2.3.1.</span> <span class="nav-text">Multi-task loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mini-batch-sampling"><span class="nav-number">2.3.2.</span> <span class="nav-text">Mini-batch sampling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Back-propagation-through-RoI-pooling-layers"><span class="nav-number">2.3.3.</span> <span class="nav-text">Back-propagation through RoI pooling layers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SGD-hyper-parameters"><span class="nav-number">2.3.4.</span> <span class="nav-text">SGD hyper-parameters</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fast-R-CNN-detection"><span class="nav-number">3.</span> <span class="nav-text">Fast R-CNN detection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-results"><span class="nav-number">4.</span> <span class="nav-text">Main results</span></a></li></ol></div>
             
 
           </div>
@@ -704,9 +706,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/';
-          this.page.identifier = '2017/11/02/Dynamic-Programming-1-Weighted-Interval-Scheduling/';
-          this.page.title = 'Dynamic Programming 1 -- Weighted Interval Scheduling';
+          this.page.url = 'http://yoursite.com/2018/05/16/Paper-Reading-Fast-R-CNN/';
+          this.page.identifier = '2018/05/16/Paper-Reading-Fast-R-CNN/';
+          this.page.title = 'Paper Reading -- Fast R-CNN';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://Neverland.disqus.com/embed.js';
