@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/images/ssdconfloss.png">
 <meta property="og:image" content="http://yoursite.com/images/ssdscale.jpg">
 <meta property="og:image" content="http://yoursite.com/images/ssdeg.jpg">
-<meta property="og:updated_time" content="2018-05-16T06:56:28.100Z">
+<meta property="og:updated_time" content="2018-05-16T06:58:31.117Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Paper Reading -- SSD">
 <meta name="twitter:description" content="前面已经介绍了Faster R-CNN，是一个完全端到端的卷积网络，但是速度还是不够快，所以这篇论文又提出了SSD(Single Shot MultiBox Detector)的方法，提高了速度和准确度。 Main Idea Our improvements include using a small convolutional filter to predict object categorie">
@@ -335,20 +335,20 @@
 <p>Our improvements include using a <strong>small convolutional filter</strong> to predict object categories and offsets in bounding box locations, using <strong>separate predictors (filters)</strong> for different aspect ratio detections, and applying these filters to multiple feature maps from the later stages of a network in order to perform detection at multiple scales</p>
 </blockquote>
 <p>在R-CNN 系列模型⾥。区域提议和分类是分作两块来进⾏的。SSD 则将其统⼀成⼀个步骤来使得模型更加简单并且速度更快，这也是为什么它被称之为单发的原因。</p>
-<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p>SSD方法基于前馈卷积网络，生成固定大小的边界框集和框中存在物体类别的置信度，接着使用非最大化抑制产生最终的检测结果。位于网络前面的一些层是基于做高质量图像分类的标准架构（截取该框架分类层之前的层），称为基础网络。然后向网络添加辅助结构，产生了具有下列关键特征的检测：</p>
-<h4 id="多尺度特征图检测"><a href="#多尺度特征图检测" class="headerlink" title="多尺度特征图检测"></a>多尺度特征图检测</h4><p>我们将卷积特征层添加到截断了的基础网络的尾端。这些层的尺寸逐渐减小，这样可以预测多个尺度的检测结果。用于检测的卷积模型对于每个特征层是不同的。</p>
+<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>SSD方法基于前馈卷积网络，生成固定大小的边界框集和框中存在物体类别的置信度，接着使用非最大化抑制产生最终的检测结果。位于网络前面的一些层是基于做高质量图像分类的标准架构（截取该框架分类层之前的层），称为基础网络。然后向网络添加辅助结构，产生了具有下列关键特征的检测：</p>
+<h3 id="多尺度特征图检测"><a href="#多尺度特征图检测" class="headerlink" title="多尺度特征图检测"></a>多尺度特征图检测</h3><p>我们将卷积特征层添加到截断了的基础网络的尾端。这些层的尺寸逐渐减小，这样可以预测多个尺度的检测结果。用于检测的卷积模型对于每个特征层是不同的。</p>
 <p><img src="/images/ssd.jpg" alt="Alt text"></p>
-<h4 id="用于检测的卷积预测器"><a href="#用于检测的卷积预测器" class="headerlink" title="用于检测的卷积预测器"></a>用于检测的卷积预测器</h4><p>每个添加的特征层（或者基础网络的特征层）使用一组卷积滤波器可以产生固定的预测集。p通道大小为m*n的特征层，对于一个可能的检测，它的预测参数的基本元素是一个3*3*p的小内核，这个小内核或决定每个类别的置信度或生成相对于默认框坐标的形状位移。内核作用于m*n的特征图的每个位置，各自产生一个输出值。边界框偏移输出值是相对于默认框的，而默认框位置则是相对于每个特征图的。</p>
-<h4 id="默认框与宽高比"><a href="#默认框与宽高比" class="headerlink" title="默认框与宽高比"></a>默认框与宽高比</h4><p>我们为网络顶部的多个特征图的每个特征单元都关联固定的一组默认框。默认框以卷积形式作用于特征图，使得每个框相对于其对应的单元格的位置是固定的。我们为每个特征图单元预测相对于该单元格的默认框形状的偏移，以及为每个类别预测反映框中该物体类别存在的分数。具体来说，对于指定位置的k个框中的每个框，我们都计算c个类的分数和相对于原始默认框的4个偏移值。这样致使总共有（c+4）k个滤波器作用于特征图中的每个位置，若特征图的大小为m*n，则会产生（c+4）kmn个输出。我们的默认框类似于Faster R-CNN中使用的锚框（anchor boxes），但不同的是，我们将其应用于若干不同分辨率的特征图。在多个特征图上使用不同形状的默认框，致使有效地离散可能的输出框的形状的空间。</p>
-<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p>训练SSD和训练使用区域候选框和池化的典型分类器的关键区别在于，真实标签需要被分配到固定的一组检测器输出中的某个特定的输出。</p>
-<h4 id="匹配策略"><a href="#匹配策略" class="headerlink" title="匹配策略"></a>匹配策略</h4><p>在训练时，我们需要决定哪些默认框和哪个真实标签框关联，然后训练在这个基础上进行。对每个真实的标签框，选择在位置、aspect ratio和scale上不同的多个默认框。把每个真是标签框与默认框中jaccard overlap（就是IoU）最大的匹配，之后又将默认框与所有的真是标签框（jaccard overlap大于某个阈值）配对。这样做<strong>简化了学习问题</strong>，它使得网络能够为多个重叠的默认框预测高的置信度，而不是要求它只选择具有最大重叠值的那个框。</p>
-<h4 id="训练目标函数"><a href="#训练目标函数" class="headerlink" title="训练目标函数"></a>训练目标函数</h4><p>SSD的训练目标函数是localization loss(loc)和confidence loss(conf)的加权和<br><img src="/images/ssdloss.png" alt="Alt text"><br>其中N是匹配的默认框的数目。</p>
+<h3 id="用于检测的卷积预测器"><a href="#用于检测的卷积预测器" class="headerlink" title="用于检测的卷积预测器"></a>用于检测的卷积预测器</h3><p>每个添加的特征层（或者基础网络的特征层）使用一组卷积滤波器可以产生固定的预测集。p通道大小为m*n的特征层，对于一个可能的检测，它的预测参数的基本元素是一个3*3*p的小内核，这个小内核或决定每个类别的置信度或生成相对于默认框坐标的形状位移。内核作用于m*n的特征图的每个位置，各自产生一个输出值。边界框偏移输出值是相对于默认框的，而默认框位置则是相对于每个特征图的。</p>
+<h3 id="默认框与宽高比"><a href="#默认框与宽高比" class="headerlink" title="默认框与宽高比"></a>默认框与宽高比</h3><p>我们为网络顶部的多个特征图的每个特征单元都关联固定的一组默认框。默认框以卷积形式作用于特征图，使得每个框相对于其对应的单元格的位置是固定的。我们为每个特征图单元预测相对于该单元格的默认框形状的偏移，以及为每个类别预测反映框中该物体类别存在的分数。具体来说，对于指定位置的k个框中的每个框，我们都计算c个类的分数和相对于原始默认框的4个偏移值。这样致使总共有（c+4）k个滤波器作用于特征图中的每个位置，若特征图的大小为m*n，则会产生（c+4）kmn个输出。我们的默认框类似于Faster R-CNN中使用的锚框（anchor boxes），但不同的是，我们将其应用于若干不同分辨率的特征图。在多个特征图上使用不同形状的默认框，致使有效地离散可能的输出框的形状的空间。</p>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>训练SSD和训练使用区域候选框和池化的典型分类器的关键区别在于，真实标签需要被分配到固定的一组检测器输出中的某个特定的输出。</p>
+<h3 id="匹配策略"><a href="#匹配策略" class="headerlink" title="匹配策略"></a>匹配策略</h3><p>在训练时，我们需要决定哪些默认框和哪个真实标签框关联，然后训练在这个基础上进行。对每个真实的标签框，选择在位置、aspect ratio和scale上不同的多个默认框。把每个真是标签框与默认框中jaccard overlap（就是IoU）最大的匹配，之后又将默认框与所有的真是标签框（jaccard overlap大于某个阈值）配对。这样做<strong>简化了学习问题</strong>，它使得网络能够为多个重叠的默认框预测高的置信度，而不是要求它只选择具有最大重叠值的那个框。</p>
+<h3 id="训练目标函数"><a href="#训练目标函数" class="headerlink" title="训练目标函数"></a>训练目标函数</h3><p>SSD的训练目标函数是localization loss(loc)和confidence loss(conf)的加权和<br><img src="/images/ssdloss.png" alt="Alt text"><br>其中N是匹配的默认框的数目。</p>
 <ul>
 <li>localization loss是预测框l和真实框g的smooth l1 loss。我们预测default box的中心(cx,cy)，以及宽度(w)和长度(h)。<img src="/images/ssdlocloss.png" alt="Alt text"></li>
 <li>confidence loss是多个类confidence(c)之间的softmax loss。<img src="/images/ssdconfloss.png" alt="Alt text"></li>
 <li>权值alpha通过交叉验证设定为1.</li>
 </ul>
-<h4 id="选择默认框的比例和宽高比"><a href="#选择默认框的比例和宽高比" class="headerlink" title="选择默认框的比例和宽高比"></a>选择默认框的比例和宽高比</h4><ul>
+<h3 id="选择默认框的比例和宽高比"><a href="#选择默认框的比例和宽高比" class="headerlink" title="选择默认框的比例和宽高比"></a>选择默认框的比例和宽高比</h3><ul>
 <li>不同于将照片处理为不同尺寸再结合结果的方法，本论文通过利用单个神经网络中不同层的feature maps，可以达到同样的效果，同时可以在所有尺寸中共享权值。</li>
 <li>利用较低层的feature maps可以提高semantic segmentation质量，因为较低层往往可以捕捉到更精细的细节。</li>
 <li>同时使用较低和较高层的feature maps来进行检测。</li>
@@ -356,7 +356,7 @@
 <li>假设我们想要使用m个feature maps用来检测，则每个feature map的default boxes的scale可以这样计算：<img src="/images/ssdscale.jpg" alt="Alt text"></li>
 <li>通过结合在许多feature maps上所有位置上的所有的有着不同scale和aspect ratio的default boxes，我们可以产生对不同物体大小和形状的各种预测。如下图中，狗在8x8的feature map中没有匹配的default box，因此在训练中会被作为负样本，但是在4x4的feature map中有着匹配的feature map。<img src="/images/ssdeg.jpg" alt="Alt text"></li>
 </ul>
-<h4 id="Hard-negative-mining"><a href="#Hard-negative-mining" class="headerlink" title="Hard negative mining"></a>Hard negative mining</h4><ul>
+<h3 id="Hard-negative-mining"><a href="#Hard-negative-mining" class="headerlink" title="Hard negative mining"></a>Hard negative mining</h3><ul>
 <li>通过匹配阶段后，default boxes中会产生大量的negatives，尤其是当可能的default boxes数量非常大时。<strong>这导致positive和negative时间严重的不平衡</strong>。</li>
 <li>我们将negative examples的default boxes通过其最高的confidence loss进行排序，然后选择较高的几个，使negative examples和positive examples之间的比例保持在3:1之间。这样会更快的优化和更稳定的训练。</li>
 </ul>
@@ -537,7 +537,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-Idea"><span class="nav-number">1.</span> <span class="nav-text">Main Idea</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model"><span class="nav-number">1.1.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多尺度特征图检测"><span class="nav-number">1.1.1.</span> <span class="nav-text">多尺度特征图检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用于检测的卷积预测器"><span class="nav-number">1.1.2.</span> <span class="nav-text">用于检测的卷积预测器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认框与宽高比"><span class="nav-number">1.1.3.</span> <span class="nav-text">默认框与宽高比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练"><span class="nav-number">1.2.</span> <span class="nav-text">训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#匹配策略"><span class="nav-number">1.2.1.</span> <span class="nav-text">匹配策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练目标函数"><span class="nav-number">1.2.2.</span> <span class="nav-text">训练目标函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择默认框的比例和宽高比"><span class="nav-number">1.2.3.</span> <span class="nav-text">选择默认框的比例和宽高比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hard-negative-mining"><span class="nav-number">1.2.4.</span> <span class="nav-text">Hard negative mining</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-Idea"><span class="nav-number">1.</span> <span class="nav-text">Main Idea</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model"><span class="nav-number">2.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多尺度特征图检测"><span class="nav-number">2.1.</span> <span class="nav-text">多尺度特征图检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用于检测的卷积预测器"><span class="nav-number">2.2.</span> <span class="nav-text">用于检测的卷积预测器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认框与宽高比"><span class="nav-number">2.3.</span> <span class="nav-text">默认框与宽高比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Training"><span class="nav-number">3.</span> <span class="nav-text">Training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配策略"><span class="nav-number">3.1.</span> <span class="nav-text">匹配策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练目标函数"><span class="nav-number">3.2.</span> <span class="nav-text">训练目标函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择默认框的比例和宽高比"><span class="nav-number">3.3.</span> <span class="nav-text">选择默认框的比例和宽高比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hard-negative-mining"><span class="nav-number">3.4.</span> <span class="nav-text">Hard negative mining</span></a></li></ol></li></ol></div>
             
 
           </div>
