@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="IntroductionFast R-CNN??R-CNN ????????detection???????????????contribution??  ?R-CNN?SPPnet?mAP?? ???single-stage????multi-task loss ????update?????? ?????????feature caching  Architecture and Trainin">
+<meta name="description" content="IntroductionFast R-CNN是在R-CNN 的基础上，提升了detection速度和精准度的一种方法，主要的contribution有：  比R-CNN，SPPnet的mAP更高 训练是single-stage的，使用multi-task loss 训练可以update所有的网络层 不需要在磁盘上进行feature caching  Architecture and Trainin">
 <meta name="keywords" content="Computer Vision">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Paper Reading -- Fast R-CNN">
 <meta property="og:url" content="http://yoursite.com/2018/05/16/Paper-Reading-Fast-R-CNN/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="IntroductionFast R-CNN??R-CNN ????????detection???????????????contribution??  ?R-CNN?SPPnet?mAP?? ???single-stage????multi-task loss ????update?????? ?????????feature caching  Architecture and Trainin">
+<meta property="og:description" content="IntroductionFast R-CNN是在R-CNN 的基础上，提升了detection速度和精准度的一种方法，主要的contribution有：  比R-CNN，SPPnet的mAP更高 训练是single-stage的，使用multi-task loss 训练可以update所有的网络层 不需要在磁盘上进行feature caching  Architecture and Trainin">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/FastRCNN.png">
-<meta property="og:updated_time" content="2018-05-16T02:49:53.981Z">
+<meta property="og:updated_time" content="2018-05-16T02:53:21.571Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Paper Reading -- Fast R-CNN">
-<meta name="twitter:description" content="IntroductionFast R-CNN??R-CNN ????????detection???????????????contribution??  ?R-CNN?SPPnet?mAP?? ???single-stage????multi-task loss ????update?????? ?????????feature caching  Architecture and Trainin">
+<meta name="twitter:description" content="IntroductionFast R-CNN是在R-CNN 的基础上，提升了detection速度和精准度的一种方法，主要的contribution有：  比R-CNN，SPPnet的mAP更高 训练是single-stage的，使用multi-task loss 训练可以update所有的网络层 不需要在磁盘上进行feature caching  Architecture and Trainin">
 <meta name="twitter:image" content="http://yoursite.com/images/FastRCNN.png">
 
 
@@ -325,46 +325,46 @@
       
 
       
-        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Fast R-CNN??R-CNN ????????detection???????????????contribution??</p>
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Fast R-CNN是在R-CNN 的基础上，提升了detection速度和精准度的一种方法，主要的contribution有：</p>
 <ol>
-<li>?R-CNN?SPPnet?mAP??</li>
-<li>???single-stage????multi-task loss</li>
-<li>????update??????</li>
-<li>?????????feature caching</li>
+<li>比R-CNN，SPPnet的mAP更高</li>
+<li>训练是single-stage的，使用multi-task loss</li>
+<li>训练可以update所有的网络层</li>
+<li>不需要在磁盘上进行feature caching</li>
 </ol>
-<h2 id="Architecture-and-Training"><a href="#Architecture-and-Training" class="headerlink" title="Architecture and Training"></a>Architecture and Training</h2><p>??????????object proposals?set<br>???</p>
+<h2 id="Architecture-and-Training"><a href="#Architecture-and-Training" class="headerlink" title="Architecture and Training"></a>Architecture and Training</h2><p>输入：整个图片和一个object proposals的set<br>网络：</p>
 <ul>
-<li>?????max pooling???conv feature map?</li>
-<li>???object proposal??region of interest(RoI)????????????feature vector?</li>
-<li>??feature vector????????????</li>
+<li>数个卷积和max pooling层得到conv feature map；</li>
+<li>对每个object proposal进行region of interest(RoI)池化，得到一个固定长度的feature vector；</li>
+<li>每个feature vector经过全连接层到两个输出层</li>
 </ul>
-<p>???</p>
+<p>输出：</p>
 <ul>
-<li>??K?object classes + 1???class?softmax probability</li>
-<li>?K?object classes?4?real-valued numbers</li>
+<li>估计K个object classes + 1个背景class的softmax probability</li>
+<li>对K个object classes的4个real-valued numbers</li>
 </ul>
 <p><img src="/images/FastRCNN.png" alt="Alt text"></p>
-<h3 id="RoI-pooling-layer"><a href="#RoI-pooling-layer" class="headerlink" title="RoI pooling layer"></a>RoI pooling layer</h3><p>RoI pooling layer???????????????????features?????????(H *<br> W)???feature map. ??RoI???4????</p>
+<h3 id="RoI-pooling-layer"><a href="#RoI-pooling-layer" class="headerlink" title="RoI pooling layer"></a>RoI pooling layer</h3><p>RoI pooling layer使用最大池化把在有效的感兴趣的区域内的features转换成一个固定尺寸(H *<br> W)的小的feature map. 一个RoI由一个4元组决定</p>
 <blockquote>
 <p>RoI: (r,c,h,w)<br>top-left corner: (r,c)<br>height and width: (h,w)</p>
 </blockquote>
-<p>RoI max pooling????????(h,w)?RoI window??????(h/H, w/W)?subwindow????????(H, W)????????????channel???????</p>
-<h3 id="Initializing-from-pretrained-networks"><a href="#Initializing-from-pretrained-networks" class="headerlink" title="Initializing from pretrained networks"></a>Initializing from pretrained networks</h3><p>??ImageNet?pre-trained?networks???????</p>
+<p>RoI max pooling的过程就是将一个(h,w)的RoI window通过大小近似(h/H, w/W)的subwindow，做最大池化变成(H, W)的过程。这个过程对每一个channel是独立进行的。</p>
+<h3 id="Initializing-from-pretrained-networks"><a href="#Initializing-from-pretrained-networks" class="headerlink" title="Initializing from pretrained networks"></a>Initializing from pretrained networks</h3><p>将在ImageNet上pre-trained的networks进行如下操作：</p>
 <ol>
-<li>?????max pooling??RoI pooling</li>
-<li>???????????softmax?????????????????K+1????softmax???category-specific bounding-box regressors?</li>
+<li>将最后一层max pooling换成RoI pooling</li>
+<li>将网络最后的全连接层和softmax层替换成两个输出层（一个全连接层和K+1个类别的softmax；一个category-specific bounding-box regressors）</li>
 </ol>
-<h3 id="Fine-tuning-for-detection"><a href="#Fine-tuning-for-detection" class="headerlink" title="Fine-tuning for detection"></a>Fine-tuning for detection</h3><p>??hierarchical sampling SGD???sampling N images????????sampling R/N RoIs. ?????????RoIs?????????share computation?memory. </p>
-<p>???Fast R-CNN??streamlined training process???????softmax????bounding-box regressors??????????softmax????SVMs?regressors?</p>
-<h4 id="Multi-task-loss"><a href="#Multi-task-loss" class="headerlink" title="Multi-task loss"></a>Multi-task loss</h4><p>????softmax log loss + smooth L1 loss????multi-task?loss</p>
-<h4 id="Mini-batch-sampling"><a href="#Mini-batch-sampling" class="headerlink" title="Mini-batch sampling"></a>Mini-batch sampling</h4><p>?fine-tuning???????SGD?mini-batch??N=2????????R=128??????????64?RoI?????????IoU??0.5?box??????????0.5??????</p>
-<h4 id="Back-propagation-through-RoI-pooling-layers"><a href="#Back-propagation-through-RoI-pooling-layers" class="headerlink" title="Back-propagation through RoI pooling layers"></a>Back-propagation through RoI pooling layers</h4><h4 id="SGD-hyper-parameters"><a href="#SGD-hyper-parameters" class="headerlink" title="SGD hyper-parameters"></a>SGD hyper-parameters</h4><p>softmax????bounding-box regression??????????0.01?0.001??????biases????0????learning rate?weight?1??biases?2?global learning rate?0.001. </p>
-<h2 id="Fast-R-CNN-detection"><a href="#Fast-R-CNN-detection" class="headerlink" title="Fast R-CNN detection"></a>Fast R-CNN detection</h2><p>??????????R?object proposals???????RoI <strong>r</strong>???????class posterior probability distribution<br><strong>p</strong>????<strong>r</strong>???bounding-box offests. ???<strong>r</strong>??object class <strong>k</strong>?detection confidence?????????<em>Pr(class = k|r) = pk</em>. ???????R-CNN????????????????</p>
-<p>????SVD?????</p>
+<h3 id="Fine-tuning-for-detection"><a href="#Fine-tuning-for-detection" class="headerlink" title="Fine-tuning for detection"></a>Fine-tuning for detection</h3><p>使用hierarchical sampling SGD，首先sampling N images，然后在每张图中sampling R/N RoIs. 并且在同一张图中的RoIs在前向和后向计算中share computation和memory. </p>
+<p>另外，Fast R-CNN使用streamlined training process，联合优化一个softmax分类器和bounding-box regressors，而不是分别训练一个softmax分类器、SVMs和regressors。</p>
+<h4 id="Multi-task-loss"><a href="#Multi-task-loss" class="headerlink" title="Multi-task loss"></a>Multi-task loss</h4><p>使用一个softmax log loss + smooth L1 loss作为这个multi-task的loss</p>
+<h4 id="Mini-batch-sampling"><a href="#Mini-batch-sampling" class="headerlink" title="Mini-batch sampling"></a>Mini-batch sampling</h4><p>在fine-tuning的过程中，每个SGD的mini-batch是在N=2个图片中随机选择R=128大小，每个图片中采样64个RoI。选择标签为前景的IoU至少0.5的box。在训练过程中图片以0.5的概率翻转。</p>
+<h4 id="Back-propagation-through-RoI-pooling-layers"><a href="#Back-propagation-through-RoI-pooling-layers" class="headerlink" title="Back-propagation through RoI pooling layers"></a>Back-propagation through RoI pooling layers</h4><h4 id="SGD-hyper-parameters"><a href="#SGD-hyper-parameters" class="headerlink" title="SGD hyper-parameters"></a>SGD hyper-parameters</h4><p>softmax分类器和bounding-box regression初始化为标准差分别为0.01和0.001的高斯分布，biases初始化为0，每层的learning rate对weight为1，对biases为2，global learning rate为0.001. </p>
+<h2 id="Fast-R-CNN-detection"><a href="#Fast-R-CNN-detection" class="headerlink" title="Fast R-CNN detection"></a>Fast R-CNN detection</h2><p>输入为一个图片和一个R个object proposals的列表。对每个RoI <strong>r</strong>，前向输出一个class posterior probability distribution<br><strong>p</strong>和一组与<strong>r</strong>预测的bounding-box offests. 对每个<strong>r</strong>中的object class <strong>k</strong>的detection confidence使用一个估计的概率<em>Pr(class = k|r) = pk</em>. 然后对每个使用R-CNN得到的类别独立的使用非极大抑制。</p>
+<p>可以使用SVD加速计算。</p>
 <h2 id="Main-results"><a href="#Main-results" class="headerlink" title="Main results"></a>Main results</h2><ol>
-<li>?VOC07?2010?2012??state-of-art mAP</li>
-<li>?R-CNN?SPPnet???????????</li>
-<li>?VGG16???fine-tuning conv layers??mAP</li>
+<li>在VOC07，2010和2012上的state-of-art mAP</li>
+<li>比R-CNN和SPPnet更快的训练和测试速度；</li>
+<li>在VGG16基础上fine-tuning conv layers提升mAP</li>
 </ol>
 
       
