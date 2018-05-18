@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="算法学习笔记," />
+  <meta name="keywords" content="Computer Vision," />
 
 
 
@@ -79,20 +79,24 @@
 
 
 
-<meta name="description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
-<meta name="keywords" content="算法学习笔记">
+<meta name="description" content="FCN(Fully Convolutional Networks)是将CNN应用到图像语义分割并取得突出结果的开山之作。图像语义分割，即对图片上所有的像素点进行分类。 IntroductionFCN是一种end-to-end，pixels-to-pixels的图像语意分割方法。这是第一篇端到端的FCN训练用于像素级的预测的文章，也是第一次用监督pre-training的方法进行训练。FCN可以进行">
+<meta name="keywords" content="Computer Vision">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dynamic Programming 3 -- 背包问题">
-<meta property="og:url" content="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/index.html">
+<meta property="og:title" content="Paper Reading -- FCN">
+<meta property="og:url" content="http://yoursite.com/2018/05/18/Paper-Reading-FCN/index.html">
 <meta property="og:site_name" content="Neverland">
-<meta property="og:description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
+<meta property="og:description" content="FCN(Fully Convolutional Networks)是将CNN应用到图像语义分割并取得突出结果的开山之作。图像语义分割，即对图片上所有的像素点进行分类。 IntroductionFCN是一种end-to-end，pixels-to-pixels的图像语意分割方法。这是第一篇端到端的FCN训练用于像素级的预测的文章，也是第一次用监督pre-training的方法进行训练。FCN可以进行">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/dynamicprogramming3_1.png">
-<meta property="og:updated_time" content="2017-11-03T12:32:32.000Z">
+<meta property="og:image" content="http://yoursite.com/images/fcn1.png">
+<meta property="og:image" content="http://yoursite.com/images/padding_strides.gif">
+<meta property="og:image" content="http://yoursite.com/images/fcn2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/fcn3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/fcn4.png">
+<meta property="og:updated_time" content="2018-05-18T02:46:21.219Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dynamic Programming 3 -- 背包问题">
-<meta name="twitter:description" content="背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。 问题描述 有n个物体和一个背包； 第i个物体的重量为wi &amp;gt; 0，价值为vi &amp;gt; 0； 背包总承重W； GOAL：使得装进背包的物品价值最大。  问题分析首先考虑的是能不能用Greedy Algorithm求解，但是无论">
-<meta name="twitter:image" content="http://yoursite.com/images/dynamicprogramming3_1.png">
+<meta name="twitter:title" content="Paper Reading -- FCN">
+<meta name="twitter:description" content="FCN(Fully Convolutional Networks)是将CNN应用到图像语义分割并取得突出结果的开山之作。图像语义分割，即对图片上所有的像素点进行分类。 IntroductionFCN是一种end-to-end，pixels-to-pixels的图像语意分割方法。这是第一篇端到端的FCN训练用于像素级的预测的文章，也是第一次用监督pre-training的方法进行训练。FCN可以进行">
+<meta name="twitter:image" content="http://yoursite.com/images/fcn1.png">
 
 
 
@@ -122,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/18/Paper-Reading-FCN/"/>
 
 
 
 
 
-  <title>Dynamic Programming 3 -- 背包问题 | Neverland</title>
+  <title>Paper Reading -- FCN | Neverland</title>
   
 
 
@@ -247,7 +251,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/18/Paper-Reading-FCN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Vanessa Cao">
@@ -264,7 +268,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Dynamic Programming 3 -- 背包问题</h1>
+          <h1 class="post-title" itemprop="name headline">Paper Reading -- FCN</h1>
         
 
         <div class="post-meta">
@@ -276,8 +280,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T20:32:18+08:00">
-                2017-11-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T10:44:50+08:00">
+                2018-05-18
               </time>
             
 
@@ -295,9 +299,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/11/03/Dynamic-Programming-3-背包问题/#comments" itemprop="discussionUrl">
+                <a href="/2018/05/18/Paper-Reading-FCN/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/03/Dynamic-Programming-3-背包问题/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/05/18/Paper-Reading-FCN/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -325,41 +329,27 @@
       
 
       
-        <p>背包问题是动态规划里非常典型的问题，从大一开始学python，到之后的C++再到后来的数据结构，基本上每年都会遇到一遍，这次算法又遇到了一次，就把背包问题再复习一遍。</p>
-<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><ul>
-<li>有n个物体和一个背包；</li>
-<li>第i个物体的重量为wi &gt; 0，价值为vi &gt; 0；</li>
-<li>背包总承重W；</li>
-<li>GOAL：使得装进背包的物品价值最大。</li>
-</ul>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>首先考虑的是能不能用Greedy Algorithm求解，但是无论是以最大价值、最小重量还是价值和重量的比值为Greedy Patten，都不能满足最优。所以考虑使用动态规划。</p>
-<p>首先定义OPT函数，由于这是一个binary choice的问题，所以首先考虑的是OPT(i) = 从1到i的最大价值subset。</p>
-<ul>
-<li>OPT不选择i：OPT选择从1到i-1的最优值。</li>
-<li>OPT选择i：选择了物体i不一定会是最优解，可能还能接受其他的物品，但是我们不知道我们是不是在选择了i之前还选择了其他的物品，甚至不知道有没有i的空间。</li>
-</ul>
-<p>根据上面的分析，我们发现OPT如果只是关于i的函数，是不能解决这个问题的，所以我们增加一个参数限制，w。</p>
-<p>OPT(i,w) = 从1到i且重量小于w的最大价值的subset.</p>
-<ul>
-<li>OPT不选择i：OPT选择从1到i-1的重量小于等于w的OPT结果；</li>
-<li>OPT选择I：OPT选择从1到i-1的重量小于等于w-wi的结果。</li>
-</ul>
-<p>则OPT函数的定义为：</p>
-<ol>
-<li>当i=0时，OPT(i,w) = 0；</li>
-<li>当wi &gt; w时，OPT(i,w) = OPT(i-1, w)；</li>
-<li>否则，OPT(i,w) = max(OPT(i-1,w), vi + OPT(i-1,w-wi)).</li>
-</ol>
-<p>通过OPT可以找到最大价值，为了找到选择的物品，从二维的memory中从右下角向上向左找解，向上的储存值与当前相等时说明没有选择此物品，直至不相等选择此物品，w变为w-wi，具体过程如下图：</p>
-<p><img src="/images/dynamicprogramming3_1.png" alt="Alt text"></p>
-<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>下面是一个bottom-up的解决方案：</p>
-<blockquote>
-<p>KNAPSACK(n, W, w1, …, wn, v1, …, vn)</p>
-<p> For w = 0 to W<br>     M[0, w] = 0.</p>
-<p> For I = 1 to n<br>     For w = 1 to W<br>     If (wi &gt; w)    M[i, w] = M[i-1, w].<br>     Else             M[i, w] = max(M[i-1, w], vi + M[i-1, w-wi]).</p>
-<p> Return M[n, W].</p>
-</blockquote>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>填表时每填一格需要时间为O(1)，表格共有O(nW)格，所以时间复杂度为O(nW)，空间复杂度也为O(nW).</p>
+        <p>FCN(Fully Convolutional Networks)是将CNN应用到图像语义分割并取得突出结果的开山之作。图像语义分割，即对图片上所有的像素点进行分类。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>FCN是一种end-to-end，pixels-to-pixels的图像语意分割方法。这是第一篇端到端的FCN训练用于像素级的预测的文章，也是第一次用监督pre-training的方法进行训练。FCN可以进行任意大小的图像的预测。</p>
+<h2 id="Fully-Convolutional-Networks"><a href="#Fully-Convolutional-Networks" class="headerlink" title="Fully Convolutional Networks"></a>Fully Convolutional Networks</h2><p>FCN主要运用了以下三种技术：</p>
+<h3 id="全卷积网络"><a href="#全卷积网络" class="headerlink" title="全卷积网络"></a>全卷积网络</h3><p>FCN可以基于若干种结构(VGGNet, AlexNet, SIFT-Flow)，论文中基于效果最好的VGG16。</p>
+<p>分类所使用的网络通常会在最后连接全连接层，它会将原来二维的矩阵(图片)压缩成一维的，从而丢失了空间信息，最后训练输出一个标量，这就是我们的分类标签。</p>
+<p>而图像语义分割的输出则需要是个分割图，且不论尺寸大小，但是至少是二维的。所以，FCN网络的前五层和VGG16的结构完全一样，唯一的区别在于全连接层。FCN将全连接层也全部变成卷积层。下面的图显示的是AlexNet的结构，将后面三层全连接全部换成卷积层。</p>
+<p><img src="/images/fcn1.png" alt="Alt text"></p>
+<p>这种变化可以大大提高预测速度。</p>
+<h3 id="上采样（Unsampling）"><a href="#上采样（Unsampling）" class="headerlink" title="上采样（Unsampling）"></a>上采样（Unsampling）</h3><p>上采样对应上图中最后生成heatmap的过程。</p>
+<p>在一般的CNN结构中,如AlexNet,VGGNet均是使用池化层来缩小输出图片的size，例如VGG16,五次池化后图片被缩小了32倍;而在ResNet中，某些卷积层也参与到缩小图片size的过程。但是我们需要得到的是一个与原图像size相同的分割图，因此我们需要对最后一层进行上采样，在caffe中也被称为<strong>反卷积(Deconvolution)</strong>,可能叫做<strong>转置卷积(conv_transpose)</strong>更为恰当一点。</p>
+<p><img src="/images/padding_strides.gif" alt="Alt text"></p>
+<p>如图，绿色部分是输入，蓝色部分是输出，stride为2，padding为1. 所以其实上采样的过程就是将convolution反过来，调换了convolution的前向传播和反向传播过程。</p>
+<p>虽然转置卷积层和卷积层一样，也是可以train参数的，但是实际实验过程中，作者发现，让转置卷积层可学习，并没有带来performance的提升，所以实验中的转置卷积层的lr全部被置零了。</p>
+<h3 id="跳跃结构（Skip-Architecture）"><a href="#跳跃结构（Skip-Architecture）" class="headerlink" title="跳跃结构（Skip Architecture）"></a>跳跃结构（Skip Architecture）</h3><p>其实直接使用前两种结构就已经可以得到结果了，但是直接将全卷积后的结果上采样后得到的结果通常是很粗糙的。所以这一结构主要是用来优化最终结果的，思路就是将不同池化层的结果进行上采样，然后结合这些结果来优化输出，具体结构如下:</p>
+<p><img src="/images/fcn2.jpg" alt="Alt text"></p>
+<p>不同结构产生的对比结果如下：</p>
+<p><img src="/images/fcn3.jpg" alt="Alt text"></p>
+<p>FCN-8s从pool3，pool4和pool5中提取出信息，然后通过插值法调整大小把算出来的密度图简单相加。</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p><img src="/images/fcn4.png" alt="Alt text"></p>
+<hr>
+<p>Ref：<br>[1] <a href="https://zhuanlan.zhihu.com/p/22976342" target="_blank" rel="external">FCN学习：Semantic Segmentation</a><br>[2] <a href="https://arxiv.org/abs/1411.4038" target="_blank" rel="external">ully Convolutional Networks for Semantic Segmentation</a><br>[3] <a href="https://www.jianshu.com/p/14f446a8b099" target="_blank" rel="external">FCN 论文笔记</a><br>[4] <a href="http://youchen.me/2017/07/25/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0-%E5%85%A8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-FCN/" target="_blank" rel="external">论文笔记-全卷积神经网络(FCN)</a></p>
 
       
     </div>
@@ -377,7 +367,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法学习笔记/" rel="tag"># 算法学习笔记</a>
+            <a href="/tags/Computer-Vision/" rel="tag"># Computer Vision</a>
           
         </div>
       
@@ -390,8 +380,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/03/Dynamic-Programming-2-Segmented-Least-Square/" rel="next" title="Dynamic Programming 2 -- Segmented Least Square">
-                <i class="fa fa-chevron-left"></i> Dynamic Programming 2 -- Segmented Least Square
+              <a href="/2018/05/16/Paper-Reading-SSD/" rel="next" title="Paper Reading -- SSD">
+                <i class="fa fa-chevron-left"></i> Paper Reading -- SSD
               </a>
             
           </div>
@@ -399,10 +389,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/03/Dynamic-Programming-4-RNA-secondary-structure/" rel="prev" title="Dynamic Programming 4 -- RNA secondary structure">
-                Dynamic Programming 4 -- RNA secondary structure <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -541,7 +527,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法流程"><span class="nav-number">3.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度分析"><span class="nav-number">4.</span> <span class="nav-text">复杂度分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fully-Convolutional-Networks"><span class="nav-number">2.</span> <span class="nav-text">Fully Convolutional Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全卷积网络"><span class="nav-number">2.1.</span> <span class="nav-text">全卷积网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上采样（Unsampling）"><span class="nav-number">2.2.</span> <span class="nav-text">上采样（Unsampling）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳跃结构（Skip-Architecture）"><span class="nav-number">2.3.</span> <span class="nav-text">跳跃结构（Skip Architecture）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">3.</span> <span class="nav-text">Results</span></a></li></ol></div>
             
 
           </div>
@@ -704,9 +690,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2017/11/03/Dynamic-Programming-3-背包问题/';
-          this.page.identifier = '2017/11/03/Dynamic-Programming-3-背包问题/';
-          this.page.title = 'Dynamic Programming 3 -- 背包问题';
+          this.page.url = 'http://yoursite.com/2018/05/18/Paper-Reading-FCN/';
+          this.page.identifier = '2018/05/18/Paper-Reading-FCN/';
+          this.page.title = 'Paper Reading -- FCN';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://Neverland.disqus.com/embed.js';
