@@ -89,10 +89,10 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/maskrcnn1.png">
 <meta property="og:image" content="http://yoursite.com/images/maskrcnn6.png">
-<meta property="og:image" content="http://yoursite.com/images/maskrcnn2.png">
+<meta property="og:image" content="http://yoursite.com/images/maskrcnn3.png">
 <meta property="og:image" content="http://yoursite.com/images/maskrcnn5.png">
 <meta property="og:image" content="http://yoursite.com/images/maskrcnn4.png">
-<meta property="og:updated_time" content="2018-05-18T07:59:26.161Z">
+<meta property="og:updated_time" content="2018-05-21T08:01:59.644Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Paper Reading -- Mask R-CNN">
 <meta name="twitter:description" content="IntroductionMask R-CNN在Faster R-CNN的基础上添加一个分支网络，实现目标检测的同时，输出高质量的实例分割Mask。该算法在COCO的实例分割、目标检测、人体关键点检测三个任务中都取得了非常好的结果，在不加任何Trick的情况下能够超过各种数据增强加持下COCO 2016分割挑战的冠军FCIS。 本文的目标是得到一个高质量的instance segmentation。">
@@ -351,7 +351,7 @@
 </blockquote>
 <p>这样的错位通常只是在几个像素之间，对于分类和边框预测的影响不大。但是对于Mask R-CNN中像素级别的预测，这样的错位可能会带来大问题。所以Mask R-CNN提出一个RoIAlign层，类似于RoI池化层，但是去掉了定点化步骤，即不向下取整，如果计算得到的表框不是刚好在像素之间，那么通过四周像素来线性插值得到这个点上的值。</p>
 <p>对于一维情况，假设要计算x点的值f(x)，那么我们可以用x左右的整点的值来进行差值：</p>
-<p><img src="/images/maskrcnn2.png" alt="Alt text"></p>
+<p><img src="/images/maskrcnn3.png" alt="Alt text"></p>
 <p>我们实际要使⽤的是⼆维差值来估计<code>f(x, y)</code>，我们⾸先在x轴上差值得到<code>f(x, ⌊y⌋)</code> 和<code>f(x, ⌊y⌋+1)</code>，然后根据这两个值来差值得到<code>f(x, y)</code>.</p>
 <h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p>本文构造了多种不同结构的Mask R-CNN，使用不同的：</p>
 <ul>
