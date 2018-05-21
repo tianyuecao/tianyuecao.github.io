@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Computer Vision," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="国内自动驾驶创业公司图森未来对ICCV 2017最佳论文《Mask R-CNN》进行了完整复现，开源代码在Github上公布。（Mask R-CNN的mxnet实现） 代码结构代码的主要结构如下：  mx-maskrcnn data(储存训练和测试数据，这里是用了cityscapes的数据) incubator-mxnet(mxnet源代码) model(储存模型) rcnn(主要的实现模块，后面">
+<meta name="keywords" content="Computer Vision">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mask R-CNN代码阅读（一）">
+<meta property="og:url" content="http://yoursite.com/2018/05/21/Mask-R-CNN代码阅读（一）/index.html">
+<meta property="og:site_name" content="Neverland">
+<meta property="og:description" content="国内自动驾驶创业公司图森未来对ICCV 2017最佳论文《Mask R-CNN》进行了完整复现，开源代码在Github上公布。（Mask R-CNN的mxnet实现） 代码结构代码的主要结构如下：  mx-maskrcnn data(储存训练和测试数据，这里是用了cityscapes的数据) incubator-mxnet(mxnet源代码) model(储存模型) rcnn(主要的实现模块，后面">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-21T10:47:34.164Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mask R-CNN代码阅读（一）">
+<meta name="twitter:description" content="国内自动驾驶创业公司图森未来对ICCV 2017最佳论文《Mask R-CNN》进行了完整复现，开源代码在Github上公布。（Mask R-CNN的mxnet实现） 代码结构代码的主要结构如下：  mx-maskrcnn data(储存训练和测试数据，这里是用了cityscapes的数据) incubator-mxnet(mxnet源代码) model(储存模型) rcnn(主要的实现模块，后面">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/21/Mask-R-CNN代码阅读（一）/"/>
+
+
+
+
+
+  <title>Mask R-CNN代码阅读（一） | Neverland</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Neverland</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/21/Mask-R-CNN代码阅读（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vanessa Cao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Neverland">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mask R-CNN代码阅读（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-21T18:46:59+08:00">
+                2018-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/21/Mask-R-CNN代码阅读（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/21/Mask-R-CNN代码阅读（一）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>国内自动驾驶创业公司图森未来对ICCV 2017最佳论文《Mask R-CNN》进行了完整复现，开源代码在Github上公布。<a href="https://github.com/TuSimple/mx-maskrcnn" target="_blank" rel="external">（Mask R-CNN的mxnet实现）</a></p>
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><p>代码的主要结构如下：</p>
+<ul>
+<li>mx-maskrcnn<ul>
+<li>data(储存训练和测试数据，这里是用了cityscapes的数据)</li>
+<li>incubator-mxnet(mxnet源代码)</li>
+<li>model(储存模型)</li>
+<li>rcnn(主要的实现模块，后面主要对这部分进行分析)<ul>
+<li>core</li>
+<li>CXX_OP</li>
+<li>cython</li>
+<li>dataset</li>
+<li>io</li>
+<li>processing</li>
+<li>PY_OP</li>
+<li>pycocotools</li>
+<li>symbol</li>
+<li>tools</li>
+<li>utils</li>
+<li>config.py(设定各种参数)</li>
+</ul>
+</li>
+<li>scripts(运行的脚本)</li>
+<li>demo_mask.py(demo的main文件)</li>
+<li>eval_maskrcnn.py(evaluate的main文件)</li>
+<li>train_alternate_mask_fpn.py(训练的main文件)</li>
+<li>Makefile(make cython和pycocotools)</li>
+</ul>
+</li>
+</ul>
+<h2 id="rcnn部分"><a href="#rcnn部分" class="headerlink" title="rcnn部分"></a>rcnn部分</h2><p>下面对rcnn部分代码进行分析。</p>
+<h3 id="config-py"><a href="#config-py" class="headerlink" title="config.py"></a>config.py</h3><p>config.py进行了各种参数设定，包括config和default两种参数的设定。在config参数设定中，分别设定了:</p>
+<ul>
+<li>网络相关参数: PIXEL_MEANS, ROIALIGN(True or False), RPN_FEAT_STRIDE, RCNN_FEAT_STRIDE, FIXED_PARAMS, FIXED_PARAMS_SHARED</li>
+<li>数据及相关参数: NUM_CLASSES, SCALES, ANCHOR_SCALES, ANCHOR_RATIOS, NUM_ANCHORS, CLASS_ID</li>
+<li>网络训练相关参数: <ul>
+<li>整体网络: BATCH_IMAGES, ASPECT_GROUPING(True or False), SCALE(True or False), SCALE_RANGE</li>
+<li>R-CNN: BATCH_ROIS, <strong>rois sampling params</strong>(FG_FRACTION, FG_THRESH, BG_THRESH_HI, BG_THRESH_LO), <strong>bounding vox regression params</strong>(BBOX_REGRESSION_THRESH, BBOX_WEIGHTS)</li>
+<li>RPN:<ul>
+<li>RPN anchor loader: <strong>anchors batch size</strong>(RPN_BATCH_SIZE), <strong>anchors sampling params</strong>(RPN_FG_FRACTION, RPN_POSITIVE_OVERLAP, RPN_NEGATIVE_OVERLAP, RPN_CLOBBER_POSITIVES), <strong>bounding box regression params</strong>(RPN_BBOX_WEIGHTS, RPN_POSITIVE_WEIGHT)</li>
+<li>RPN proposal: RPN_NMS_THRESH, RPN_PRE_NMS_TOP_N, RPN_POST_NMS_TOP_N, RPN_MIN_SIZE</li>
+</ul>
+</li>
+<li>approximate bounding box regression: BBOX_NORMALIZATION_PRECOMPUTED, BBOX_MEANS, BBOX_STDS</li>
+</ul>
+</li>
+<li>测试相关参数</li>
+</ul>
+<p>在default参数设定中，使用resnet_fpn网络，pretrained resnet-50模型。</p>
+<p>另外，进行了network和dataset的参数设定。</p>
+<p>最后用generate_config函数进行参数设定。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_config</span><span class="params">(_network, _dataset)</span>:</span></div><div class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span>  network[_network].items():</div><div class="line">    <span class="comment">#网络参数中分别设定config和默认参数</span></div><div class="line">        <span class="keyword">if</span> k <span class="keyword">in</span> config:</div><div class="line">            config[k] = v</div><div class="line">        <span class="keyword">elif</span> k <span class="keyword">in</span> default:</div><div class="line">            default[k] = v</div><div class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> dataset[_dataset].items():</div><div class="line">    <span class="comment">#dataset参数中分别设定config和默认参数</span></div><div class="line">        <span class="keyword">if</span> k <span class="keyword">in</span> config:</div><div class="line">            config[k] = v</div><div class="line">        <span class="keyword">elif</span> k <span class="keyword">in</span> default:</div><div class="line">            default[k] = v</div></pre></td></tr></table></figure>
+<h3 id="utils"><a href="#utils" class="headerlink" title="utils"></a>utils</h3><p>进行模型和数据的储存和读入。</p>
+<h4 id="save-model-py"><a href="#save-model-py" class="headerlink" title="save_model.py"></a>save_model.py</h4><p>将模型数据checkpoint储存到文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_checkpoint</span><span class="params">(prefix, epoch, arg_params, aux_params)</span>:</span></div><div class="line">    <span class="comment"># prefix: 模型名字的前缀</span></div><div class="line">    <span class="comment"># epoch: 模型的epoch number</span></div><div class="line">    <span class="comment"># argparams: &#123;str:NDArray&#125;的词典，str是网络权重的name，NDArray是网络权重</span></div><div class="line">    <span class="comment"># aux_parameter: &#123;str:NDArray&#125;的词典，str是网络辅助状态的name，NDArray是网络辅助状态</span></div><div class="line">    <span class="comment"># 最终储存格式是prefix-epoch.params</span></div><div class="line">    save_dict = &#123;(<span class="string">'arg:%s'</span> % k) : v <span class="keyword">for</span> k, v <span class="keyword">in</span> arg_params.items()&#125;</div><div class="line">    save_dict.update(&#123;(<span class="string">'aux:%s'</span> % k) : v <span class="keyword">for</span> k, v <span class="keyword">in</span> aux_params.items()&#125;)</div><div class="line">    param_name = <span class="string">'%s-%04d.params'</span> % (prefix, epoch)</div><div class="line">    mx.nd.save(param_name, save_dict)</div></pre></td></tr></table></figure>
+<h4 id="load-model-py"><a href="#load-model-py" class="headerlink" title="load_model.py"></a>load_model.py</h4><p>加载模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_checkpoint</span><span class="params">(prefix, epoch)</span>:</span></div><div class="line">	<span class="comment"># 从文件加载模型</span></div><div class="line">	<span class="comment"># prefix: 模型名字的前缀</span></div><div class="line">	<span class="comment"># epoch: 想要加载的模型的epoch number</span></div><div class="line">	<span class="comment"># return: arg_params, aux_params，与上述save_models.py中一样</span></div><div class="line">    save_dict = mx.nd.load(<span class="string">'%s-%04d.params'</span> % (prefix, epoch))</div><div class="line">    arg_params = &#123;&#125;</div><div class="line">    aux_params = &#123;&#125;</div><div class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> save_dict.items():</div><div class="line">        tp, name = k.split(<span class="string">':'</span>, <span class="number">1</span>)</div><div class="line">        <span class="keyword">if</span> tp == <span class="string">'arg'</span>:</div><div class="line">            arg_params[name] = v</div><div class="line">        <span class="keyword">if</span> tp == <span class="string">'aux'</span>:</div><div class="line">            aux_params[name] = v</div><div class="line">    <span class="keyword">return</span> arg_params, aux_params</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert_context</span><span class="params">(params, ctx)</span>:</span></div><div class="line">    <span class="comment"># params: &#123;str:NDArray&#125;的dict</span></div><div class="line">    <span class="comment"># ctx: 要转移到的context</span></div><div class="line">    <span class="comment"># return: 在ctx上的dict</span></div><div class="line">    new_params = dict()</div><div class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> params.items():</div><div class="line">        new_params[k] = v.as_in_context(ctx)</div><div class="line">    <span class="keyword">return</span> new_params</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_param</span><span class="params">(prefix, epoch, convert=False, ctx=None, process=False)</span>:</span></div><div class="line">    <span class="comment"># 包装的checkpoint加载</span></div><div class="line">    <span class="comment"># process: 是否对模型进行测试</span></div><div class="line">    <span class="comment"># return: arg_params, aux_params</span></div><div class="line">    arg_params, aux_params = load_checkpoint(prefix, epoch)</div><div class="line">    <span class="keyword">if</span> convert:</div><div class="line">        <span class="keyword">if</span> ctx <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            ctx = mx.cpu()</div><div class="line">        arg_params = convert_context(arg_params, ctx)</div><div class="line">        aux_params = convert_context(aux_params, ctx)</div><div class="line">    <span class="keyword">if</span> process:</div><div class="line">        tests = [k <span class="keyword">for</span> k <span class="keyword">in</span> arg_params.keys() <span class="keyword">if</span> <span class="string">'_test'</span> <span class="keyword">in</span> k]</div><div class="line">        <span class="keyword">for</span> test <span class="keyword">in</span> tests:</div><div class="line">            arg_params[test.replace(<span class="string">'_test'</span>, <span class="string">''</span>)] = arg_params.pop(test)</div><div class="line">    <span class="keyword">return</span> arg_params, aux_params</div></pre></td></tr></table></figure>
+<h4 id="combine-model-py"><a href="#combine-model-py" class="headerlink" title="combine_model.py"></a>combine_model.py</h4><p>将两个模型checkpoint结合并储存到新的文件中。</p>
+<h4 id="load-data-py"><a href="#load-data-py" class="headerlink" title="load_data.py"></a>load_data.py</h4><p>加载数据，定义了以下几个函数：</p>
+<ul>
+<li><strong>load_gt_roidb</strong>：加载ground truth roidb</li>
+<li><strong>load_proposal_roidb</strong>：加载proposal roidb(训练时的append_gt)</li>
+<li><strong>merge_roidb</strong>：把roidb list concat到一起</li>
+<li><strong>filter_roidb</strong>：过滤出可以使用的roidb entries（至少有一个fg或bg roi的图片）</li>
+</ul>
+<h3 id="dataset"><a href="#dataset" class="headerlink" title="dataset"></a>dataset</h3><p>对数据集进行处理。</p>
+<h4 id="imdb-py"><a href="#imdb-py" class="headerlink" title="imdb.py"></a>imdb.py</h4><p>定义了一个image database类，产生一个图像相对路径的list<strong>image_set_index</strong>和转化成的图像绝对路径。对于训练来说，需要将ground truth和proposals充分的混合。</p>
+<p>roidb的basic format：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[image_index][<span class="string">'image'</span>, <span class="string">'height'</span>, <span class="string">'width'</span>, <span class="string">'flipped'</span>, <span class="string">'boxes'</span>, <span class="string">'gt_classes'</span>, <span class="string">'gt_overlaps'</span>, <span class="string">'max_classes'</span>, <span class="string">'max_overlaps'</span>, <span class="string">'bbox_targets'</span>]</div></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">IMDB</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, image_set, root_path, dataset_path)</span>:</span></div><div class="line">        <span class="comment"># image database的基本信息</span></div><div class="line">        self.name = name + <span class="string">'_'</span> + image_set  <span class="comment">#image database的名字</span></div><div class="line">        self.image_set = image_set</div><div class="line">        self.root_path = root_path  <span class="comment">#储存cache和proposal数据的根路径</span></div><div class="line">        self.data_path = dataset_path  <span class="comment">#储存图像和图像列表的dataset路径</span></div><div class="line"></div><div class="line">        <span class="comment"># abstract attributes</span></div><div class="line">        self.classes = []</div><div class="line">        self.num_classes = <span class="number">0</span></div><div class="line">        self.image_set_index = []</div><div class="line">        self.num_images = <span class="number">0</span></div><div class="line"></div><div class="line">        self.config = &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment"># 下面三个函数在IMDB这个抽象类中没有对应的具体实现，在子类中需要实现</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">image_path_from_index</span><span class="params">(self, index)</span>:</span></div><div class="line">        <span class="keyword">raise</span> NotImplementedError</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">gt_roidb</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">raise</span> NotImplementedError</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">evaluate_detections</span><span class="params">(self, detections)</span>:</span></div><div class="line">        <span class="keyword">raise</span> NotImplementedError</div><div class="line"></div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cache_path</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="comment"># 创建一个储存cache的文件夹</span></div><div class="line">        <span class="comment"># return: cache路径</span></div><div class="line">        cache_path = os.path.join(self.root_path, <span class="string">'cache'</span>)</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(cache_path):</div><div class="line">            os.mkdir(cache_path)</div><div class="line">        <span class="keyword">return</span> cache_path</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">image_path_at</span><span class="params">(self, index)</span>:</span></div><div class="line">        <span class="comment"># 根据index获取image database中图像</span></div><div class="line">        <span class="comment"># index: image database中图像的index</span></div><div class="line">        <span class="comment"># return: image路径</span></div><div class="line">        <span class="keyword">return</span> self.image_path_from_index(self.image_set_index[index])</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_rpn_data</span><span class="params">(self, full=False)</span>:</span></div><div class="line">    <span class="comment"># 从pickle文件加载rpn数据</span></div><div class="line">    <span class="comment"># return: box的list</span></div><div class="line">        <span class="keyword">if</span> full:</div><div class="line">            rpn_file = os.path.join(self.root_path, <span class="string">'rpn_data'</span>, self.name + <span class="string">'_full_rpn.pkl'</span>)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            rpn_file = os.path.join(self.root_path, <span class="string">'rpn_data'</span>, self.name + <span class="string">'_rpn.pkl'</span>)</div><div class="line">        <span class="keyword">print</span> <span class="string">'loading &#123;&#125;'</span>.format(rpn_file)</div><div class="line">        <span class="keyword">assert</span> os.path.exists(rpn_file), <span class="string">'rpn data not found at &#123;&#125;'</span>.format(rpn_file)</div><div class="line">        <span class="keyword">with</span> open(rpn_file, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</div><div class="line">            box_list = cPickle.load(f)</div><div class="line">        <span class="keyword">return</span> box_list</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_rpn_roidb</span><span class="params">(self, gt_roidb)</span>:</span></div><div class="line">        <span class="comment"># 把rpn检测框转换成roidb</span></div><div class="line">        <span class="comment"># gt_roidb: [image_index]['boxes', 'gt_classes', 'gt_overlaps', 'flipped']</span></div><div class="line">        <span class="comment"># return: roidb，格式与gt_roidb相同</span></div><div class="line">        box_list = self.load_rpn_data()</div><div class="line">        <span class="keyword">return</span> self.create_roidb_from_box_list(box_list, gt_roidb)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rpn_roidb</span><span class="params">(self, gt_roidb, append_gt=False)</span>:</span></div><div class="line">        <span class="comment"># 得到rpn roidb和ground truth roidb</span></div><div class="line">        <span class="comment"># gt_roidb: ground truth roidb</span></div><div class="line">        <span class="comment"># append_gt: append ground truth</span></div><div class="line">        <span class="comment"># return: rpn的roidb</span></div><div class="line">        <span class="keyword">if</span> append_gt:</div><div class="line">            <span class="keyword">print</span> <span class="string">'appending ground truth annotations'</span></div><div class="line">            rpn_roidb = self.load_rpn_roidb(gt_roidb)</div><div class="line">            roidb = IMDB.merge_roidbs(gt_roidb, rpn_roidb)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            roidb = self.load_rpn_roidb(gt_roidb)</div><div class="line">        <span class="keyword">return</span> roidb</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_roidb_from_box_list</span><span class="params">(self, box_list, gt_roidb)</span>:</span></div><div class="line">        <span class="comment"># 给定ground truth和box list生成roidb，在选择时，每个图片中boxes与ground truth进行对比，选择overlap最大的boxes（非极大抑制）</span></div><div class="line">        <span class="comment"># box_list: [image_index] ndarray of [box_index][x1, x2, y1, y2]</span></div><div class="line">        <span class="comment"># gt_roidb, roidb格式相同: [image_index]['boxes', 'gt_classes', 'gt_overlaps', 'flipped']</span></div><div class="line">        <span class="comment"># return: roidb</span></div><div class="line">        <span class="keyword">assert</span> len(box_list) == self.num_images, <span class="string">'number of boxes matrix must match number of images'</span></div><div class="line">        <span class="comment"># boxes的数量必须与图像数量相同</span></div><div class="line">        roidb = []</div><div class="line">        <span class="comment"># 先将每张图的图片名称、ground truth的宽和高储存在roi_rec这个dict中</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_images):</div><div class="line">            roi_rec = dict()</div><div class="line">            roi_rec[<span class="string">'image'</span>] = gt_roidb[i][<span class="string">'image'</span>]</div><div class="line">            roi_rec[<span class="string">'height'</span>] = gt_roidb[i][<span class="string">'height'</span>]</div><div class="line">            roi_rec[<span class="string">'width'</span>] = gt_roidb[i][<span class="string">'width'</span>]</div><div class="line">            </div><div class="line">            <span class="comment"># box_list的格式为: [image_index] ndarray of [box_index][x1, x2, y1, y2]</span></div><div class="line">            <span class="comment"># 那么boxes的格式为: ndarray of [box_index][x1, x2, y1, y2]</span></div><div class="line">			boxes = box_list[i]</div><div class="line">            <span class="keyword">if</span> boxes.shape[<span class="number">1</span>] == <span class="number">5</span>:</div><div class="line">                boxes = boxes[:, :<span class="number">4</span>]  <span class="comment">#如果boxes.shape[1]为5，那么只取前四个，即只取[x1, x2, y1, y2]</span></div><div class="line">            num_boxes = boxes.shape[<span class="number">0</span>]  <span class="comment">#boxes.shape[0]是boxes的数量</span></div><div class="line">            overlaps = np.zeros((num_boxes, self.num_classes), dtype=np.float32)</div><div class="line">            <span class="keyword">if</span> gt_roidb <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span> <span class="keyword">and</span> gt_roidb[i][<span class="string">'boxes'</span>].size &gt; <span class="number">0</span>:</div><div class="line">                gt_boxes = gt_roidb[i][<span class="string">'boxes'</span>]</div><div class="line">                gt_classes = gt_roidb[i][<span class="string">'gt_classes'</span>]</div><div class="line">                <span class="comment"># n boxes and k gt_boxes =&gt; n * k overlap</span></div><div class="line">                gt_overlaps = bbox_overlaps(boxes.astype(np.float), gt_boxes.astype(np.float))</div><div class="line">                <span class="comment"># 对于有重叠的n个boxes中选择最大overlap的box（必须大于0）</span></div><div class="line">                argmaxes = gt_overlaps.argmax(axis=<span class="number">1</span>)</div><div class="line">                maxes = gt_overlaps.max(axis=<span class="number">1</span>)</div><div class="line">                I = np.where(maxes &gt; <span class="number">0</span>)[<span class="number">0</span>]</div><div class="line">                overlaps[I, gt_classes[argmaxes[I]]] = maxes[I]</div><div class="line"></div><div class="line">            roi_rec.update(&#123;<span class="string">'boxes'</span>: boxes,</div><div class="line">                            <span class="string">'gt_classes'</span>: np.zeros((num_boxes,), dtype=np.int32),</div><div class="line">                            <span class="string">'gt_overlaps'</span>: overlaps,</div><div class="line">                            <span class="string">'max_classes'</span>: overlaps.argmax(axis=<span class="number">1</span>),</div><div class="line">                            <span class="string">'max_overlaps'</span>: overlaps.max(axis=<span class="number">1</span>),</div><div class="line">                            <span class="string">'flipped'</span>: <span class="keyword">False</span>&#125;)</div><div class="line"></div><div class="line">            <span class="comment"># background roi =&gt; background class</span></div><div class="line">            zero_indexes = np.where(roi_rec[<span class="string">'max_overlaps'</span>] == <span class="number">0</span>)[<span class="number">0</span>]</div><div class="line">            <span class="keyword">assert</span> all(roi_rec[<span class="string">'max_classes'</span>][zero_indexes] == <span class="number">0</span>)</div><div class="line">            <span class="comment"># foreground roi =&gt; foreground class</span></div><div class="line">            nonzero_indexes = np.where(roi_rec[<span class="string">'max_overlaps'</span>] &gt; <span class="number">0</span>)[<span class="number">0</span>]</div><div class="line">            <span class="keyword">assert</span> all(roi_rec[<span class="string">'max_classes'</span>][nonzero_indexes] != <span class="number">0</span>)</div><div class="line"></div><div class="line">            roidb.append(roi_rec)</div><div class="line"></div><div class="line">        <span class="keyword">return</span> roidb</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append_flipped_images</span><span class="params">(self, roidb)</span>:</span></div><div class="line">	    <span class="comment"># 将翻转图片加入到roidb</span></div><div class="line">	    <span class="comment"># 把boxes的坐标翻转，在图像加载入网络时就会翻转</span></div><div class="line">	    <span class="comment"># return: roidb: [image_index]['boxes', 'gt_classes', 'gt_overlaps', 'flipped']</span></div><div class="line">        <span class="keyword">print</span> <span class="string">'append flipped images to roidb'</span></div><div class="line">        <span class="keyword">assert</span> self.num_images == len(roidb)  <span class="comment">#roidb的数量和图像数量相等</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_images):</div><div class="line">            roi_rec = roidb[i]</div><div class="line">            boxes = roi_rec[<span class="string">'boxes'</span>].copy()</div><div class="line">            oldx1 = boxes[:, <span class="number">0</span>].copy()</div><div class="line">            oldx2 = boxes[:, <span class="number">2</span>].copy()</div><div class="line">            boxes[:, <span class="number">0</span>] = roi_rec[<span class="string">'width'</span>] - oldx2 - <span class="number">1</span></div><div class="line">            boxes[:, <span class="number">2</span>] = roi_rec[<span class="string">'width'</span>] - oldx1 - <span class="number">1</span></div><div class="line">            <span class="keyword">assert</span> (boxes[:, <span class="number">2</span>] &gt;= boxes[:, <span class="number">0</span>]).all(),\</div><div class="line">                <span class="string">'img_name %s, width %d\n'</span> % (roi_rec[<span class="string">'image'</span>], roi_rec[<span class="string">'width'</span>]) + \</div><div class="line">                np.array_str(roi_rec[<span class="string">'boxes'</span>], precision=<span class="number">3</span>, suppress_small=<span class="keyword">True</span>)</div><div class="line">            entry = &#123;<span class="string">'image'</span>: roi_rec[<span class="string">'image'</span>],</div><div class="line">                     <span class="string">'height'</span>: roi_rec[<span class="string">'height'</span>],</div><div class="line">                     <span class="string">'width'</span>: roi_rec[<span class="string">'width'</span>],</div><div class="line">                     <span class="string">'boxes'</span>: boxes,</div><div class="line">                     <span class="string">'gt_classes'</span>: roidb[i][<span class="string">'gt_classes'</span>],</div><div class="line">                     <span class="string">'gt_overlaps'</span>: roidb[i][<span class="string">'gt_overlaps'</span>],</div><div class="line">                     <span class="string">'max_classes'</span>: roidb[i][<span class="string">'max_classes'</span>],</div><div class="line">                     <span class="string">'max_overlaps'</span>: roidb[i][<span class="string">'max_overlaps'</span>],</div><div class="line">                     <span class="string">'flipped'</span>: <span class="keyword">True</span>&#125;</div><div class="line">            roidb.append(entry)</div><div class="line"></div><div class="line">        self.image_set_index *= <span class="number">2</span></div><div class="line">        <span class="keyword">return</span> roidb</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">evaluate_recall</span><span class="params">(self, roidb, candidate_boxes=None, thresholds=None)</span>:</span></div><div class="line">	    <span class="comment"># evaluate detection proposal recall metrics</span></div><div class="line">	    <span class="comment"># 对每个gt box记录最大overlap的值, 返回overlap values vector</span></div><div class="line">	    <span class="comment"># roidb: evaluate的对象</span></div><div class="line">	    <span class="comment"># candidate_boxes: 如果没有给定，那么使用roidb的non-gt boxes</span></div><div class="line">	    <span class="comment"># thresholds: array-like recall threshold</span></div><div class="line">        area_names = [<span class="string">'all'</span>, <span class="string">'0-25'</span>, <span class="string">'25-50'</span>, <span class="string">'50-100'</span>,</div><div class="line">                      <span class="string">'100-200'</span>, <span class="string">'200-300'</span>, <span class="string">'300-inf'</span>]</div><div class="line">        area_ranges = [[<span class="number">0</span>**<span class="number">2</span>, <span class="number">1e5</span>**<span class="number">2</span>], [<span class="number">0</span>**<span class="number">2</span>, <span class="number">25</span>**<span class="number">2</span>], [<span class="number">25</span>**<span class="number">2</span>, <span class="number">50</span>**<span class="number">2</span>], [<span class="number">50</span>**<span class="number">2</span>, <span class="number">100</span>**<span class="number">2</span>],</div><div class="line">                       [<span class="number">100</span>**<span class="number">2</span>, <span class="number">200</span>**<span class="number">2</span>], [<span class="number">200</span>**<span class="number">2</span>, <span class="number">300</span>**<span class="number">2</span>], [<span class="number">300</span>**<span class="number">2</span>, <span class="number">1e5</span>**<span class="number">2</span>]]</div><div class="line">        area_counts = []</div><div class="line">        <span class="keyword">for</span> area_name, area_range <span class="keyword">in</span> zip(area_names[<span class="number">1</span>:], area_ranges[<span class="number">1</span>:]):</div><div class="line">            area_count = <span class="number">0</span></div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_images):</div><div class="line">                <span class="keyword">if</span> candidate_boxes <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">                    <span class="comment"># default is use the non-gt boxes from roidb</span></div><div class="line">                    non_gt_inds = np.where(roidb[i][<span class="string">'gt_classes'</span>] == <span class="number">0</span>)[<span class="number">0</span>]</div><div class="line">                    boxes = roidb[i][<span class="string">'boxes'</span>][non_gt_inds, :]</div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    boxes = candidate_boxes[i]</div><div class="line">                boxes_areas = (boxes[:, <span class="number">2</span>] - boxes[:, <span class="number">0</span>] + <span class="number">1</span>) * (boxes[:, <span class="number">3</span>] - boxes[:, <span class="number">1</span>] + <span class="number">1</span>)</div><div class="line">                valid_range_inds = np.where((boxes_areas &gt;= area_range[<span class="number">0</span>]) &amp; (boxes_areas &lt; area_range[<span class="number">1</span>]))[<span class="number">0</span>]</div><div class="line">                area_count += len(valid_range_inds)</div><div class="line">            area_counts.append(area_count)</div><div class="line">        total_counts = float(sum(area_counts))</div><div class="line">        <span class="keyword">for</span> area_name, area_count <span class="keyword">in</span> zip(area_names[<span class="number">1</span>:], area_counts):</div><div class="line">            <span class="keyword">print</span> <span class="string">'percentage of'</span>, area_name, area_count / total_counts</div><div class="line">        <span class="keyword">print</span> <span class="string">'average number of proposal'</span>, total_counts / self.num_images</div><div class="line">        <span class="keyword">for</span> area_name, area_range <span class="keyword">in</span> zip(area_names, area_ranges):</div><div class="line">            gt_overlaps = np.zeros(<span class="number">0</span>)</div><div class="line">            num_pos = <span class="number">0</span></div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_images):</div><div class="line">                <span class="comment"># check for max_overlaps == 1 avoids including crowd annotations</span></div><div class="line">                max_gt_overlaps = roidb[i][<span class="string">'gt_overlaps'</span>].max(axis=<span class="number">1</span>)</div><div class="line">                gt_inds = np.where((roidb[i][<span class="string">'gt_classes'</span>] &gt; <span class="number">0</span>) &amp; (max_gt_overlaps == <span class="number">1</span>))[<span class="number">0</span>]</div><div class="line">                gt_boxes = roidb[i][<span class="string">'boxes'</span>][gt_inds, :]</div><div class="line">                gt_areas = (gt_boxes[:, <span class="number">2</span>] - gt_boxes[:, <span class="number">0</span>] + <span class="number">1</span>) * (gt_boxes[:, <span class="number">3</span>] - gt_boxes[:, <span class="number">1</span>] + <span class="number">1</span>)</div><div class="line">                valid_gt_inds = np.where((gt_areas &gt;= area_range[<span class="number">0</span>]) &amp; (gt_areas &lt; area_range[<span class="number">1</span>]))[<span class="number">0</span>]</div><div class="line">                gt_boxes = gt_boxes[valid_gt_inds, :]</div><div class="line">                num_pos += len(valid_gt_inds)</div><div class="line"></div><div class="line">                <span class="keyword">if</span> candidate_boxes <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">                    <span class="comment"># default is use the non-gt boxes from roidb</span></div><div class="line">                    non_gt_inds = np.where(roidb[i][<span class="string">'gt_classes'</span>] == <span class="number">0</span>)[<span class="number">0</span>]</div><div class="line">                    boxes = roidb[i][<span class="string">'boxes'</span>][non_gt_inds, :]</div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    boxes = candidate_boxes[i]</div><div class="line">                <span class="keyword">if</span> boxes.shape[<span class="number">0</span>] == <span class="number">0</span>:</div><div class="line">                    <span class="keyword">continue</span></div><div class="line"></div><div class="line">                overlaps = bbox_overlaps(boxes.astype(np.float), gt_boxes.astype(np.float))</div><div class="line"></div><div class="line">                _gt_overlaps = np.zeros((gt_boxes.shape[<span class="number">0</span>]))</div><div class="line">                <span class="comment"># choose whatever is smaller to iterate</span></div><div class="line">                rounds = min(boxes.shape[<span class="number">0</span>], gt_boxes.shape[<span class="number">0</span>])</div><div class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(rounds):</div><div class="line">                    <span class="comment"># find which proposal maximally covers each gt box</span></div><div class="line">                    argmax_overlaps = overlaps.argmax(axis=<span class="number">0</span>)</div><div class="line">                    <span class="comment"># get the IoU amount of coverage for each gt box</span></div><div class="line">                    max_overlaps = overlaps.max(axis=<span class="number">0</span>)</div><div class="line">                    <span class="comment"># find which gt box is covered by most IoU</span></div><div class="line">                    gt_ind = max_overlaps.argmax()</div><div class="line">                    gt_ovr = max_overlaps.max()</div><div class="line">                    <span class="keyword">assert</span> (gt_ovr &gt;= <span class="number">0</span>), <span class="string">'%s\n%s\n%s'</span> % (boxes, gt_boxes, overlaps)</div><div class="line">                    <span class="comment"># find the proposal box that covers the best covered gt box</span></div><div class="line">                    box_ind = argmax_overlaps[gt_ind]</div><div class="line">                    <span class="comment"># record the IoU coverage of this gt box</span></div><div class="line">                    _gt_overlaps[j] = overlaps[box_ind, gt_ind]</div><div class="line">                    <span class="keyword">assert</span> (_gt_overlaps[j] == gt_ovr)</div><div class="line">                    <span class="comment"># mark the proposal box and the gt box as used</span></div><div class="line">                    overlaps[box_ind, :] = <span class="number">-1</span></div><div class="line">                    overlaps[:, gt_ind] = <span class="number">-1</span></div><div class="line">                <span class="comment"># append recorded IoU coverage level</span></div><div class="line">                gt_overlaps = np.hstack((gt_overlaps, _gt_overlaps))</div><div class="line"></div><div class="line">            gt_overlaps = np.sort(gt_overlaps)</div><div class="line">            <span class="keyword">if</span> thresholds <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">                step = <span class="number">0.05</span></div><div class="line">                thresholds = np.arange(<span class="number">0.5</span>, <span class="number">0.95</span> + <span class="number">1e-5</span>, step)</div><div class="line">            recalls = np.zeros_like(thresholds)</div><div class="line"></div><div class="line">            <span class="comment"># compute recall for each IoU threshold</span></div><div class="line">            <span class="keyword">for</span> i, t <span class="keyword">in</span> enumerate(thresholds):</div><div class="line">                recalls[i] = (gt_overlaps &gt;= t).sum() / float(num_pos)</div><div class="line">            ar = recalls.mean()</div><div class="line"></div><div class="line">            <span class="comment"># print results</span></div><div class="line">            <span class="keyword">print</span> <span class="string">'average recall for &#123;&#125;: &#123;:.3f&#125;'</span>.format(area_name, ar)</div><div class="line">            <span class="keyword">for</span> threshold, recall <span class="keyword">in</span> zip(thresholds, recalls):</div><div class="line">                <span class="keyword">print</span> <span class="string">'recall @&#123;:.2f&#125;: &#123;:.3f&#125;'</span>.format(threshold, recall)</div><div class="line"></div><div class="line"><span class="meta">    @staticmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge_roidbs</span><span class="params">(a, b)</span>:</span></div><div class="line">	    <span class="comment"># 把两个roidb merge成为一个roidb</span></div><div class="line">	    <span class="comment"># a, b: 两个roidb，最终将b merge到a中</span></div><div class="line">	    <span class="comment"># return: merged imdb</span></div><div class="line">        <span class="keyword">assert</span> len(a) == len(b)</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(a)):</div><div class="line">	        <span class="comment"># vstack: 垂直堆叠</span></div><div class="line">	        <span class="comment"># hstack: 水平堆叠</span></div><div class="line">            a[i][<span class="string">'boxes'</span>] = np.vstack((a[i][<span class="string">'boxes'</span>], b[i][<span class="string">'boxes'</span>]))</div><div class="line">            a[i][<span class="string">'gt_classes'</span>] = np.hstack((a[i][<span class="string">'gt_classes'</span>], b[i][<span class="string">'gt_classes'</span>]))</div><div class="line">            a[i][<span class="string">'gt_overlaps'</span>] = np.vstack((a[i][<span class="string">'gt_overlaps'</span>], b[i][<span class="string">'gt_overlaps'</span>]))</div><div class="line">            a[i][<span class="string">'max_classes'</span>] = np.hstack((a[i][<span class="string">'max_classes'</span>], b[i][<span class="string">'max_classes'</span>]))</div><div class="line">            a[i][<span class="string">'max_overlaps'</span>] = np.hstack((a[i][<span class="string">'max_overlaps'</span>], b[i][<span class="string">'max_overlaps'</span>]))</div><div class="line">        <span class="keyword">return</span> a</div></pre></td></tr></table></figure>
+<h4 id="cityscape-py"><a href="#cityscape-py" class="headerlink" title="cityscape.py"></a>cityscape.py</h4><p>定义了一个继承了IMDB类的Cityscape子类，用来对cityscapes的数据进行处理。</p>
+<p>在cityscape.py中具体实现了<code>load_image_set_index(self)</code>，<code>image_path_from_index(self, index)</code>和<code>gt_roidb(self)</code>， 定义并实现了<code>load_from_seg(self, ins_seg_path)</code>和<code>load_citysacpe_annotations(self)</code>等数据集专有的函数。另外，<code>append_flipped_images</code>等函数实现与<strong>IMDB</strong>有所区别。</p>
+<h3 id="CXX-OP"><a href="#CXX-OP" class="headerlink" title="CXX_OP"></a>CXX_OP</h3><p>这部分用c语言实现了RoIAlign，这里不进行详细的分析。</p>
+<h3 id="pycocotools"><a href="#pycocotools" class="headerlink" title="pycocotools"></a>pycocotools</h3><p>这部分是与coco相关的部分，暂不分析。</p>
+<h3 id="cython"><a href="#cython" class="headerlink" title="cython"></a>cython</h3><p>这部分是cython相关的部分，也不做分析。</p>
+<p>这部分就先讨论到这里，剩下的模块（core, io, processing, PY_OP,  symbol, tools）下次进行分析。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Computer-Vision/" rel="tag"># Computer Vision</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/21/Numpy中的stack-hstack-vstack/" rel="next" title="Numpy中的stack(),hstack(),vstack()">
+                <i class="fa fa-chevron-left"></i> Numpy中的stack(),hstack(),vstack()
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vanessa Cao" />
+            
+              <p class="site-author-name" itemprop="name">Vanessa Cao</p>
+              <p class="site-description motion-element" itemprop="description">Stay Simple, Stay Naive.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码结构"><span class="nav-number">1.</span> <span class="nav-text">代码结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rcnn部分"><span class="nav-number">2.</span> <span class="nav-text">rcnn部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#config-py"><span class="nav-number">2.1.</span> <span class="nav-text">config.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#utils"><span class="nav-number">2.2.</span> <span class="nav-text">utils</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#save-model-py"><span class="nav-number">2.2.1.</span> <span class="nav-text">save_model.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#load-model-py"><span class="nav-number">2.2.2.</span> <span class="nav-text">load_model.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#combine-model-py"><span class="nav-number">2.2.3.</span> <span class="nav-text">combine_model.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#load-data-py"><span class="nav-number">2.2.4.</span> <span class="nav-text">load_data.py</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dataset"><span class="nav-number">2.3.</span> <span class="nav-text">dataset</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#imdb-py"><span class="nav-number">2.3.1.</span> <span class="nav-text">imdb.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cityscape-py"><span class="nav-number">2.3.2.</span> <span class="nav-text">cityscape.py</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CXX-OP"><span class="nav-number">2.4.</span> <span class="nav-text">CXX_OP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pycocotools"><span class="nav-number">2.5.</span> <span class="nav-text">pycocotools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cython"><span class="nav-number">2.6.</span> <span class="nav-text">cython</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vanessa Cao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://Neverland.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/05/21/Mask-R-CNN代码阅读（一）/';
+          this.page.identifier = '2018/05/21/Mask-R-CNN代码阅读（一）/';
+          this.page.title = 'Mask R-CNN代码阅读（一）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Neverland.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
