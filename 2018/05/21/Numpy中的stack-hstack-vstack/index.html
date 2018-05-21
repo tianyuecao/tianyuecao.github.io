@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="参考了[1]这篇文章，主要讲解stack中的axis参数的含义。 stack()官方的doc中是这样解释的：numpy.stack(arrays, axis=0, out=None)  Join a sequence of arrays along a new axis. The axis parameter specifies the index of the new axis in the d">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Numpy中的stack(),hstack(),vstack()">
+<meta property="og:url" content="http://yoursite.com/2018/05/21/Numpy中的stack-hstack-vstack/index.html">
+<meta property="og:site_name" content="Neverland">
+<meta property="og:description" content="参考了[1]这篇文章，主要讲解stack中的axis参数的含义。 stack()官方的doc中是这样解释的：numpy.stack(arrays, axis=0, out=None)  Join a sequence of arrays along a new axis. The axis parameter specifies the index of the new axis in the d">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-21T10:31:05.601Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Numpy中的stack(),hstack(),vstack()">
+<meta name="twitter:description" content="参考了[1]这篇文章，主要讲解stack中的axis参数的含义。 stack()官方的doc中是这样解释的：numpy.stack(arrays, axis=0, out=None)  Join a sequence of arrays along a new axis. The axis parameter specifies the index of the new axis in the d">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/21/Numpy中的stack-hstack-vstack/"/>
+
+
+
+
+
+  <title>Numpy中的stack(),hstack(),vstack() | Neverland</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Neverland</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/21/Numpy中的stack-hstack-vstack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vanessa Cao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Neverland">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Numpy中的stack(),hstack(),vstack()</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-21T18:30:23+08:00">
+                2018-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/21/Numpy中的stack-hstack-vstack/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/21/Numpy中的stack-hstack-vstack/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考了<a href="https://blog.csdn.net/csdn15698845876/article/details/73380803" target="_blank" rel="external">[1]</a>这篇文章，主要讲解stack中的axis参数的含义。</p>
+<h2 id="stack"><a href="#stack" class="headerlink" title="stack()"></a>stack()</h2><p>官方的doc中是这样解释的：<br><code>numpy.stack(arrays, axis=0, out=None)</code></p>
+<blockquote>
+<p>Join a sequence of arrays along a new axis.</p>
+<p>The axis parameter specifies the index of the new axis in the dimensions of the result. For example, if <code>axis=0</code> it will be the first dimension and if <code>axis=-1</code> it will be the last dimension.</p>
+</blockquote>
+<p>下面是一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]</div><div class="line">print(<span class="string">"列表a如下："</span>)</div><div class="line">print(a)</div><div class="line"></div><div class="line">print(<span class="string">"增加一维，新维度的下标为1"</span>)</div><div class="line">c=np.stack(a,axis=<span class="number">1</span>)</div><div class="line">print(c)</div><div class="line"></div><div class="line">输出：</div><div class="line">列表a如下：</div><div class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</div><div class="line">增加一维，新维度下标为<span class="number">0</span></div><div class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line"> [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</div><div class="line">增加一维，新维度下标为<span class="number">1</span></div><div class="line">[[<span class="number">1</span> <span class="number">4</span>]</div><div class="line"> [<span class="number">2</span> <span class="number">5</span>]</div><div class="line"> [<span class="number">3</span> <span class="number">6</span>]]</div></pre></td></tr></table></figure></p>
+<p>首先，这里arrays传的是一个list，stack()是对arrays中的每个元素（可能是个list，元组，或者是个numpy的数组）变成numpy的数组后，再对<strong>每个元素</strong>增加一维（由axis控制维度加在哪里），然后把这些元素堆叠起来。</p>
+<p><strong>arrays</strong>中每个元素的形状是一样的，而axis表示在哪个维度上加一维。如</p>
+<ul>
+<li><code>axis=0</code>: 增加维度的下标为0. 对于<code>[1,2,3]</code>, 变成<code>[[1 2 3]]</code>；<code>[4,5,6]</code>变成<code>[[4 5 6]]</code>，堆叠在一起就是<code>[[1 2 3] [4 5 6]]</code>.</li>
+<li><code>axis=1</code>: 增加维度的下标为1. 对于<code>[1,2,3]</code>变为<code>[[1] [2] [3]]</code>；<code>[4,5,6]</code>变为<code>[[4] [5] [6]]</code>，堆叠在一起就是<code>[[1 4] [2 5] [3 6]]</code>.</li>
+</ul>
+<p>下面是另一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</div><div class="line">b=[<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</div><div class="line">c=[<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>]</div><div class="line">print(<span class="string">"a="</span>,a)</div><div class="line">print(<span class="string">"b="</span>,b)</div><div class="line">print(<span class="string">"c="</span>,c)</div><div class="line"></div><div class="line">print(<span class="string">"增加一维，新维度的下标为0"</span>)</div><div class="line">d=np.stack((a,b,c),axis=<span class="number">0</span>)</div><div class="line">print(d)</div><div class="line"></div><div class="line">print(<span class="string">"增加一维，新维度的下标为1"</span>)</div><div class="line">d=np.stack((a,b,c),axis=<span class="number">1</span>)</div><div class="line">print(d)</div><div class="line"></div><div class="line">输出：</div><div class="line">(<span class="string">'a='</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</div><div class="line">(<span class="string">'b='</span>, [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>])</div><div class="line">(<span class="string">'c='</span>, [<span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>])</div><div class="line">增加一维，新维度的下标为<span class="number">0</span></div><div class="line">[[ <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">4</span>]</div><div class="line"> [ <span class="number">5</span>  <span class="number">6</span>  <span class="number">7</span>  <span class="number">8</span>]</div><div class="line"> [ <span class="number">9</span> <span class="number">10</span> <span class="number">11</span> <span class="number">12</span>]]</div><div class="line">增加一维，新维度的下标为<span class="number">1</span></div><div class="line">[[ <span class="number">1</span>  <span class="number">5</span>  <span class="number">9</span>]</div><div class="line"> [ <span class="number">2</span>  <span class="number">6</span> <span class="number">10</span>]</div><div class="line"> [ <span class="number">3</span>  <span class="number">7</span> <span class="number">11</span>]</div><div class="line"> [ <span class="number">4</span>  <span class="number">8</span> <span class="number">12</span>]]</div></pre></td></tr></table></figure></p>
+<p>传递参数时，如果传递的参数是类似于<code>(a,b,c)</code>这种，会把<code>(a,b,c)</code>看成一个tuple。</p>
+<p>下面是二维变三维的一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">   [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]</div><div class="line">b=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">   [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]</div><div class="line">c=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">   [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]</div><div class="line">print(<span class="string">"a="</span>,a)</div><div class="line">print(<span class="string">"b="</span>,b)</div><div class="line">print(<span class="string">"c="</span>,c)</div><div class="line"></div><div class="line">print(<span class="string">"增加一维，新维度的下标为0"</span>)</div><div class="line">d=np.stack((a,b,c),axis=<span class="number">0</span>)</div><div class="line">print(d)</div><div class="line"></div><div class="line">print(<span class="string">"增加一维，新维度的下标为1"</span>)</div><div class="line">d=np.stack((a,b,c),axis=<span class="number">1</span>)</div><div class="line">print(d)</div><div class="line">print(<span class="string">"增加一维，新维度的下标为2"</span>)</div><div class="line">d=np.stack((a,b,c),axis=<span class="number">2</span>)</div><div class="line">print(d)</div><div class="line"></div><div class="line">输出：</div><div class="line">(<span class="string">'a='</span>, [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</div><div class="line">(<span class="string">'b='</span>, [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</div><div class="line">(<span class="string">'c='</span>, [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</div><div class="line">增加一维，新维度的下标为<span class="number">0</span></div><div class="line">[[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line">  [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</div><div class="line"></div><div class="line"> [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line">  [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</div><div class="line"></div><div class="line"> [[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line">  [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]]</div><div class="line">增加一维，新维度的下标为<span class="number">1</span></div><div class="line">[[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line">  [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line">  [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]]</div><div class="line"></div><div class="line"> [[<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]</div><div class="line">  [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]</div><div class="line">  [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]]</div><div class="line">增加一维，新维度的下标为<span class="number">2</span></div><div class="line">[[[<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>]</div><div class="line">  [<span class="number">2</span> <span class="number">2</span> <span class="number">2</span>]</div><div class="line">  [<span class="number">3</span> <span class="number">3</span> <span class="number">3</span>]]</div><div class="line"></div><div class="line"> [[<span class="number">4</span> <span class="number">4</span> <span class="number">4</span>]</div><div class="line">  [<span class="number">5</span> <span class="number">5</span> <span class="number">5</span>]</div><div class="line">  [<span class="number">6</span> <span class="number">6</span> <span class="number">6</span>]]]</div></pre></td></tr></table></figure>
+<h2 id="hstack"><a href="#hstack" class="headerlink" title="hstack()"></a>hstack()</h2><p><code>numpy.hstack(tup)</code></p>
+<blockquote>
+<p>Stack arrays in sequence horizontally (column wise).</p>
+<p>This is equivalent to concatenation along the second axis, except for 1-D arrays where it concatenates along the first axis. Rebuilds arrays divided by <code>hsplit</code>.</p>
+<p>This function makes most sense for arrays with up to 3 dimensions. For instance, for pixel-data with a height (first axis), width (second axis), and r/g/b channels (third axis). The functions <code>concatenate</code>, <code>stack</code> and <code>block</code> provide more general stacking and concatenation operations.</p>
+</blockquote>
+<p>水平（按列顺序）把数组堆叠起来，下面是两个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b=[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</div><div class="line">print(np.hstack((a,b)))</div><div class="line"></div><div class="line">输出：[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> ]</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">b=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">c=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">d=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">print(np.hstack((a,b,c,d)))</div><div class="line"></div><div class="line">输出：</div><div class="line">[[<span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>]</div><div class="line"> [<span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span>]</div><div class="line"> [<span class="number">3</span> <span class="number">3</span> <span class="number">3</span> <span class="number">3</span>]]</div></pre></td></tr></table></figure>
+<h2 id="vstack"><a href="#vstack" class="headerlink" title="vstack()"></a>vstack()</h2><p><code>numpy.vstack(tup)</code></p>
+<blockquote>
+<p>Stack arrays in sequence vertically (row wise).</p>
+<p>This is equivalent to concatenation along the first axis after 1-D arrays of shape (N,) have been reshaped to (1,N). Rebuilds arrays divided by <code>vsplit</code>.</p>
+<p>This function makes most sense for arrays with up to 3 dimensions. For instance, for pixel-data with a height (first axis), width (second axis), and r/g/b channels (third axis). The functions <code>concatenate</code>, <code>stack</code> and <code>block</code> provide more general stacking and concatenation operations.</p>
+</blockquote>
+<p>垂直（按行顺序）把数组堆叠起来，下面是两个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b=[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</div><div class="line">print(np.vstack((a,b)))</div><div class="line"></div><div class="line">输出：</div><div class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</div><div class="line"> [<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]]</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">b=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">c=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">d=[[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]</div><div class="line">print(np.vstack((a,b,c,d)))</div><div class="line"></div><div class="line">输出：</div><div class="line">[[<span class="number">1</span>]</div><div class="line"> [<span class="number">2</span>]</div><div class="line"> [<span class="number">3</span>]</div><div class="line"> [<span class="number">1</span>]</div><div class="line"> [<span class="number">2</span>]</div><div class="line"> [<span class="number">3</span>]</div><div class="line"> [<span class="number">1</span>]</div><div class="line"> [<span class="number">2</span>]</div><div class="line"> [<span class="number">3</span>]</div><div class="line"> [<span class="number">1</span>]</div><div class="line"> [<span class="number">2</span>]</div><div class="line"> [<span class="number">3</span>]]</div></pre></td></tr></table></figure>
+<hr>
+<p>Ref：<br>[1] <a href="https://blog.csdn.net/csdn15698845876/article/details/73380803" target="_blank" rel="external">https://blog.csdn.net/csdn15698845876/article/details/73380803</a><br>[2] <a href="https://docs.scipy.org/doc/numpy/index.html" target="_blank" rel="external">NumPy v1.14 Manual</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/18/Paper-Reading-Mask-R-CNN/" rel="next" title="Paper Reading -- Mask R-CNN">
+                <i class="fa fa-chevron-left"></i> Paper Reading -- Mask R-CNN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vanessa Cao" />
+            
+              <p class="site-author-name" itemprop="name">Vanessa Cao</p>
+              <p class="site-description motion-element" itemprop="description">Stay Simple, Stay Naive.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#stack"><span class="nav-number">1.</span> <span class="nav-text">stack()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hstack"><span class="nav-number">2.</span> <span class="nav-text">hstack()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vstack"><span class="nav-number">3.</span> <span class="nav-text">vstack()</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vanessa Cao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://Neverland.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/05/21/Numpy中的stack-hstack-vstack/';
+          this.page.identifier = '2018/05/21/Numpy中的stack-hstack-vstack/';
+          this.page.title = 'Numpy中的stack(),hstack(),vstack()';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Neverland.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
