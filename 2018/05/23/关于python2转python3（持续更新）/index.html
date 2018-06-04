@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Neverland">
 <meta property="og:description" content="print函数是最常用的变化 1234# python2print &apos;aaa&apos;#python3print(&apos;aaa&apos;)  dict的加法 1234567# python2dict( dictA.tems() + dictB.tems() ) # python3dict( dictA.tems() | dictB.tems() )  #simple casedictC = dictA.copy()">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-23T08:16:54.802Z">
+<meta property="og:updated_time" content="2018-06-04T06:08:14.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于python2转python3（持续更新）">
 <meta name="twitter:description" content="print函数是最常用的变化 1234# python2print &apos;aaa&apos;#python3print(&apos;aaa&apos;)  dict的加法 1234567# python2dict( dictA.tems() + dictB.tems() ) # python3dict( dictA.tems() | dictB.tems() )  #simple casedictC = dictA.copy()">
@@ -341,6 +341,9 @@
 </li>
 <li><p>queue和Queue</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python2</span></div><div class="line"><span class="keyword">import</span> Queue</div><div class="line"><span class="comment"># python3</span></div><div class="line"><span class="keyword">import</span> queue</div></pre></td></tr></table></figure>
+</li>
+<li><p>dict.keys()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># python2</span></div><div class="line">dict_keys = dict1.keys() + dict2.keys()	<span class="comment">#dict.keys()返回一个list</span></div><div class="line"><span class="comment"># python3</span></div><div class="line">dict_keys = list(dict1.keys()) + list(dict2.keys()) <span class="comment">#dict.keys()返回一个dict_keys类型，不是list，不可调用dict.keys()[0]或者'+'方法</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
 
