@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="paper read," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Abstract深度学习中NN取得了巨大的成功，但是同时也有一些问题：  计算量巨大； 模型占用内存很大。  由于这些问题，在嵌入式系统中应用神经网络很困难。作者为了解决计算量和内存的问题，提出了三种方式进行模型压缩。 Network Pruning早期，LeCun使用Network Pruning减少网络复杂度，从而避免过拟合。作者通过剪枝使模型达到state-of-the-art的结果而没有降">
+<meta name="keywords" content="paper read">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DEEP COMPRESSION: COMPRESSING DEEP NEURAL NETWORKS WITH PRUNING, TRAINED QUANTIZATION">
+<meta property="og:url" content="http://yoursite.com/2018/08/24/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/index.html">
+<meta property="og:site_name" content="Neverland">
+<meta property="og:description" content="Abstract深度学习中NN取得了巨大的成功，但是同时也有一些问题：  计算量巨大； 模型占用内存很大。  由于这些问题，在嵌入式系统中应用神经网络很困难。作者为了解决计算量和内存的问题，提出了三种方式进行模型压缩。 Network Pruning早期，LeCun使用Network Pruning减少网络复杂度，从而避免过拟合。作者通过剪枝使模型达到state-of-the-art的结果而没有降">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/deep_compression_1.png">
+<meta property="og:image" content="http://yoursite.com/images/deep_compression_2.png">
+<meta property="og:image" content="http://yoursite.com/images/deep_compression_3.png">
+<meta property="og:image" content="http://yoursite.com/images/deep_compression_4.png">
+<meta property="og:updated_time" content="2018-08-26T02:44:14.133Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DEEP COMPRESSION: COMPRESSING DEEP NEURAL NETWORKS WITH PRUNING, TRAINED QUANTIZATION">
+<meta name="twitter:description" content="Abstract深度学习中NN取得了巨大的成功，但是同时也有一些问题：  计算量巨大； 模型占用内存很大。  由于这些问题，在嵌入式系统中应用神经网络很困难。作者为了解决计算量和内存的问题，提出了三种方式进行模型压缩。 Network Pruning早期，LeCun使用Network Pruning减少网络复杂度，从而避免过拟合。作者通过剪枝使模型达到state-of-the-art的结果而没有降">
+<meta name="twitter:image" content="http://yoursite.com/images/deep_compression_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/24/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/"/>
+
+
+
+
+
+  <title>DEEP COMPRESSION: COMPRESSING DEEP NEURAL NETWORKS WITH PRUNING, TRAINED QUANTIZATION | Neverland</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Neverland</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/24/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vanessa Cao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Neverland">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DEEP COMPRESSION: COMPRESSING DEEP NEURAL NETWORKS WITH PRUNING, TRAINED QUANTIZATION</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T10:11:12+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/24/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/24/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>深度学习中NN取得了巨大的成功，但是同时也有一些问题：</p>
+<ol>
+<li>计算量巨大；</li>
+<li>模型占用内存很大。</li>
+</ol>
+<p>由于这些问题，在嵌入式系统中应用神经网络很困难。作者为了解决计算量和内存的问题，提出了三种方式进行模型压缩。</p>
+<h2 id="Network-Pruning"><a href="#Network-Pruning" class="headerlink" title="Network Pruning"></a>Network Pruning</h2><p>早期，LeCun使用Network Pruning减少网络复杂度，从而避免过拟合。作者通过剪枝使模型达到state-of-the-art的结果而没有降低accuracy。</p>
+<p><img src="/images/deep_compression_1.png" alt="Alt text"></p>
+<p>上图最左边的框表示Network Pruning阶段，过程为：</p>
+<ol>
+<li>正常的训练一个网络；</li>
+<li>把一些权值很小的连接进行剪枝；</li>
+<li>重新训练剪枝后的网络。</li>
+</ol>
+<p>为了进一步压缩，对于weight的index，不再存储绝对位置的index，而是存储跟上一个有效weight的相对位置，这样index的字节数就可以被压缩了。<br>论文中，对于卷积层用 8bits 来保存这个相对位置的index，在全连接层中用 5bits 来保存；</p>
+<p><img src="/images/deep_compression_2.png" alt="Alt text"></p>
+<p>上图是以用3bits保存相对位置为例子，当相对位置超过8（3bits）的时候，需要在相对位置为8的地方填充一个0，防止溢出。</p>
+<h2 id="Trained-Quantization-and-Weight-Sharing"><a href="#Trained-Quantization-and-Weight-Sharing" class="headerlink" title="Trained Quantization and Weight Sharing"></a>Trained Quantization and Weight Sharing</h2><p><img src="/images/deep_compression_3.png" alt="Alt text"></p>
+<p>上图是权重压缩的过程，weight矩阵 聚类成了4个cluster，由4种颜色表示。属于同一类的weight共享同一个权值大小，每种颜色权值对应一个cluster index。由于同一cluster的weight共享一个权值大小，所以只需要存储权值的index例子中是4个cluster，所以原来每个weight需要32bits，现在只需要2bits，非常简单的压缩了16倍。</p>
+<p>在权值更新时，所有的gradients按照weight矩阵颜色分组，同一组的gradient相加，得到的和乘以learning rate再减去共享的centroids，得到一个fine-tuned centroids。在AlexNet中，卷积层quantization到8bits（256个共享权值），而全连接层quantization到5bits（32个共享权值），并且这样压缩之后的网络没有降低准确率。</p>
+<h2 id="Weight-Sharing"><a href="#Weight-Sharing" class="headerlink" title="Weight Sharing"></a>Weight Sharing</h2><p>使用K-means，对每一层都做一个weight的聚类，同一类的共享一个权值大小。但是跨层的权值不共享。</p>
+<h2 id="Initialization-of-Shared-Weights"><a href="#Initialization-of-Shared-Weights" class="headerlink" title="Initialization of Shared Weights"></a>Initialization of Shared Weights</h2><p>作者尝试了各种初始化方法，包括Forgy(random), density-based, and linear initialization.</p>
+<p><img src="/images/deep_compression_4.png" alt="Alt text"></p>
+<p>上图中未AlexNet中conv3的权重分布，Forgy 和 density-based 方法产生的centroids很少落入到大权值的范围中，造成的结果就是忽略了大权值的作用；而Linear initialization产生的centroids非常平均，没有这个问题存在，后续试验结果也说明Linear initialization的效果最好。</p>
+<h2 id="Huffman-Coding"><a href="#Huffman-Coding" class="headerlink" title="Huffman Coding"></a>Huffman Coding</h2><p>通过使用哈夫曼编码对权重编码，可以使网络储存减少20%-30%。</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul>
+<li>Pruning：把连接数减少到原来的 1/13~1/9； </li>
+<li>Quantization：每一个连接从原来的 32bits 减少到 5bits；</li>
+<li>把AlextNet压缩了35倍，从 240MB，减小到 6.9MB； </li>
+<li>把VGG-16压缩了49北，从 552MB 减小到 11.3MB； </li>
+<li>计算速度是原来的3~4倍，能源消耗是原来的3~7倍。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/paper-read/" rel="tag"># paper read</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/21/MnasNet-Platform-Aware-Neural-Architecture-Search-for-Mobile-md/" rel="next" title="MnasNet: Platform-Aware Neural Architecture Search for Mobile">
+                <i class="fa fa-chevron-left"></i> MnasNet: Platform-Aware Neural Architecture Search for Mobile
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vanessa Cao" />
+            
+              <p class="site-author-name" itemprop="name">Vanessa Cao</p>
+              <p class="site-description motion-element" itemprop="description">Stay Simple, Stay Naive.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Network-Pruning"><span class="nav-number">2.</span> <span class="nav-text">Network Pruning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trained-Quantization-and-Weight-Sharing"><span class="nav-number">3.</span> <span class="nav-text">Trained Quantization and Weight Sharing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weight-Sharing"><span class="nav-number">4.</span> <span class="nav-text">Weight Sharing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Initialization-of-Shared-Weights"><span class="nav-number">5.</span> <span class="nav-text">Initialization of Shared Weights</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Huffman-Coding"><span class="nav-number">6.</span> <span class="nav-text">Huffman Coding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">7.</span> <span class="nav-text">Results</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vanessa Cao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://Neverland.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/08/24/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/';
+          this.page.identifier = '2018/08/24/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/';
+          this.page.title = 'DEEP COMPRESSION: COMPRESSING DEEP NEURAL NETWORKS WITH PRUNING, TRAINED QUANTIZATION';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Neverland.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
