@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/mnasnet_1.png">
 <meta property="og:image" content="http://yoursite.com/images/mnasnet_2.png">
-<meta property="og:updated_time" content="2018-08-21T08:07:58.287Z">
+<meta property="og:updated_time" content="2018-08-26T02:35:31.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MnasNet: Platform-Aware Neural Architecture Search for Mobile">
 <meta name="twitter:description" content="本文提出了一种根据资源限制自动搜索网络结构的方法。与以往的近似性能（如FLOPS）不同，本文使用真实的延迟来衡量性能。在搜索上，在factorized hierarchical search space进行搜索。在ImageNet分类和COCO物体检测上都取得了很好的效果。 Introduction随着CNN模型的发展，网络结构越来越深，需要的计算量更大，速度也越来越慢，导致在或者资源受限的移动设">
@@ -371,6 +371,7 @@
 <li>相比于之前的工作，本文的模型中有更多的5×5卷积。之前通常使用3×3的卷积。5×5的卷积比3×3的卷积效率更高。</li>
 <li>通过实验证明了layer diversity是很重要的，本文提出的搜索空间有多种layer可以选择，相比于其他的方法比较好的平衡了accuracy和latency。</li>
 </ol>
+<h2 id="Think"><a href="#Think" class="headerlink" title="Think"></a>Think</h2><p>可以使用RL进行自动适配的神经网络压缩，同时，定义一个好的搜索空间十分重要。如果根据不同的任务进行搜索空间的调整可能能够取得更好的效果。</p>
 
       
     </div>
@@ -410,6 +411,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/26/DEEP-COMPRESSION-COMPRESSING-DEEP-NEURAL-NETWORKS-WITH-PRUNING-TRAINED-QUANTIZATION/" rel="prev" title="DEEP COMPRESSION: COMPRESSING DEEP NEURAL NETWORKS WITH PRUNING, TRAINED QUANTIZATION">
+                DEEP COMPRESSION: COMPRESSING DEEP NEURAL NETWORKS WITH PRUNING, TRAINED QUANTIZATION <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -500,7 +505,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -548,7 +553,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-Formulation"><span class="nav-number">2.</span> <span class="nav-text">Problem Formulation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mobile-Neural-Architecture-Search"><span class="nav-number">3.</span> <span class="nav-text">Mobile Neural Architecture Search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Search Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Factorized-Hierarchical-Search-Space"><span class="nav-number">5.</span> <span class="nav-text">Factorized Hierarchical Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">6.</span> <span class="nav-text">Experiments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture-and-Discussion"><span class="nav-number">7.</span> <span class="nav-text">Architecture and Discussion</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-Formulation"><span class="nav-number">2.</span> <span class="nav-text">Problem Formulation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mobile-Neural-Architecture-Search"><span class="nav-number">3.</span> <span class="nav-text">Mobile Neural Architecture Search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Search Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Factorized-Hierarchical-Search-Space"><span class="nav-number">5.</span> <span class="nav-text">Factorized Hierarchical Search Space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">6.</span> <span class="nav-text">Experiments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture-and-Discussion"><span class="nav-number">7.</span> <span class="nav-text">Architecture and Discussion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Think"><span class="nav-number">8.</span> <span class="nav-text">Think</span></a></li></ol></div>
             
 
           </div>
